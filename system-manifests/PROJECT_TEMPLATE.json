@@ -1,14 +1,49 @@
 {
-  "requiredFiles": [
-    "SYSTEM_MANIFEST.json.md",
-    "SPEC.md",
-    "UX_INVARIANTS.md",
-    "TEST_ACCEPTANCE.md",
-    "BINDING_CERTIFICATION.md"
-  ],
-  "defaultStatus": "DEVELOPMENT",
-  "defaultReviewScope": ["spec", "ux", "acceptance"],
-  "manifestVersion": "1.0",
+  "templateVersion": "1.1",
+
+  "profiles": {
+    "spec-governed": {
+      "requiredFiles": [
+        "SYSTEM_MANIFEST.json.md",
+        "SPEC.md",
+        "BINDING_CERTIFICATION.md"
+      ],
+      "optionalFiles": [
+        "UX_INVARIANTS.md",
+        "TEST_ACCEPTANCE.md"
+      ],
+      "defaultReviewScope": ["spec"]
+    },
+
+    "ux-demo": {
+      "requiredFiles": [
+        "SYSTEM_MANIFEST.json.md",
+        "UX_INVARIANTS.md",
+        "TEST_ACCEPTANCE.md"
+      ],
+      "optionalFiles": [
+        "SPEC.md"
+      ],
+      "defaultReviewScope": ["ux", "acceptance"]
+    },
+
+    "hybrid": {
+      "requiredFiles": [
+        "SYSTEM_MANIFEST.json.md",
+        "SPEC.md",
+        "UX_INVARIANTS.md",
+        "TEST_ACCEPTANCE.md",
+        "BINDING_CERTIFICATION.md"
+      ],
+      "defaultReviewScope": ["spec", "ux", "acceptance"]
+    }
+  },
+
+  "defaults": {
+    "status": "DEVELOPMENT",
+    "profile": "hybrid"
+  },
+
   "namingRules": {
     "projectId": "lowercase-hyphen"
   }
