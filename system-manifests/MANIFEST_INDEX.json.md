@@ -19,7 +19,6 @@
       "status": "ACTIVE",
       "type": "demo-hybrid",
       "speckitReviewable": true,
-
       "spec": {
         "type": "directory",
         "path": "spec/",
@@ -27,7 +26,6 @@
         "reviewMode": "aggregate"
       }
     },
-
     {
       "projectId": "generic-code-snippet-manager",
       "name": "Generic Code Snippet Manager",
@@ -37,7 +35,6 @@
       "status": "DEVELOPMENT",
       "type": "spec-governed",
       "speckitReviewable": true,
-
       "spec": {
         "type": "directory",
         "path": "spec/",
