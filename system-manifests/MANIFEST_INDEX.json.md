@@ -13,11 +13,10 @@
     {
       "projectId": "appointment-scheduling",
       "name": "Appointment Scheduling Demo (Power Pages)",
-      "repository": "https://github.com/bradlaw76/<PROJECT_REPO_NAME>",
-      "manifestUrl": "https://raw.githubusercontent.com/bradlaw76/<PROJECT_REPO_NAME>/main/SYSTEM_MANIFEST.json.md",
+      "repository": "https://github.com/bradlaw76/PowerPagesAppointment-Scheduling",
+      "manifestUrl": "https://raw.githubusercontent.com/bradlaw76/PowerPagesAppointment-Scheduling/main/SYSTEM_MANIFEST.json.md",
       "profile": "hybrid",
       "status": "ACTIVE",
-      "type": "demo-hybrid",
       "speckitReviewable": true,
       "spec": {
         "type": "directory",
@@ -33,7 +32,6 @@
       "manifestUrl": "https://raw.githubusercontent.com/bradlaw76/Generic.CodeSnippetManager/main/SYSTEM_MANIFEST.json.md",
       "profile": "spec-governed",
       "status": "DEVELOPMENT",
-      "type": "spec-governed",
       "speckitReviewable": true,
       "spec": {
         "type": "directory",
