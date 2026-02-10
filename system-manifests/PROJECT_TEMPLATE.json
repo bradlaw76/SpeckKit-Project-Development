@@ -1,0 +1,15 @@
+{
+  "requiredFiles": [
+    "SYSTEM_MANIFEST.json.md",
+    "SPEC.md",
+    "UX_INVARIANTS.md",
+    "TEST_ACCEPTANCE.md",
+    "BINDING_CERTIFICATION.md"
+  ],
+  "defaultStatus": "DEVELOPMENT",
+  "defaultReviewScope": ["spec", "ux", "acceptance"],
+  "manifestVersion": "1.0",
+  "namingRules": {
+    "projectId": "lowercase-hyphen"
+  }
+}
