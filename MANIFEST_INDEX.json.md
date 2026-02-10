@@ -9,15 +9,24 @@
     "lastUpdated": "2026-02-10"
   },
 
-  "projects":
-  {
-  "id": "generic-code-snippet-manager",
-  "name": "Generic Code Snippet Manager",
-  "repo": "https://github.com/bradlaw76/Generic.CodeSnippetManager",
-  "manifestUrl": "https://github.com/bradlaw76/Generic.CodeSnippetManager/blob/main/SYSTEM_MANIFEST.json.md",
-  "status": "DEVELOPMENT",
-  "type": "spec-governed",
-  "speckitReviewable": true
-}
-
+  "projects": [
+    {
+      "id": "appointment-scheduling",
+      "name": "Appointment Scheduling",
+      "repo": "https://github.com/bradlaw76/appointment-scheduling",
+      "manifestUrl": "https://github.com/bradlaw76/appointment-scheduling/blob/main/SYSTEM_MANIFEST.json.md",
+      "status": "DEVELOPMENT",
+      "type": "hybrid",
+      "speckitReviewable": true
+    },
+    {
+      "id": "generic-code-snippet-manager",
+      "name": "Generic Code Snippet Manager",
+      "repo": "https://github.com/bradlaw76/Generic.CodeSnippetManager",
+      "manifestUrl": "https://github.com/bradlaw76/Generic.CodeSnippetManager/blob/main/SYSTEM_MANIFEST.json.md",
+      "status": "DEVELOPMENT",
+      "type": "spec-governed",
+      "speckitReviewable": true
+    }
+  ]
 }
