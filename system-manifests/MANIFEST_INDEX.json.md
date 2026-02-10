@@ -9,26 +9,41 @@
     "lastUpdated": "2026-02-10"
   },
 
-  "projects": 
-  {
-  "id": "appointment-scheduling",
-  "name": "Appointment Scheduling Demo (Power Pages)",
-  "repo": "https://github.com/bradlaw76/<PROJECT_REPO_NAME>",
-  "manifestUrl": "https://github.com/bradlaw76/<PROJECT_REPO_NAME>/blob/main/SYSTEM_MANIFEST.json.md",
-  "type": "demo-hybrid",
-  "status": "active",
-  "speckitReviewable": true,
-  "primarySpec": "SPEC.md"
-}
-{
-  "id": "generic-code-snippet-manager",
-  "name": "Generic Code Snippet Manager",
-  "repo": "https://github.com/bradlaw76/Generic.CodeSnippetManager",
-  "manifestUrl": "https://github.com/bradlaw76/Generic.CodeSnippetManager/blob/main/SYSTEM_MANIFEST.json.md",
-  "status": "DEVELOPMENT",
-  "type": "spec-governed",
-  "speckitReviewable": true
-}
+  "projects": [
+    {
+      "projectId": "appointment-scheduling",
+      "name": "Appointment Scheduling Demo (Power Pages)",
+      "repository": "https://github.com/bradlaw76/<PROJECT_REPO_NAME>",
+      "manifestUrl": "https://raw.githubusercontent.com/bradlaw76/<PROJECT_REPO_NAME>/main/SYSTEM_MANIFEST.json.md",
+      "profile": "hybrid",
+      "status": "ACTIVE",
+      "type": "demo-hybrid",
+      "speckitReviewable": true,
 
+      "spec": {
+        "type": "directory",
+        "path": "spec/",
+        "entryPoint": "01-intent.md",
+        "reviewMode": "aggregate"
+      }
+    },
 
+    {
+      "projectId": "generic-code-snippet-manager",
+      "name": "Generic Code Snippet Manager",
+      "repository": "https://github.com/bradlaw76/Generic.CodeSnippetManager",
+      "manifestUrl": "https://raw.githubusercontent.com/bradlaw76/Generic.CodeSnippetManager/main/SYSTEM_MANIFEST.json.md",
+      "profile": "spec-governed",
+      "status": "DEVELOPMENT",
+      "type": "spec-governed",
+      "speckitReviewable": true,
+
+      "spec": {
+        "type": "directory",
+        "path": "spec/",
+        "entryPoint": "01-intent.md",
+        "reviewMode": "aggregate"
+      }
+    }
+  ]
 }
