@@ -20,5 +20,15 @@
   "speckitReviewable": true,
   "primarySpec": "SPEC.md"
 }
+{
+  "id": "generic-code-snippet-manager",
+  "name": "Generic Code Snippet Manager",
+  "repo": "https://github.com/bradlaw76/Generic.CodeSnippetManager",
+  "manifestUrl": "https://github.com/bradlaw76/Generic.CodeSnippetManager/blob/main/SYSTEM_MANIFEST.json.md",
+  "status": "DEVELOPMENT",
+  "type": "spec-governed",
+  "speckitReviewable": true
+}
+
 
 }
