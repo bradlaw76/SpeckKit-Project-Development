@@ -55,6 +55,7 @@
   "usage": {
     "howToReference": "See HOW_TO_USE_CODE_STANDARDS.md for full integration guide",
     "quickStart": "See QUICK_START_FOR_PROJECTS.md for step-by-step consumer setup",
+    "setupGuide": "See /SETUP_FOR_PROJECTS.md for the unified single-file setup (recommended)",
     "quickReference": {
       "directUrl": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/comments/component-header-block.md",
       "catalogUrl": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/CODE_STANDARDS_CATALOG.json.md"

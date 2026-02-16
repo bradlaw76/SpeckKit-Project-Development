@@ -46,6 +46,7 @@
   "usage": {
     "howToReference": "See HOW_TO_USE_UI_REFERENCES.md for full integration guide",
     "quickStart": "See QUICK_START_FOR_PROJECTS.md for step-by-step consumer setup",
+    "setupGuide": "See /SETUP_FOR_PROJECTS.md for the unified single-file setup (recommended)",
     "quickReference": {
       "directUrl": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/ui-references/dynamics365/ui/contact-center-cases-grid.jsonc",
       "catalogUrl": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/ui-references/UI_REFERENCE_CATALOG.json.md",

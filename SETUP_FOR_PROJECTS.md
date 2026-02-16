@@ -9,6 +9,12 @@
 
 ---
 
+<!--
+Set up this project using the SpeckKit registry at https://github.com/bradlaw76/SpeckKit-Project-Development — read SETUP_FOR_PROJECTS.md
+-->
+
+---
+
 ## What This Registry Provides
 
 | Resource | Description | Agent Default |

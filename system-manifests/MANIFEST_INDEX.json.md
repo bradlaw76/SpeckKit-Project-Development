@@ -34,6 +34,12 @@
     "purpose": "Defines auto-apply vs. ask-first defaults for all registry resources"
   },
 
+  "setupGuide": {
+    "path": "/SETUP_FOR_PROJECTS.md",
+    "url": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/SETUP_FOR_PROJECTS.md",
+    "purpose": "Unified setup guide for consumer projects — single entry point"
+  },
+
   "projects": [
     {
       "projectId": "appointment-scheduling",

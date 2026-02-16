@@ -6,7 +6,7 @@
 **Registry Path:** `/system-manifests/`
 **Registry File:** `MANIFEST_INDEX.json.md`
 **Governance Status:** **ACTIVE & BINDING**
-**Effective Date:** February 10, 2026
+**Effective Date:** February 16, 2026
 **Authority:** SpeckKit Project Development
 
 ---
@@ -33,8 +33,9 @@ SpeckKit operates with **two strictly separated layers**:
 
 ### 1️⃣ Registry Layer (This Repository)
 
-**Purpose:** Discovery, governance, routing
+**Purpose:** Discovery, governance, routing, shared standards
 **Scope:** Portfolio-level only
+**Provides:** Project registry, code standards, UI references, agent behavior defaults
 **Never contains:** Specs, UX rules, code, logic
 
 ### 2️⃣ Project Layer (Individual Repositories)
@@ -325,12 +326,12 @@ DEVELOPMENT → ACTIVE → INACTIVE / DEPRECATED → ARCHIVED
 
 ## What This Repository Never Does
 
-* Stores specs
-* Reviews code
-* Defines UX behavior
-* Makes architectural decisions
+* Stores project specs
+* Reviews project code
+* Defines project-specific UX behavior
+* Makes project-level architectural decisions
 
-It governs **existence, discoverability, and compliance only** — plus provides **shared UI references** and **code documentation standards** for cross-project reuse.
+It governs **existence, discoverability, and compliance** — plus provides **shared code standards** and **UI references** for cross-project reuse, with **agent-aware defaults** for AI-assisted development.
 
 ---
 
@@ -437,7 +438,7 @@ Add to your project's `SYSTEM_MANIFEST.json.md`:
 }
 ```
 
-For full setup instructions, see `ui-references/HOW_TO_USE_UI_REFERENCES.md`.
+For full setup instructions, see [`SETUP_FOR_PROJECTS.md`](SETUP_FOR_PROJECTS.md).
 
 ---
 
