@@ -6,7 +6,16 @@
     "path": "/system-manifests",
     "version": "1.0",
     "purpose": "Authoritative index of all system manifests governed and reviewed using SpeckKit",
-    "lastUpdated": "2026-02-10"
+    "lastUpdated": "2026-02-16"
+  },
+
+  "uiReferenceCatalog": {
+    "path": "/ui-references",
+    "catalogFile": "UI_REFERENCE_CATALOG.json.md",
+    "catalogUrl": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/ui-references/UI_REFERENCE_CATALOG.json.md",
+    "guideFile": "HOW_TO_USE_UI_REFERENCES.md",
+    "purpose": "Reusable UI description models consumable by any SpeckKit-governed project",
+    "status": "ACTIVE"
   },
 
   "projects": [

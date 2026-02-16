@@ -1,0 +1,353 @@
+{
+  // ============================================================
+  // SpeckKit UI Reference
+  // ID: dynamics365-contact-center-cases-grid
+  // ============================================================
+  // This is a reusable UI description model for the Dynamics 365
+  // Contact Center workspace — Cases > My Active Cases grid view
+  // with the Copilot AI assistant pane.
+  //
+  // Usage: Reference this file from any SpeckKit-governed project
+  // to inherit UI patterns, layout models, and component specs
+  // for Dynamics 365 Contact Center interfaces.
+  //
+  // Source Image: dynamics365-contact-center-cases-grid.png
+  // Created: 2026-02-16
+  // ============================================================
+
+  "$schema": {
+    "type": "SpeckKit.UIReference",
+    "version": "1.0",
+    "id": "dynamics365-contact-center-cases-grid",
+    "name": "Dynamics 365 – Contact Center Cases Grid",
+    "catalog": "ui-references",
+    "registryUrl": "https://github.com/bradlaw76/SpeckKit-Project-Development/blob/main/ui-references/dynamics365-contact-center-cases-grid.jsonc",
+    "sourceImage": "dynamics365-contact-center-cases-grid.png",
+    "created": "2026-02-16",
+    "lastUpdated": "2026-02-16",
+    "tags": [
+      "dynamics-365",
+      "contact-center",
+      "case-management",
+      "copilot",
+      "grid-view",
+      "customer-service"
+    ]
+  },
+
+  // ============================================================
+  // Application Context
+  // ============================================================
+  "app": {
+    "platform": "Dynamics 365",
+    "area": "Customer Service",
+    "workspace": "Contact Center workspace",
+    "environmentType": "Trial",
+    "theme": {
+      "mode": "Light",
+      "topBarColor": "#000000",
+      "accentColor": "#00B7C3" // Teal accent in header icons
+    }
+  },
+
+  // ------------------------------------------------------------
+  // Global Header (Top Navigation Bar)
+  // ------------------------------------------------------------
+  "globalHeader": {
+    "left": {
+      "logo": "Dynamics 365",
+      "appName": "Contact Center workspace"
+    },
+    "center": {
+      "searchBar": {
+        "placeholder": "Search",
+        "scope": "Global"
+      }
+    },
+    "right": {
+      "icons": [
+        "Lightbulb (Ideas)",
+        "Create (+)",
+        "Notifications (Bell)",
+        "Settings (Gear)",
+        "Help (?)",
+        "Voice/Call Icon",
+        "User Profile Avatar"
+      ],
+      "actions": [
+        "Open trial guide"
+      ]
+    }
+  },
+
+  // ------------------------------------------------------------
+  // Secondary Header (App Context Bar)
+  // ------------------------------------------------------------
+  "contextBar": {
+    "breadcrumb": [
+      "Home"
+    ],
+    "tabs": [
+      "Trial home",
+      "Customer Service Representative",
+      "Cases | My Active Cases"
+    ],
+    "activeTab": "Cases | My Active Cases"
+  },
+
+  // ------------------------------------------------------------
+  // Left Navigation Pane (Case Stream / Timeline)
+  // ------------------------------------------------------------
+  "leftPane": {
+    "section": "Cases",
+    "filter": "This month",
+    "items": [
+      {
+        "type": "Case",
+        "category": "Document Inquiry and Follow Up",
+        "caseId": "CAS-01140-L9K1ZZ",
+        "customer": "Ted O. Bailey",
+        "status": "Active",
+        "date": "Sat 2/7"
+      },
+      {
+        "type": "Case",
+        "category": "Document Inquiry and Follow Up",
+        "caseId": "CAS-01139-P9Q5X6",
+        "customer": "Ted O. Bailey",
+        "status": "Active",
+        "date": "Thu 2/5"
+      }
+      // ...additional recent cases listed vertically
+    ],
+    "visualStyle": {
+      "layout": "Vertical list",
+      "icons": "Purple circular icons",
+      "scrollable": true
+    }
+  },
+
+  // ------------------------------------------------------------
+  // Main Content Area (Cases Grid)
+  // ------------------------------------------------------------
+  "mainContent": {
+    "viewName": "My Active Cases",
+    "toolbar": {
+      "actions": [
+        "Show As",
+        "Show Chart",
+        "Inbox view",
+        "New Case",
+        "Delete",
+        "Refresh",
+        "Collaborate",
+        "Run Report",
+        "Share"
+      ],
+      "columnManagement": [
+        "Edit columns",
+        "Edit filters",
+        "Filter by keyword"
+      ]
+    },
+
+    "grid": {
+      "type": "Dataverse View Grid",
+      "columns": [
+        "Case Title",
+        "Case Number",
+        "Priority",
+        "Origin",
+        "Customer",
+        "Status Reason",
+        "Created On"
+      ],
+      "rows": [
+        {
+          "caseTitle": "Benefits Question",
+          "caseNumber": "CAS-01121-W0L4...",
+          "priority": null,
+          "origin": null,
+          "customer": "Ted Bailey",
+          "statusReason": "In Progress",
+          "createdOn": "12/13/2025 10:00"
+        },
+        {
+          "caseTitle": "Benefits Questions 1",
+          "caseNumber": "CAS-01108-W1P8...",
+          "priority": "Normal",
+          "origin": "Chat",
+          "customer": "Ted Bailey",
+          "statusReason": "In Progress",
+          "createdOn": "11/17/2025 11:44"
+        },
+        {
+          "caseTitle": "Benefits Questions 2",
+          "caseNumber": "CAS-01115-Z8G3...",
+          "priority": "High",
+          "origin": "Phone",
+          "customer": "Ted Bailey",
+          "statusReason": "In Progress",
+          "createdOn": "12/3/2025 10:34"
+        },
+        {
+          "caseTitle": "Benefits Support - Call Center 2030",
+          "caseNumber": "CAS-01126-M5V9...",
+          "priority": null,
+          "origin": "Phone",
+          "customer": "Ted Bailey",
+          "statusReason": "In Progress",
+          "createdOn": "12/16/2025 3:12"
+        },
+        {
+          "caseTitle": "Camping Chair Broken",
+          "caseNumber": "CAS-08952-G7V1...",
+          "priority": "Normal",
+          "origin": null,
+          "customer": "Eva Corets",
+          "statusReason": "Waiting for Details",
+          "createdOn": "3/29/2025 4:38"
+        },
+        {
+          "caseTitle": "Camping Chair Broken",
+          "caseNumber": "CAS-08946-K9J6H6",
+          "priority": "Low",
+          "origin": null,
+          "customer": "Abbey Blees",
+          "statusReason": "In Progress",
+          "createdOn": "1/25/2024 4:38"
+        },
+        {
+          "caseTitle": "Camping Chair Broken",
+          "caseNumber": "CAS-08940-F3F3...",
+          "priority": "Normal",
+          "origin": null,
+          "customer": "Orestas Schafer",
+          "statusReason": "Waiting for Details",
+          "createdOn": "1/23/2025 4:38"
+        },
+        {
+          "caseTitle": "Camping Chair Broken",
+          "caseNumber": "CAS-08873-K3C6S5",
+          "priority": "Normal",
+          "origin": null,
+          "customer": "Adam Fardoe",
+          "statusReason": "Researching",
+          "createdOn": "6/13/2023 4:38"
+        }
+      ],
+      "visualIndicators": {
+        "priority": {
+          "High": { "color": "Red", "badgeStyle": "Alert" },
+          "Normal": { "color": "Dark Gray", "badgeStyle": "Neutral" },
+          "Low": { "color": "Green", "badgeStyle": "Success" }
+        },
+        "origin": {
+          "Chat": { "color": "Light Green" },
+          "Phone": { "color": "Yellow" }
+        },
+        "statusReason": {
+          "In Progress": { "color": "Blue/Neutral" },
+          "Waiting for Details": { "color": "Light Red/Warning" },
+          "Researching": { "color": "Yellow/Info" }
+        }
+      },
+      "pagination": {
+        "rowsDisplayed": "1-50",
+        "total": "5000+",
+        "page": 1
+      }
+    }
+  },
+
+  // ------------------------------------------------------------
+  // Right Pane – Copilot (AI Assistant)
+  // ------------------------------------------------------------
+  "rightPane": {
+    "component": "Copilot",
+    "purpose": "AI-powered assistance for solving customer issues",
+    "tabs": [
+      "Ask a question",
+      "Write an email"
+    ],
+    "suggestedPrompts": [
+      {
+        "type": "Summarize",
+        "example": "Can you help summarize case [case number]?"
+      },
+      {
+        "type": "Ask",
+        "example": "Can you help me translate this content into English: '[content]'?"
+      },
+      {
+        "type": "Discover",
+        "example": "Show me cases that have email updates in the last [3] days."
+      }
+    ],
+    "inputArea": {
+      "placeholder": "Describe what you need",
+      "characterLimit": 2000
+    },
+    "footer": {
+      "note": "AI-generated content may not always be accurate"
+    }
+  },
+
+  // ------------------------------------------------------------
+  // Layout Model
+  // ------------------------------------------------------------
+  "layout": {
+    "structure": "Three-column",
+    "columns": {
+      "left": "Case stream navigation",
+      "center": "Primary grid + toolbar",
+      "right": "Copilot AI assistant panel"
+    },
+    "responsiveBehavior": {
+      "leftPane": "Collapsible",
+      "rightPane": "Docked / Toggleable",
+      "grid": "Scrollable"
+    }
+  },
+
+  // ------------------------------------------------------------
+  // Functional Context
+  // ------------------------------------------------------------
+  "functionalPurpose": {
+    "primaryUse": "Case management for contact center agents",
+    "userRole": "Customer Service Representative",
+    "coreTasks": [
+      "View and manage active cases",
+      "Filter and search cases",
+      "Create new cases",
+      "Collaborate and report",
+      "Use Copilot for AI assistance"
+    ]
+  },
+
+  // ------------------------------------------------------------
+  // Reusable Component Patterns (Extractable)
+  // ------------------------------------------------------------
+  "reusablePatterns": {
+    "threeColumnLayout": {
+      "description": "Navigation pane | Main content area | AI assistant sidebar",
+      "applicableTo": ["Case views", "Queue views", "Dashboard views"]
+    },
+    "dataverseGrid": {
+      "description": "Standard Dynamics 365 grid with column sorting, filtering, and inline visual badges",
+      "applicableTo": ["Any entity list view"]
+    },
+    "copilotPanel": {
+      "description": "Docked AI assistant with suggested prompts, free-text input, and tab-based modes",
+      "applicableTo": ["Any Dynamics 365 model-driven app with Copilot enabled"]
+    },
+    "caseStreamNav": {
+      "description": "Vertical scrollable list of recent cases with category icons and status indicators",
+      "applicableTo": ["Case management", "Activity management"]
+    },
+    "priorityBadges": {
+      "description": "Color-coded priority indicators (Red=High, Gray=Normal, Green=Low)",
+      "applicableTo": ["Any entity with priority field"]
+    }
+  }
+}

@@ -36,6 +36,21 @@
         "BINDING_CERTIFICATION.md"
       ],
       "defaultReviewScope": ["spec", "ux", "acceptance"]
+    },
+
+    "ui-reference": {
+      "requiredFiles": [
+        "SYSTEM_MANIFEST.json.md"
+      ],
+      "optionalFiles": [
+        "SPEC.md",
+        "UX_INVARIANTS.md"
+      ],
+      "uiReferences": {
+        "catalogUrl": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/ui-references/UI_REFERENCE_CATALOG.json.md",
+        "required": true
+      },
+      "defaultReviewScope": ["ux", "ui-references"]
     }
   },
 
