@@ -18,6 +18,22 @@
     "status": "ACTIVE"
   },
 
+  "codeStandardsCatalog": {
+    "path": "/code-standards",
+    "catalogFile": "CODE_STANDARDS_CATALOG.json.md",
+    "catalogUrl": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/CODE_STANDARDS_CATALOG.json.md",
+    "guideFile": "HOW_TO_USE_CODE_STANDARDS.md",
+    "purpose": "Reusable code documentation standards and templates — auto-applied by agents",
+    "defaultApply": true,
+    "status": "ACTIVE"
+  },
+
+  "agentBehavior": {
+    "path": "/AGENT_BEHAVIOR_DEFAULTS.jsonc",
+    "url": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/AGENT_BEHAVIOR_DEFAULTS.jsonc",
+    "purpose": "Defines auto-apply vs. ask-first defaults for all registry resources"
+  },
+
   "projects": [
     {
       "id": "appointment-scheduling",

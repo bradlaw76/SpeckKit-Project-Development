@@ -58,6 +58,12 @@ SpeckKit-Project-Development/
 │   ├── MANIFEST_INDEX.json.md   ← Authoritative registry
 │   ├── PROJECT_TEMPLATE.json    ← Project profile templates
 │   └── REGISTRY_LOCK.md         ← Binding governance rules
+├── code-standards/
+│   ├── CODE_STANDARDS_CATALOG.json.md        ← Code standards index
+│   ├── HOW_TO_USE_CODE_STANDARDS.md          ← Usage guide
+│   ├── QUICK_START_FOR_PROJECTS.md           ← Consumer bootstrap
+│   └── comments/                             ← Category: comment standards
+│       └── component-header-block.md         ← Component header template
 ├── ui-references/
 │   ├── UI_REFERENCE_CATALOG.json.md          ← UI reference index
 │   ├── HOW_TO_USE_UI_REFERENCES.md           ← Usage guide (skill doc)
@@ -65,6 +71,7 @@ SpeckKit-Project-Development/
 │   └── dynamics365/                          ← Platform: Dynamics 365
 │       └── ui/                               ← Area: UI references
 │           └── contact-center-cases-grid.jsonc
+├── AGENT_BEHAVIOR_DEFAULTS.jsonc ← Agent auto-apply vs. ask-first rules
 ├── MANIFEST_RULES.md            ← Registry usage rules
 └── README.md                    ← This document
 ```
@@ -322,7 +329,57 @@ DEVELOPMENT → ACTIVE → INACTIVE / DEPRECATED → ARCHIVED
 * Defines UX behavior
 * Makes architectural decisions
 
-It governs **existence, discoverability, and compliance only** — plus provides **shared UI references** for cross-project reuse.
+It governs **existence, discoverability, and compliance only** — plus provides **shared UI references** and **code documentation standards** for cross-project reuse.
+
+---
+
+## Agent Behavior Defaults
+
+This registry defines **two types of reusable resources** with different agent behaviors:
+
+| Resource | Default | Agent Behavior | File |
+|----------|---------|----------------|------|
+| **Code Standards** | **YES — auto-apply** | Apply comment headers automatically. Skip only if user opts out. | `AGENT_BEHAVIOR_DEFAULTS.jsonc` |
+| **UI References** | **ASK first** | Confirm with user before loading UI context. | `AGENT_BEHAVIOR_DEFAULTS.jsonc` |
+
+When an agent is pointed at this repo, it should read `AGENT_BEHAVIOR_DEFAULTS.jsonc` first to understand these defaults.
+
+---
+
+## Code Standards Catalog
+
+The registry includes a **Code Standards Catalog** — reusable documentation templates that agents auto-apply to component files.
+
+### Purpose
+
+Code standards ensure every component is self-documenting with structured comment headers covering identity, architecture, features, security, testing, and changelog.
+
+### Location
+
+```
+code-standards/
+├── CODE_STANDARDS_CATALOG.json.md    ← Index of all standards
+├── HOW_TO_USE_CODE_STANDARDS.md      ← Full integration guide
+├── QUICK_START_FOR_PROJECTS.md       ← Step-by-step consumer setup
+└── comments/                         ← Category: comment standards
+    └── component-header-block.md     ← Component header template
+```
+
+### Quick Reference (for other VS Code projects)
+
+Add to your `.github/copilot-instructions.md`:
+
+```markdown
+## Code Standards (Auto-Apply)
+
+This project follows SpeckKit code standards.
+ALWAYS apply the component header comment block to new component files.
+
+- Standard: https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/comments/component-header-block.md
+- Catalog: https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/CODE_STANDARDS_CATALOG.json.md
+```
+
+For full setup instructions, see `code-standards/QUICK_START_FOR_PROJECTS.md`.
 
 ---
 
@@ -380,6 +437,7 @@ For full setup instructions, see `ui-references/HOW_TO_USE_UI_REFERENCES.md`.
 * Explicit scope control
 * Portfolio-scale governance
 * Human-readable + machine-enforced
+* **Agent-aware defaults** — code standards auto-apply, UI references ask first
 
 ---
 

@@ -51,6 +51,20 @@
         "required": true
       },
       "defaultReviewScope": ["ux", "ui-references"]
+    },
+
+    "code-standard": {
+      "requiredFiles": [
+        "SYSTEM_MANIFEST.json.md"
+      ],
+      "optionalFiles": [
+        "SPEC.md"
+      ],
+      "codeStandards": {
+        "catalogUrl": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/CODE_STANDARDS_CATALOG.json.md",
+        "defaultApply": true
+      },
+      "defaultReviewScope": ["code-standards"]
     }
   },
 

@@ -1,0 +1,99 @@
+{
+  // ============================================================
+  // SpeckKit Agent Behavior Defaults
+  // ============================================================
+  // This file defines how AI agents should behave when consuming
+  // resources from the SpeckKit registry. It establishes which
+  // standards are auto-applied vs. which require user confirmation.
+  //
+  // An agent reading this repo should load this file FIRST to
+  // understand default behavior before acting on any standard
+  // or reference.
+  // ============================================================
+
+  "version": "1.0",
+  "lastUpdated": "2026-02-16",
+
+  "defaults": {
+    // --------------------------------------------------------
+    // Code Standards: AUTO-APPLY
+    // --------------------------------------------------------
+    // Comment headers, documentation blocks, changelog formats.
+    // These are always useful and should be applied without
+    // asking the user. Only skip if user explicitly opts out.
+    // --------------------------------------------------------
+    "codeStandards": {
+      "defaultApply": true,
+      "confirmBeforeApplying": false,
+      "behavior": "Apply automatically to every new or modified component file. Update CHANGELOG, VERSION, and LAST UPDATED on changes. Do NOT skip unless user explicitly says to omit comments.",
+      "catalogPath": "/code-standards/CODE_STANDARDS_CATALOG.json.md"
+    },
+
+    // --------------------------------------------------------
+    // UI References: ASK FIRST
+    // --------------------------------------------------------
+    // Platform-specific UI description models (e.g., Dynamics 365
+    // layouts). These are contextual — only load when the user's
+    // task involves that platform's UI.
+    // --------------------------------------------------------
+    "uiReferences": {
+      "defaultApply": false,
+      "confirmBeforeApplying": true,
+      "behavior": "Ask the user before loading UI reference context. Only apply when the task involves building or reviewing UI for the referenced platform. Confirm which patterns are relevant.",
+      "catalogPath": "/ui-references/UI_REFERENCE_CATALOG.json.md"
+    }
+  },
+
+  // --------------------------------------------------------
+  // Agent Discovery Flow
+  // --------------------------------------------------------
+  // When an agent is pointed at this repo, it should:
+  // 1. Read this file (AGENT_BEHAVIOR_DEFAULTS.jsonc)
+  // 2. Read the relevant catalog(s)
+  // 3. Apply code standards automatically
+  // 4. Ask about UI references only if UI work is involved
+  // 5. Fill in template values from project context
+  // --------------------------------------------------------
+  "discoveryOrder": [
+    {
+      "step": 1,
+      "action": "Read AGENT_BEHAVIOR_DEFAULTS.jsonc",
+      "path": "/AGENT_BEHAVIOR_DEFAULTS.jsonc",
+      "purpose": "Understand what to auto-apply vs. ask about"
+    },
+    {
+      "step": 2,
+      "action": "Read Code Standards Catalog",
+      "path": "/code-standards/CODE_STANDARDS_CATALOG.json.md",
+      "purpose": "Load available code documentation standards"
+    },
+    {
+      "step": 3,
+      "action": "Read UI Reference Catalog",
+      "path": "/ui-references/UI_REFERENCE_CATALOG.json.md",
+      "purpose": "Load available UI reference models (apply only if relevant)"
+    },
+    {
+      "step": 4,
+      "action": "Ask user questions",
+      "purpose": "Confirm UI reference needs, project-specific overrides"
+    }
+  ],
+
+  // --------------------------------------------------------
+  // Questions an Agent Should Ask
+  // --------------------------------------------------------
+  "agentQuestions": {
+    "onNewProject": [
+      "What platform is this project targeting? (Power Pages, React, Dynamics 365, etc.)",
+      "Should I load any UI references for context? (I'll apply code standards automatically.)"
+    ],
+    "onNewComponent": [
+      "I'll include the component header comment block. Any specific sections to emphasize or skip?"
+    ],
+    "onUIWork": [
+      "I see UI references available for [platform]. Should I load them for context?",
+      "Which patterns do you need? (e.g., grid layout, Copilot panel, navigation)"
+    ]
+  }
+}
