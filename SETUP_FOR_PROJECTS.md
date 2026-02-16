@@ -1,3 +1,33 @@
+<!--
+=============================================================================
+DOCUMENT:     SpeckKit Setup Guide for Consumer Projects
+FILE:         SETUP_FOR_PROJECTS.md
+VERSION:      1.0
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+The ONE unified entry point for connecting any VS Code project to the
+SpeckKit registry. Contains the decision tree, exact copy-paste content
+for .github/copilot-instructions.md and SYSTEM_MANIFEST.json.md, and the
+agent discovery flow.
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- Single entry point — agents and developers start HERE.
+- Replaces the need to read multiple quick-start guides.
+- Referenced by AGENT_BEHAVIOR_DEFAULTS.jsonc, README.md, and all catalogs.
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.0  2026-02-16  Initial version — unified setup guide
+=============================================================================
+-->
+
 # SpeckKit Registry — Setup Guide for Consumer Projects
 
 **This is the ONE file an AI agent or developer needs to set up any VS Code project to use SpeckKit standards and references.**

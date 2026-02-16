@@ -1,3 +1,33 @@
+<!--
+=============================================================================
+DOCUMENT:     SpeckKit System Manifest Registry Index (Authoritative)
+FILE:         system-manifests/MANIFEST_INDEX.json.md
+VERSION:      1.1
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+The authoritative registry index for all SpeckKit-governed projects. Lists
+project manifests, catalog cross-references, agent behavior defaults, and
+the unified setup guide entry point.
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- AUTHORITATIVE source — this is the single source of truth.
+- Root-level MANIFEST_INDEX.json.md is a convenience copy of this file.
+- Agents resolve project lookups and catalog paths from this index.
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.1  2026-02-16  Added codeStandardsCatalog, agentBehavior, setupGuide
+v1.0  2026-02-10  Initial version — registry and UI reference catalog only
+=============================================================================
+-->
+
 {
   "registry": {
     "name": "SpeckKit System Manifest Registry",

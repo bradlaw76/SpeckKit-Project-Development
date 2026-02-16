@@ -1,3 +1,31 @@
+<!--
+=============================================================================
+DOCUMENT:     Quick Start — SpeckKit Code Standards
+FILE:         code-standards/QUICK_START_FOR_PROJECTS.md
+VERSION:      1.0
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+Fast-track setup guide for applying SpeckKit code standards to a consumer
+VS Code project. Provides exact copy-paste content for two setup files.
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- Quick bootstrap for code standards only (not UI references).
+- For unified setup covering both, use SETUP_FOR_PROJECTS.md at repo root.
+- Provides the minimal copilot-instructions.md and manifest content.
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.0  2026-02-16  Initial version
+=============================================================================
+-->
+
 # Quick Start: Apply SpeckKit Code Standards to Your Project
 
 **For any VS Code repo that wants AI agents to auto-apply comment headers and documentation standards.**

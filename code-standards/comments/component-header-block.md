@@ -1,3 +1,32 @@
+<!--
+=============================================================================
+DOCUMENT:     Component Header Comment Block — Template
+FILE:         code-standards/comments/component-header-block.md
+VERSION:      1.0
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+The standard structured comment header template for component files in any
+SpeckKit-governed project. Captures identity, architecture, features,
+security, prerequisites, and changelog in a single self-documenting block.
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- THE canonical code standard template — agents auto-apply this.
+- Designed for Power Pages / Dataverse but adaptable to any stack.
+- Agent behavior: defaultApply = true (apply without asking).
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.0  2026-02-16  Initial version
+=============================================================================
+-->
+
 # Component Header Comment Block — Template
 
 **Standard:** SpeckKit Code Standards

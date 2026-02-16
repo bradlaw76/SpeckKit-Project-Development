@@ -1,3 +1,33 @@
+<!--
+=============================================================================
+DOCUMENT:     How to Use SpeckKit Code Standards
+FILE:         code-standards/HOW_TO_USE_CODE_STANDARDS.md
+VERSION:      1.0
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+Deep-dive integration guide explaining how to consume the SpeckKit Code
+Standards Catalog from any VS Code project. Covers agent behavior, usage
+modes, referencing options, and how to contribute new standards.
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- Detailed guide for developers who want full control over integration.
+- Complements QUICK_START_FOR_PROJECTS.md (fast setup) and
+  SETUP_FOR_PROJECTS.md (unified entry point).
+- Documents how agents discover and apply code standards.
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.0  2026-02-16  Initial version
+=============================================================================
+-->
+
 # How to Use SpeckKit Code Standards in VS Code Projects
 
 **Purpose:** This guide explains how to consume the **SpeckKit Code Standards Catalog** from any VS Code project — so AI agents automatically apply documentation standards and developers follow consistent patterns.

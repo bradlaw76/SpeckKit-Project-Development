@@ -1,3 +1,33 @@
+<!--
+=============================================================================
+DOCUMENT:     How to Use SpeckKit UI References
+FILE:         ui-references/HOW_TO_USE_UI_REFERENCES.md
+VERSION:      1.0
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+Deep-dive integration guide explaining how to consume the SpeckKit UI
+Reference Catalog from any VS Code project. Covers referencing methods,
+agent behavior (ask-first), pattern extraction, and adding new references.
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- Detailed guide for developers who want full control over UI ref integration.
+- Complements QUICK_START_FOR_PROJECTS.md (fast setup) and
+  SETUP_FOR_PROJECTS.md (unified entry point).
+- Documents how agents discover and load UI references.
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.0  2026-02-16  Initial version
+=============================================================================
+-->
+
 # How to Use SpeckKit UI References in VS Code Projects
 
 **Purpose:** This guide explains how to consume the **SpeckKit UI Reference Catalog** from any VS Code project — as a shared context source, a skill for AI agents, or a reusable spec component.

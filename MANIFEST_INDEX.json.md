@@ -1,3 +1,33 @@
+<!--
+=============================================================================
+DOCUMENT:     SpeckKit System Manifest Registry Index (Root Copy)
+FILE:         MANIFEST_INDEX.json.md
+VERSION:      1.1
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+Root-level convenience copy of the authoritative manifest registry index.
+Lists all governed projects, catalog references, agent behavior defaults,
+and the unified setup guide.
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- Convenience copy of system-manifests/MANIFEST_INDEX.json.md.
+- Kept in sync with the authoritative copy under /system-manifests/.
+- Machine-readable JSON wrapped in Markdown for GitHub rendering.
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.1  2026-02-16  Added codeStandardsCatalog, agentBehavior, setupGuide
+v1.0  2026-02-10  Initial version — registry and UI reference catalog only
+=============================================================================
+-->
+
 {
   "registry": {
     "name": "SpeckKit System Manifest Registry",

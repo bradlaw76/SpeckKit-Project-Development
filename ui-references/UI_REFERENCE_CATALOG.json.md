@@ -1,3 +1,32 @@
+<!--
+=============================================================================
+DOCUMENT:     SpeckKit UI Reference Catalog
+FILE:         ui-references/UI_REFERENCE_CATALOG.json.md
+VERSION:      1.0
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+Machine-readable index of all reusable UI description models in the SpeckKit
+registry. Currently includes the Dynamics 365 Contact Center Cases Grid.
+Agents ask before loading these references (confirmBeforeApplying: true).
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- Catalog index — agents read this to discover available UI references.
+- Defines folder convention: ui-references/<platform>/<area>/<file>.
+- Lists each reference with its path, raw URL, tags, and metadata.
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.0  2026-02-16  Initial version — dynamics365-contact-center-cases-grid
+=============================================================================
+-->
+
 {
   "catalog": {
     "name": "SpeckKit UI Reference Catalog",

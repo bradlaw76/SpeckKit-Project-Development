@@ -1,3 +1,34 @@
+<!--
+=============================================================================
+DOCUMENT:     System Manifest Rules
+FILE:         MANIFEST_RULES.md
+VERSION:      1.1
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+Defines the 10 binding rules for the SpeckKit Manifest Registry — covering
+project manifests, shared resources (code standards, UI references), agent
+behavior defaults, and consumer project setup requirements.
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- Governance document — every project and agent must comply.
+- Referenced by MANIFEST_INDEX.json.md and README.md.
+- Rules are additive; new capabilities add new rules.
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.1  2026-02-16  Expanded from 5 to 10 rules (code standards, UI refs,
+                  agent behavior, consumer setup)
+v1.0  2026-02-10  Initial version — 5 registry rules
+=============================================================================
+-->
+
 # System Manifest Rules
 
 ## Registry Rules

@@ -1,3 +1,36 @@
+<!--
+=============================================================================
+DOCUMENT:     SpeckKit Manifest Registry — README
+FILE:         README.md
+VERSION:      1.2
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+Primary documentation file for the SpeckKit Manifest Registry. Provides the
+executive summary, repository structure, registry rules, agent behavior
+defaults, and catalog references for all governed projects.
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- This is the GitHub-rendered landing page for the repository.
+- Points agents and developers to SETUP_FOR_PROJECTS.md as the unified
+  entry point for consumer project setup.
+- Documents the full repo structure, catalogs, and governance model.
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.2  2026-02-16  Added code standards, UI references, agent behavior,
+                  unified setup guide references
+v1.1  2026-02-10  Added UI reference catalog and folder structure
+v1.0  2026-02-10  Initial version — manifest registry only
+=============================================================================
+-->
+
 # SpeckKit Manifest Registry
 
 **Authoritative Registry for Spec-Governed Projects**

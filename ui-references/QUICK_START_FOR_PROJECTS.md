@@ -1,3 +1,31 @@
+<!--
+=============================================================================
+DOCUMENT:     Quick Start — SpeckKit UI References
+FILE:         ui-references/QUICK_START_FOR_PROJECTS.md
+VERSION:      1.0
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+Fast-track setup guide for referencing SpeckKit UI models from a consumer
+VS Code project. Provides exact copy-paste content for setup files.
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- Quick bootstrap for UI references only (not code standards).
+- For unified setup covering both, use SETUP_FOR_PROJECTS.md at repo root.
+- Provides the minimal copilot-instructions.md and manifest content.
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.0  2026-02-16  Initial version
+=============================================================================
+-->
+
 # Quick Start: Reference SpeckKit UI References from Your Project
 
 **For projects like `bradlaw76/Generic` or any VS Code repo that wants to consume UI references.**

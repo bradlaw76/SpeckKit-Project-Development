@@ -1,3 +1,32 @@
+<!--
+=============================================================================
+DOCUMENT:     SpeckKit Code Standards Catalog
+FILE:         code-standards/CODE_STANDARDS_CATALOG.json.md
+VERSION:      1.0
+AUTHOR:       bradlaw76
+LAST UPDATED: 2026-02-16
+
+-----------------------------------------------------------------------------
+OVERVIEW
+-----------------------------------------------------------------------------
+Machine-readable index of all reusable code documentation standards in the
+SpeckKit registry. Currently includes the component-header-block template.
+Agents auto-apply these standards by default.
+
+-----------------------------------------------------------------------------
+REGISTRY ROLE
+-----------------------------------------------------------------------------
+- Catalog index — agents read this to discover available code standards.
+- Defines agent behavior (defaultApply: true) for code standards.
+- Lists each standard with its path, raw URL, and metadata.
+
+-----------------------------------------------------------------------------
+CHANGELOG
+-----------------------------------------------------------------------------
+v1.0  2026-02-16  Initial version — component-header-block standard
+=============================================================================
+-->
+
 {
   "catalog": {
     "name": "SpeckKit Code Standards Catalog",
