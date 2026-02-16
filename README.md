@@ -61,7 +61,10 @@ SpeckKit-Project-Development/
 ├── ui-references/
 │   ├── UI_REFERENCE_CATALOG.json.md          ← UI reference index
 │   ├── HOW_TO_USE_UI_REFERENCES.md           ← Usage guide (skill doc)
-│   └── dynamics365-contact-center-cases-grid.jsonc  ← First UI reference
+│   ├── QUICK_START_FOR_PROJECTS.md           ← Consumer bootstrap guide
+│   └── dynamics365/                          ← Platform: Dynamics 365
+│       └── ui/                               ← Area: UI references
+│           └── contact-center-cases-grid.jsonc
 ├── MANIFEST_RULES.md            ← Registry usage rules
 └── README.md                    ← This document
 ```
@@ -341,7 +344,10 @@ UI references capture the structure, layout, components, and visual patterns of 
 ui-references/
 ├── UI_REFERENCE_CATALOG.json.md          ← Index of all references
 ├── HOW_TO_USE_UI_REFERENCES.md           ← Full integration guide
-└── dynamics365-contact-center-cases-grid.jsonc  ← Example reference
+├── QUICK_START_FOR_PROJECTS.md           ← Step-by-step consumer setup
+├── dynamics365/                          ← Platform folder
+│   └── ui/                               ← Area folder
+│       └── contact-center-cases-grid.jsonc  ← UI reference
 ```
 
 ### Quick Reference (for other VS Code projects)
@@ -355,7 +361,7 @@ Add to your project's `SYSTEM_MANIFEST.json.md`:
     "references": [
       {
         "id": "dynamics365-contact-center-cases-grid",
-        "url": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/ui-references/dynamics365-contact-center-cases-grid.jsonc",
+        "url": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/ui-references/dynamics365/ui/contact-center-cases-grid.jsonc",
         "patternsUsed": ["threeColumnLayout", "dataverseGrid", "copilotPanel"]
       }
     ]

@@ -11,7 +11,7 @@
   // to inherit UI patterns, layout models, and component specs
   // for Dynamics 365 Contact Center interfaces.
   //
-  // Source Image: dynamics365-contact-center-cases-grid.png
+  // Source Image: contact-center-cases-grid.png
   // Created: 2026-02-16
   // ============================================================
 
@@ -21,8 +21,10 @@
     "id": "dynamics365-contact-center-cases-grid",
     "name": "Dynamics 365 – Contact Center Cases Grid",
     "catalog": "ui-references",
-    "registryUrl": "https://github.com/bradlaw76/SpeckKit-Project-Development/blob/main/ui-references/dynamics365-contact-center-cases-grid.jsonc",
-    "sourceImage": "dynamics365-contact-center-cases-grid.png",
+    "platform": "dynamics365",
+    "area": "ui",
+    "registryUrl": "https://github.com/bradlaw76/SpeckKit-Project-Development/blob/main/ui-references/dynamics365/ui/contact-center-cases-grid.jsonc",
+    "sourceImage": "contact-center-cases-grid.png",
     "created": "2026-02-16",
     "lastUpdated": "2026-02-16",
     "tags": [

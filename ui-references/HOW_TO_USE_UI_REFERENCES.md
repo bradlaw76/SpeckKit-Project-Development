@@ -46,7 +46,9 @@ ui-references/UI_REFERENCE_CATALOG.json.md
 
 Each entry has:
 - `id` — Unique identifier (e.g., `dynamics365-contact-center-cases-grid`)
-- `file` — The JSONC file containing the full UI model
+- `path` — Relative path to the JSONC file (e.g., `dynamics365/ui/contact-center-cases-grid.jsonc`)
+- `platform` — Platform folder (e.g., `dynamics365`)
+- `area` — Area subfolder (e.g., `ui`)
 - `tags` — Searchable keywords
 - `patterns` — Extractable component patterns
 
@@ -62,7 +64,7 @@ Add a `uiReferences` block to your project's `SYSTEM_MANIFEST.json.md`:
     "references": [
       {
         "id": "dynamics365-contact-center-cases-grid",
-        "url": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/ui-references/dynamics365-contact-center-cases-grid.jsonc",
+        "url": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/ui-references/dynamics365/ui/contact-center-cases-grid.jsonc",
         "usage": "Context for Dynamics 365 case management UI patterns",
         "patternsUsed": ["threeColumnLayout", "dataverseGrid", "copilotPanel"]
       }
@@ -91,7 +93,7 @@ Load the complete JSONC file to give an AI agent or developer full understanding
 **How:**
 ```
 Reference: dynamics365-contact-center-cases-grid
-Load: ui-references/dynamics365-contact-center-cases-grid.jsonc
+Load: ui-references/dynamics365/ui/contact-center-cases-grid.jsonc
 ```
 
 ### Mode 2: Pattern Extraction (Load Specific Components)
@@ -145,7 +147,7 @@ This project targets the Dynamics 365 Contact Center workspace.
 For UI layout, component structure, and visual pattern reference, load:
 
 - Catalog: /ui-references/UI_REFERENCE_CATALOG.json.md
-- Reference: /ui-references/dynamics365-contact-center-cases-grid.jsonc
+- Reference: /ui-references/dynamics365/ui/contact-center-cases-grid.jsonc
 
 Use the `reusablePatterns` section to understand component conventions.
 Use the `visualIndicators` section for color/badge mappings.
@@ -168,6 +170,8 @@ Use the `layout` section for responsive behavior rules.
 
 ## Referencing from Another VS Code Project
 
+> **Quick start?** See `QUICK_START_FOR_PROJECTS.md` for a copy-paste bootstrap.
+
 ### Option A: Git Submodule (Recommended for Teams)
 
 ```bash
@@ -176,20 +180,20 @@ git submodule add https://github.com/bradlaw76/SpeckKit-Project-Development.git 
 
 Then reference locally:
 ```
-.speckkit-registry/ui-references/dynamics365-contact-center-cases-grid.jsonc
+.speckkit-registry/ui-references/dynamics365/ui/contact-center-cases-grid.jsonc
 ```
 
 ### Option B: Raw GitHub URL (Quick Access)
 
 ```
-https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/ui-references/dynamics365-contact-center-cases-grid.jsonc
+https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/ui-references/dynamics365/ui/contact-center-cases-grid.jsonc
 ```
 
 ### Option C: Local Workspace Reference (Multi-Root Workspace)
 
 If both repos are in the same parent folder:
 ```
-../SpeckKit-Project-Development/ui-references/dynamics365-contact-center-cases-grid.jsonc
+../SpeckKit-Project-Development/ui-references/dynamics365/ui/contact-center-cases-grid.jsonc
 ```
 
 ### Option D: Copy to Project (Snapshot)
@@ -287,8 +291,9 @@ A: Absolutely. The JSONC format is platform-agnostic. Use it for Power Pages, Po
 | What | Where |
 |------|-------|
 | UI Reference Catalog | `ui-references/UI_REFERENCE_CATALOG.json.md` |
-| Individual References | `ui-references/<id>.jsonc` |
-| Source Images | `ui-references/<id>.png` |
+| Quick Start Guide | `ui-references/QUICK_START_FOR_PROJECTS.md` |
+| Individual References | `ui-references/<platform>/<area>/<view>.jsonc` |
+| Source Images | `ui-references/<platform>/<area>/<view>.png` |
 | This Guide | `ui-references/HOW_TO_USE_UI_REFERENCES.md` |
 | Registry Root | `system-manifests/MANIFEST_INDEX.json.md` |
 
