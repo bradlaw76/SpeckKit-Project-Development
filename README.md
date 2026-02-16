@@ -72,6 +72,7 @@ SpeckKit-Project-Development/
 │       └── ui/                               ← Area: UI references
 │           └── contact-center-cases-grid.jsonc
 ├── AGENT_BEHAVIOR_DEFAULTS.jsonc ← Agent auto-apply vs. ask-first rules
+├── SETUP_FOR_PROJECTS.md        ← ONE setup guide for consumer projects
 ├── MANIFEST_RULES.md            ← Registry usage rules
 └── README.md                    ← This document
 ```
@@ -343,6 +344,16 @@ This registry defines **two types of reusable resources** with different agent b
 | **UI References** | **ASK first** | Confirm with user before loading UI context. | `AGENT_BEHAVIOR_DEFAULTS.jsonc` |
 
 When an agent is pointed at this repo, it should read `AGENT_BEHAVIOR_DEFAULTS.jsonc` first to understand these defaults.
+
+### Setting Up Another Project
+
+**One file covers everything:** [`SETUP_FOR_PROJECTS.md`](SETUP_FOR_PROJECTS.md)
+
+This is the single entry point for any VS Code project that wants to consume SpeckKit standards and references. It includes:
+- A decision tree for choosing the right connection method (submodule, local path, or raw URL)
+- Exact copy-paste content for `.github/copilot-instructions.md`
+- Exact copy-paste content for `SYSTEM_MANIFEST.json.md`
+- The agent discovery flow
 
 ---
 
