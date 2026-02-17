@@ -26,6 +26,7 @@ REGISTRY ROLE
 -----------------------------------------------------------------------------
 CHANGELOG
 -----------------------------------------------------------------------------
+v1.3  2026-02-17  Added Method 5 — "Review an Existing Project" prompt
 v1.2  2026-02-17  Added "How to Bootstrap" section with 4 methods
                   (HTML comment, Copilot Chat, PowerShell CLI, Bash CLI)
 v1.1  2026-02-16  Added Step 0 (profile scaffolding) and cross-project
@@ -41,7 +42,7 @@ v1.0  2026-02-16  Initial version — unified setup guide
 **Registry:** `https://github.com/bradlaw76/SpeckKit-Project-Development`
 **Entry Point:** This file (`SETUP_FOR_PROJECTS.md`)
 **Agent Defaults:** `AGENT_BEHAVIOR_DEFAULTS.jsonc`
-**Last Updated:** 2026-02-17
+**Last Updated:** 2026-02-17 (v1.3)
 
 ---
 
@@ -51,9 +52,9 @@ Set up this project using the SpeckKit registry at https://github.com/bradlaw76/
 
 ---
 
-## How to Bootstrap a New Project
+## How to Bootstrap or Review a Project
 
-There are **four ways** to connect any repo to SpeckKit. Pick the one that fits your workflow — they all lead to the same result.
+There are **five methods** to connect or update any repo with SpeckKit. Methods 1–4 are for **new projects**; Method 5 is for **existing projects** that need a compliance review.
 
 ### Method 1 — Copilot Chat / AI Agent Prompt (Recommended)
 
@@ -100,6 +101,24 @@ cp .speckkit-registry/code-standards/QUICK_START_FOR_PROJECTS.md .github/SPECKKI
 ```
 
 > **All methods** result in the same outcome: a project connected to the SpeckKit registry with code standards auto-applied and UI references available on request.
+
+### Method 5 — Review an Existing Project
+
+If your project already has a SpeckKit integration (e.g., `copilot-instructions.md`, `SYSTEM_MANIFEST.json.md`) but may be **missing files, outdated, or drifted** from the latest standards, paste this prompt into Copilot Chat:
+
+```
+Review this project's SpeckKit integration against the registry at https://github.com/bradlaw76/SpeckKit-Project-Development — read SETUP_FOR_PROJECTS.md, compare what's already here to the required files for this project's profile, and update or scaffold anything that is missing or outdated.
+```
+
+The agent will:
+
+1. Read `SETUP_FOR_PROJECTS.md` from the registry.
+2. Identify the project's current profile from `SYSTEM_MANIFEST.json.md`.
+3. Compare installed files against the profile's required + optional file list.
+4. Report what's missing, outdated, or non-compliant.
+5. Scaffold or update files to bring the project back into compliance.
+
+> **Tip:** You can also paste this prompt periodically (e.g., after a registry update) to keep projects in sync with the latest standards.
 
 ---
 

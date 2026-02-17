@@ -141,7 +141,9 @@ cp .speckkit-registry/code-standards/QUICK_START_FOR_PROJECTS.md .github/SPECKKI
 
 const COPILOT_CHAT_PROMPT = `Set up this project using the SpeckKit registry at https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO} — read SETUP_FOR_PROJECTS.md`;
 
-type BootstrapTab = 'comment' | 'cli-ps' | 'cli-bash' | 'copilot';
+const COPILOT_REVIEW_PROMPT = `Review this project's SpeckKit integration against the registry at https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO} — read SETUP_FOR_PROJECTS.md, compare what's already here to the required files for this project's profile, and update or scaffold anything that is missing or outdated.`;
+
+type BootstrapTab = 'copilot' | 'review' | 'comment' | 'cli-ps' | 'cli-bash';
 
 const CATEGORY_LABELS: Record<Guide['category'], { label: string; color: string }> = {
   'entry-point': { label: '🏠 Entry Points', color: 'var(--accent)' },
@@ -221,15 +223,16 @@ export default function Standards() {
           {/* Bootstrap methods card */}
           <div className="card" style={{ marginBottom: '1.25rem', borderColor: 'var(--color-green)', borderWidth: 2 }}>
             <div className="card-body">
-              <h3>💡 Bootstrap a New Project</h3>
+              <h3>💡 Bootstrap or Review a Project</h3>
               <p className="text-muted" style={{ margin: '0.5rem 0' }}>
-                Four ways to connect any repo to SpeckKit. Pick the one that fits your workflow:
+                Five ways to connect or update any repo with SpeckKit. Pick the one that fits your workflow:
               </p>
 
               {/* Bootstrap method tabs */}
               <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
                 {([
                   { key: 'copilot' as BootstrapTab, label: '🤖 Copilot Chat' },
+                  { key: 'review' as BootstrapTab, label: '🔄 Existing Project' },
                   { key: 'comment' as BootstrapTab, label: '📝 HTML Comment' },
                   { key: 'cli-ps' as BootstrapTab, label: '⚡ PowerShell' },
                   { key: 'cli-bash' as BootstrapTab, label: '🐚 Bash' },
@@ -289,6 +292,32 @@ export default function Standards() {
                   <p className="text-muted text-sm" style={{ marginTop: '0.5rem' }}>
                     Works with GitHub Copilot, Cursor, Windsurf, or any AI agent that can read URLs.
                     The agent will ask you which project profile to use and scaffold the required files.
+                  </p>
+                </>
+              )}
+
+              {bootstrapTab === 'review' && (
+                <>
+                  <p style={{ fontSize: '0.85rem', margin: '0 0 0.5rem' }}>
+                    Already set up SpeckKit? Paste this prompt into <strong>Copilot Chat</strong> to have the agent
+                    audit your existing integration, find missing or outdated files, and bring everything up to date.
+                  </p>
+                  <pre style={{
+                    background: 'var(--bg-tertiary, #1a1a2e)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '0.375rem',
+                    padding: '0.75rem 1rem',
+                    fontSize: '0.8rem',
+                    lineHeight: '1.5',
+                    overflowX: 'auto',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word',
+                  }}>
+                    <code>{COPILOT_REVIEW_PROMPT}</code>
+                  </pre>
+                  <p className="text-muted text-sm" style={{ marginTop: '0.5rem' }}>
+                    The agent compares your project's current files against the profile requirements in SETUP_FOR_PROJECTS.md and
+                    scaffolds anything that's missing or updates files that have drifted from the latest standards.
                   </p>
                 </>
               )}
