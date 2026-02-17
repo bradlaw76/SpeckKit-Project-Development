@@ -183,6 +183,7 @@
 
 .grid-2 { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
 .grid-3 { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.grid-4 { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
 
 /* --- Tables --- */
 .table {
