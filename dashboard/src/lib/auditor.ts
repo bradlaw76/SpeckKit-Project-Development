@@ -122,12 +122,21 @@ function matchesPattern(filePath: string, pattern: string): boolean {
 // Repo URL Parsing
 // ---------------------------------------------------------------------------
 
-function parseRepoUrl(url: string): { owner: string; repo: string } | null {
-  // Handle: https://github.com/owner/repo
-  const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
-  if (match) {
-    return { owner: match[1], repo: match[2].replace(/\.git$/, '') };
+function parseRepoUrl(url: string | undefined | null): { owner: string; repo: string } | null {
+  if (!url) return null;
+
+  // Handle: https://github.com/owner/repo or github.com/owner/repo
+  const ghMatch = url.match(/github\.com\/([^/]+)\/([^/]+)/);
+  if (ghMatch) {
+    return { owner: ghMatch[1], repo: ghMatch[2].replace(/\.git$/, '') };
   }
+
+  // Handle: owner/repo shorthand
+  const shortMatch = url.match(/^([^/]+)\/([^/]+)$/);
+  if (shortMatch) {
+    return { owner: shortMatch[1], repo: shortMatch[2].replace(/\.git$/, '') };
+  }
+
   return null;
 }
 

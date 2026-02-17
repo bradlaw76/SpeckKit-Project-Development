@@ -23,15 +23,24 @@ import {
 // ---------------------------------------------------------------------------
 
 export interface RegistryProject {
+  /** Unique project identifier — maps from `projectId` in the manifest */
   id: string;
   name: string;
+  /** GitHub repo URL or owner/repo — maps from `repository` in the manifest */
   repo: string;
   manifestUrl: string;
   rawManifestUrl?: string;
+  /** Profile name (e.g. hybrid, spec-governed) — maps from `profile` in the manifest */
   type: string;
   status: string;
   speckitReviewable: boolean;
   specDirectory?: string;
+  spec?: {
+    type: string;
+    path: string;
+    entryPoint?: string;
+    reviewMode?: string;
+  };
 }
 
 export interface RegistryIndex {
@@ -207,8 +216,20 @@ export async function loadRegistryData(token?: string | null, force = false): Pr
   const uiRefRaw = extractJsonFromMarkdown(uiRefText) as Record<string, unknown>;
   const agentBehavior = parseJsonc(agentText) as Record<string, unknown>;
 
-  // Normalize the index — projects may be in a "projects" array
-  const projects: RegistryProject[] = (indexRaw.projects as RegistryProject[]) || [];
+  // Normalize the index — map field names from manifest format to internal format
+  const rawProjects = (indexRaw.projects as Array<Record<string, unknown>>) || [];
+  const projects: RegistryProject[] = rawProjects.map((p) => ({
+    id: (p.projectId ?? p.id ?? '') as string,
+    name: (p.name ?? '') as string,
+    repo: (p.repository ?? p.repo ?? '') as string,
+    manifestUrl: (p.manifestUrl ?? '') as string,
+    rawManifestUrl: (p.rawManifestUrl ?? undefined) as string | undefined,
+    type: (p.profile ?? p.type ?? 'unknown') as string,
+    status: (p.status ?? '') as string,
+    speckitReviewable: Boolean(p.speckitReviewable),
+    specDirectory: (p.specDirectory ?? (p.spec as Record<string, unknown>)?.path ?? undefined) as string | undefined,
+    spec: p.spec as RegistryProject['spec'],
+  }));
 
   const index: RegistryIndex = {
     registry: indexRaw.registry as RegistryIndex['registry'],

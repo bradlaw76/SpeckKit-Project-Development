@@ -138,20 +138,23 @@
 .card {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 1.25rem;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.75rem;
+  padding: 1rem 1.25rem 0.75rem;
+}
+
+.card-body {
+  padding: 0 1.25rem 1rem;
 }
 
 .card-title {
   font-size: 1rem;
   font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
 }
 
 /* --- Badges --- */
@@ -178,8 +181,8 @@
   gap: 1rem;
 }
 
-.grid-2 { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
-.grid-3 { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.grid-2 { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 
 /* --- Tables --- */
 .table {
@@ -242,17 +245,19 @@
 }
 
 /* --- Progress --- */
-.progress-bar {
+.progress {
   height: 8px;
   background: var(--bg-tertiary);
   border-radius: 4px;
   overflow: hidden;
+  margin-top: 0.75rem;
 }
 
-.progress-fill {
+.progress-bar {
   height: 100%;
   border-radius: 4px;
   transition: width 0.3s ease;
+  min-width: 2px;
 }
 
 /* --- Section Headers --- */
@@ -456,15 +461,17 @@
   display: flex;
   gap: 0.75rem;
   margin-bottom: 1.25rem;
-  flex-wrap: wrap;
-}
-
-.filter-bar .input {
-  min-width: 150px;
+  align-items: center;
 }
 
 .filter-bar .input:first-child {
-  flex: 2;
+  flex: 1;
+}
+
+.filter-bar select.input {
+  width: auto;
+  flex: 0 0 auto;
+  min-width: 140px;
 }
 
 /* --- Stat Card --- */
@@ -474,6 +481,7 @@
   align-items: center;
   gap: 0.25rem;
   text-align: center;
+  padding: 1.25rem;
 }
 
 .stat-value {
@@ -574,13 +582,25 @@
 .card-title-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
 }
 
-.card-title {
+.card-title-row .card-title {
   font-size: 1rem;
   margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.card-subtitle {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card-row {
@@ -588,17 +608,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.35rem 0;
+  font-size: 0.875rem;
 }
 
 .card-label {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
 .card-footer {
-  padding: 0.6rem 1rem;
+  padding: 0.6rem 1.25rem;
   border-top: 1px solid var(--border);
 }
 

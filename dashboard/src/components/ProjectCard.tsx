@@ -31,7 +31,9 @@ export default function ProjectCard({ result }: Props) {
           <h3 className="card-title">{result.project.name}</h3>
           <ComplianceBadge score={result.complianceScore} size="sm" />
         </div>
-        <span className="text-muted text-sm">{result.project.repo}</span>
+        <span className="card-subtitle" title={result.project.repo}>
+          {shortRepo(result.project.repo)}
+        </span>
       </div>
 
       <div className="card-body">
@@ -89,9 +91,10 @@ export default function ProjectCard({ result }: Props) {
   );
 }
 
-function repoName(fullName: string): string {
-  const parts = fullName.split('/');
-  return parts[parts.length - 1] || fullName;
+function shortRepo(url: string): string {
+  const match = url.match(/github\.com\/(.+)/);
+  if (match) return match[1].replace(/\.git$/, '');
+  return url;
 }
 
 function getBarColor(score: number): string {

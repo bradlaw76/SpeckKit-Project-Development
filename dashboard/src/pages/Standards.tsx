@@ -1,6 +1,14 @@
  import { useState } from 'react';
 import { useAppContext } from '../App';
 import { getProfileNames, type ProfileDefinition } from '../lib/registry';
+import { REGISTRY_OWNER, REGISTRY_REPO } from '../config/constants';
+
+/** Build a GitHub blob URL from a relative path */
+function ghBlobUrl(basePath: string, filePath: string): string {
+  const base = basePath.replace(/^\//, ''); // strip leading /
+  const full = base ? `${base}/${filePath}` : filePath;
+  return `https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO}/blob/main/${full}`;
+}
 
 export default function Standards() {
   const { registryData, registryError } = useAppContext();
@@ -136,7 +144,10 @@ export default function Standards() {
                     {std.path && (
                       <p>
                         <a
-                          href={`https://github.com/${registryData.index.registry.owner}/${registryData.index.registry.repo}/blob/main/${std.path}`}
+                          href={ghBlobUrl(
+                            (codeStandards?.catalog as Record<string, string>)?.path || 'code-standards',
+                            std.path
+                          )}
                           target="_blank"
                           rel="noreferrer"
                         >
@@ -199,7 +210,10 @@ export default function Standards() {
                     {ref.path && (
                       <p style={{ marginTop: '0.5rem' }}>
                         <a
-                          href={`https://github.com/${registryData.index.registry.owner}/${registryData.index.registry.repo}/blob/main/${ref.path}`}
+                          href={ghBlobUrl(
+                            (uiReferences?.catalog as Record<string, string>)?.path || 'ui-references',
+                            ref.path
+                          )}
                           target="_blank"
                           rel="noreferrer"
                         >
