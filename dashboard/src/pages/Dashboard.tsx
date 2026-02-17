@@ -106,12 +106,12 @@ export default function Dashboard() {
   // Auto-audit when registry loads or repo source changes
   useEffect(() => {
     if (registryData && !loading) {
-      // When switching to all-repos, wait for user repos to load
-      if (repoSource === 'all-repos' && loadingRepos) return;
+      // When switching to all-repos, require auth and wait for repos to load
+      if (repoSource === 'all-repos' && (!auth.token || loadingRepos)) return;
       runAudit();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [registryData, repoSource, loadingRepos]);
+  }, [registryData, repoSource, loadingRepos, auth.token]);
 
   // Derived
   const profiles = [...new Set(results.map((r) => r.profile))].sort();
@@ -208,25 +208,31 @@ export default function Dashboard() {
           </p>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          {auth.token && (
-            <select
-              className="input"
-              value={repoSource}
-              onChange={(e) => {
-                setRepoSource(e.target.value as RepoSource);
-                setResults([]); // reset so audit re-runs
-              }}
-              style={{ width: 'auto' }}
-            >
-              <option value="governed">Governed Only</option>
-              <option value="all-repos">All My Repos</option>
-            </select>
-          )}
+          <select
+            className="input"
+            value={repoSource}
+            onChange={(e) => {
+              setRepoSource(e.target.value as RepoSource);
+              setResults([]); // reset so audit re-runs
+            }}
+            style={{ width: 'auto' }}
+            disabled={!auth.token}
+            title={!auth.token ? 'Connect GitHub to view all your repos' : undefined}
+          >
+            <option value="governed">Governed Only</option>
+            <option value="all-repos">All My Repos</option>
+          </select>
           <button className="btn btn-primary" onClick={runAudit} disabled={loading}>
             {loading ? `Auditing… (${progress.done}/${progress.total})` : '🔄 Run Audit'}
           </button>
         </div>
       </div>
+
+      {repoSource === 'all-repos' && !auth.token && (
+        <div className="alert alert-warning" style={{ marginBottom: '0.75rem' }}>
+          <strong>Connect GitHub</strong> to load all your repositories. Enter a Personal Access Token with <code>repo</code> scope using the <strong>Settings</strong> button.
+        </div>
+      )}
 
       {/* Summary cards */}
       {results.length > 0 && (
