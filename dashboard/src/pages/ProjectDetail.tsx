@@ -29,6 +29,7 @@ export default function ProjectDetail() {
   const [scaffolding, setScaffolding] = useState<Record<string, 'pending' | 'success' | 'error'>>({}); 
   const [scaffoldErrors, setScaffoldErrors] = useState<Record<string, string>>({});
   const [scaffoldUrls, setScaffoldUrls] = useState<Record<string, string>>({});
+  const [reauditing, setReauditing] = useState(false);
 
   const project = registryData?.index.projects.find(
     (p) => p.id === decodeURIComponent(projectId ?? '')
@@ -47,6 +48,24 @@ export default function ProjectDetail() {
   // ── Scaffold helpers (must be before early returns — React hooks rules) ──
   const repoOwner = result?.repoOwner ?? '';
   const repoName = result?.repoName ?? '';
+
+  /** Clear cache and re-run the audit to verify scaffolded files */
+  const handleReaudit = useCallback(async () => {
+    if (!project || !registryData) return;
+    setReauditing(true);
+    try {
+      const fresh = await auditProject(project, registryData.template, auth.token ?? null, true);
+      setResult(fresh);
+      // Reset scaffold state since we have fresh data
+      setScaffolding({});
+      setScaffoldErrors({});
+      setScaffoldUrls({});
+    } catch (err) {
+      setError(String(err));
+    } finally {
+      setReauditing(false);
+    }
+  }, [project, registryData, auth.token]);
 
   const handleScaffoldOne = useCallback(async (pattern: string) => {
     if (!project || !auth.token) return;
@@ -130,6 +149,8 @@ export default function ProjectDetail() {
   if (!result) return null;
 
   const scaffoldableRequired = result.missingRequired.filter(m => hasTemplate(m.pattern.pattern));
+  const createdFiles = Object.entries(scaffoldUrls);
+  const hasAnyScaffoldResults = Object.keys(scaffolding).some(k => scaffolding[k] === 'success' || scaffolding[k] === 'error');
 
   return (
     <div className="page">
@@ -137,6 +158,53 @@ export default function ProjectDetail() {
       <button className="btn btn-sm" onClick={() => navigate('/')}>
         ← Dashboard
       </button>
+
+      {/* Scaffold Summary Banner */}
+      {hasAnyScaffoldResults && (
+        <div className="card" style={{ marginTop: '0.75rem', marginBottom: '1rem', border: '1px solid #2ea043' }}>
+          <div className="card-body">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h3 style={{ margin: 0 }}>🛠️ Scaffold Results</h3>
+                <p className="text-muted" style={{ margin: '0.25rem 0 0' }}>
+                  Files created via SpeckKit Dashboard • Committed as <code>[SpeckKit] scaffold</code>
+                </p>
+              </div>
+              <button
+                className="btn btn-sm"
+                style={{ backgroundColor: '#1f6feb', borderColor: '#1f6feb' }}
+                onClick={handleReaudit}
+                disabled={reauditing}
+              >
+                {reauditing ? '🔄 Re-auditing…' : '🔄 Re-audit Now'}
+              </button>
+            </div>
+            {createdFiles.length > 0 && (
+              <ul style={{ marginTop: '0.5rem', paddingLeft: '1.25rem' }}>
+                {createdFiles.map(([path, url]) => (
+                  <li key={path} style={{ marginBottom: '0.25rem' }}>
+                    <span className="badge badge-green" style={{ marginRight: '0.5rem' }}>✓</span>
+                    <code>{path}</code>
+                    {' — '}
+                    <a href={url} target="_blank" rel="noreferrer">View on GitHub ↗</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {Object.entries(scaffoldErrors).length > 0 && (
+              <ul style={{ marginTop: '0.5rem', paddingLeft: '1.25rem' }}>
+                {Object.entries(scaffoldErrors).map(([path, err]) => (
+                  <li key={path} style={{ marginBottom: '0.25rem', color: '#f85149' }}>
+                    <span className="badge badge-red" style={{ marginRight: '0.5rem' }}>✗</span>
+                    <code>{path}</code>
+                    {' — '}{err}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="section-header" style={{ marginTop: '0.75rem' }}>
         <div>
