@@ -11,26 +11,73 @@ function ghBlobUrl(basePath: string, filePath: string): string {
 }
 
 /** Guides data — links to the onboarding docs in the repo */
-const GUIDES = [
+interface Guide {
+  title: string;
+  file: string;
+  icon: string;
+  summary: string;
+  steps: string[];
+  audience: string;
+  category: 'entry-point' | 'code-standards' | 'ui-references';
+  badge?: string;
+}
+
+const GUIDES: Guide[] = [
+  // ── Entry Points ──
   {
-    title: 'Quick Start for Projects',
+    title: 'Setup for Projects (Unified)',
+    file: 'SETUP_FOR_PROJECTS.md',
+    icon: '🏗️',
+    summary:
+      'The ONE file an AI agent or developer needs. Covers profile selection, file scaffolding, connection options (submodule / raw URL / local), Copilot instructions, manifest creation, cross-project referencing, and the full agent discovery flow.',
+    steps: [
+      'Choose your project profile (spec-governed, ux-demo, hybrid, ui-reference, code-standard)',
+      'Scaffold required & optional template files for that profile',
+      'Pick a connection method (Git submodule, raw URL, or local workspace)',
+      'Create .github/copilot-instructions.md and SYSTEM_MANIFEST.json.md',
+      'Commit and push — you\'re governed',
+    ],
+    audience: 'Anyone starting a new governed project — start here.',
+    category: 'entry-point',
+    badge: 'Recommended',
+  },
+  {
+    title: 'Agent Behavior Defaults',
+    file: 'AGENT_BEHAVIOR_DEFAULTS.jsonc',
+    icon: '🤖',
+    summary:
+      'Machine-readable JSONC file that agents read FIRST. Defines which standards auto-apply (code standards = YES) and which require confirmation (UI references = ASK). Also lists the full agent discovery flow.',
+    steps: [
+      'Agent reads this file before acting on any standard',
+      'Checks codeStandards.defaultApply → true → auto-apply',
+      'Checks uiReferences.confirmBeforeApplying → true → ask user',
+      'Follows the agentFlow sequence to set up a new project',
+    ],
+    audience: 'AI agents and developers building agent integrations.',
+    category: 'entry-point',
+  },
+
+  // ── Code Standards ──
+  {
+    title: 'Quick Start: Code Standards',
     file: 'code-standards/QUICK_START_FOR_PROJECTS.md',
     icon: '🚀',
     summary:
-      'Fast-track setup — copy-paste two files into any VS Code project to start getting auto-applied code standard headers immediately.',
+      'Fast-track 2-file setup — copy-paste copilot-instructions.md and SYSTEM_MANIFEST.json.md into any VS Code project to get auto-applied comment headers immediately.',
     steps: [
       'Create .github/copilot-instructions.md with the standards reference',
       'Create or update SYSTEM_MANIFEST.json.md with codeStandards block',
       'Commit and push — agents auto-apply from that point on',
     ],
-    audience: 'Developers who want the fastest path to adoption.',
+    audience: 'Developers who want the fastest path to code standards adoption.',
+    category: 'code-standards',
   },
   {
     title: 'How to Use Code Standards',
     file: 'code-standards/HOW_TO_USE_CODE_STANDARDS.md',
     icon: '📖',
     summary:
-      'Deep-dive integration guide explaining agent behavior, referencing options (submodule, raw URL, local workspace), and how to contribute new standards.',
+      'Deep-dive guide — agent behavior rules, available standards, referencing options (submodule, raw URL, local), and how to contribute new standards to the catalog.',
     steps: [
       'Reference the standard in your project manifest',
       'Configure Copilot instructions with rules and catalog URLs',
@@ -38,8 +85,52 @@ const GUIDES = [
       'Learn how to add new standards to the catalog',
     ],
     audience: 'Teams who want full control over integration and want to contribute standards.',
+    category: 'code-standards',
+  },
+
+  // ── UI References ──
+  {
+    title: 'Quick Start: UI References',
+    file: 'ui-references/QUICK_START_FOR_PROJECTS.md',
+    icon: '🎨',
+    summary:
+      'Fast-track setup for consuming SpeckKit UI reference models (e.g., Dynamics 365 layouts) from your project. Adds the ask-first agent instructions and manifest UI block.',
+    steps: [
+      'Create .github/copilot-instructions.md with the UI references section',
+      'Add uiReferences block to SYSTEM_MANIFEST.json.md',
+      'Optionally add .vscode/settings.json for workspace config',
+      'Commit and push — agents will ask before loading UI context',
+    ],
+    audience: 'Developers building platform-specific UIs who want shared layout context.',
+    category: 'ui-references',
+  },
+  {
+    title: 'How to Use UI References',
+    file: 'ui-references/HOW_TO_USE_UI_REFERENCES.md',
+    icon: '📐',
+    summary:
+      'Deep-dive guide for UI reference integration — covers JSONC layout models, pattern extraction, agent loading behavior, and how to contribute new UI reference files.',
+    steps: [
+      'Understand what UI references are (structured JSONC layout models)',
+      'Learn the ask-first agent behavior for UI context',
+      'Extract reusable patterns and visual indicators',
+      'Add new UI references for your platform',
+    ],
+    audience: 'Teams building or maintaining platform UI models.',
+    category: 'ui-references',
   },
 ];
+
+/** The one-liner bootstrap comment to paste into any new repo */
+const BOOTSTRAP_SNIPPET = `<!-- SETUP: SpeckKit Registry Integration
+Set up this project using the SpeckKit registry at https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO} — read SETUP_FOR_PROJECTS.md
+-->`;
+
+const CATEGORY_LABELS: Record<Guide['category'], { label: string; color: string }> = {
+  'entry-point': { label: '🏠 Entry Points', color: 'var(--accent)' },
+  'code-standards': { label: '📝 Code Standards', color: 'var(--color-blue)' },
+  'ui-references': { label: '🎨 UI References', color: 'var(--color-purple)' },
+};
 
 export default function Standards() {
   const { registryData, registryError } = useAppContext();
@@ -105,54 +196,95 @@ export default function Standards() {
       {activeTab === 'guides' && (
         <div className="standards-content">
           <p className="text-muted" style={{ marginBottom: '1rem' }}>
-            These guides walk you through adopting SpeckKit code standards in your own VS Code projects.
-            Pick the <strong>Quick Start</strong> for a 2-file, copy-paste setup, or the <strong>Full Guide</strong> for
-            deep integration and contributing new standards.
+            Everything you need to connect a VS Code project to the SpeckKit registry.
+            Start with the <strong>Unified Setup Guide</strong>, or jump to a specific quick start.
           </p>
 
-          {GUIDES.map((g) => (
-            <div key={g.file} className="card" style={{ marginBottom: '1rem' }}>
-              <div className="card-body">
-                <div className="card-title-row">
-                  <h3>
-                    {g.icon} {g.title}
-                  </h3>
-                </div>
-                <p className="text-muted" style={{ margin: '0.5rem 0' }}>
-                  {g.summary}
-                </p>
-
-                <h4 style={{ marginTop: '0.75rem', fontSize: '0.85rem' }}>Steps</h4>
-                <ol style={{ margin: '0.25rem 0 0.75rem 1.25rem', fontSize: '0.875rem', lineHeight: '1.6' }}>
-                  {g.steps.map((s, i) => (
-                    <li key={i}>{s}</li>
-                  ))}
-                </ol>
-
-                <div className="card-row" style={{ borderTop: '1px solid var(--border)', paddingTop: '0.5rem' }}>
-                  <span className="card-label">Audience</span>
-                  <span style={{ fontSize: '0.85rem' }}>{g.audience}</span>
-                </div>
-
-                <p style={{ marginTop: '0.75rem' }}>
-                  <a
-                    href={`https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO}/blob/main/${g.file}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    📄 View full guide →
-                  </a>
-                </p>
-              </div>
+          {/* Bootstrap snippet card */}
+          <div className="card" style={{ marginBottom: '1.25rem', borderColor: 'var(--color-green)', borderWidth: 2 }}>
+            <div className="card-body">
+              <h3>💡 One-Liner Bootstrap</h3>
+              <p className="text-muted" style={{ margin: '0.5rem 0' }}>
+                Paste this HTML comment into any file in a new repo (e.g., <code>README.md</code> or a spec file).
+                When an AI agent opens the project, it will discover SpeckKit and follow <code>SETUP_FOR_PROJECTS.md</code> to set everything up.
+              </p>
+              <pre style={{
+                background: 'var(--bg-tertiary, #1a1a2e)',
+                border: '1px solid var(--border)',
+                borderRadius: '0.375rem',
+                padding: '0.75rem 1rem',
+                fontSize: '0.8rem',
+                lineHeight: '1.5',
+                overflowX: 'auto',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+              }}>
+                <code>{BOOTSTRAP_SNIPPET}</code>
+              </pre>
+              <p className="text-muted text-sm" style={{ marginTop: '0.5rem' }}>
+                This is the same comment used inside <code>SETUP_FOR_PROJECTS.md</code> — it's the entry point for agent discovery.
+              </p>
             </div>
-          ))}
+          </div>
+
+          {/* Guide cards grouped by category */}
+          {(['entry-point', 'code-standards', 'ui-references'] as const).map((cat) => {
+            const catGuides = GUIDES.filter((g) => g.category === cat);
+            const { label, color } = CATEGORY_LABELS[cat];
+            return (
+              <div key={cat} style={{ marginBottom: '1.5rem' }}>
+                <h2 style={{ fontSize: '1rem', borderBottom: `2px solid ${color}`, paddingBottom: '0.35rem', marginBottom: '0.75rem' }}>
+                  {label}
+                </h2>
+                {catGuides.map((g) => (
+                  <div key={g.file} className="card" style={{ marginBottom: '0.75rem' }}>
+                    <div className="card-body">
+                      <div className="card-title-row">
+                        <h3>
+                          {g.icon} {g.title}
+                        </h3>
+                        {g.badge && (
+                          <span className="badge badge-green">{g.badge}</span>
+                        )}
+                      </div>
+                      <p className="text-muted" style={{ margin: '0.5rem 0' }}>
+                        {g.summary}
+                      </p>
+
+                      <h4 style={{ marginTop: '0.75rem', fontSize: '0.85rem' }}>Steps</h4>
+                      <ol style={{ margin: '0.25rem 0 0.75rem 1.25rem', fontSize: '0.875rem', lineHeight: '1.6' }}>
+                        {g.steps.map((s, i) => (
+                          <li key={i}>{s}</li>
+                        ))}
+                      </ol>
+
+                      <div className="card-row" style={{ borderTop: '1px solid var(--border)', paddingTop: '0.5rem' }}>
+                        <span className="card-label">Audience</span>
+                        <span style={{ fontSize: '0.85rem' }}>{g.audience}</span>
+                      </div>
+
+                      <p style={{ marginTop: '0.75rem' }}>
+                        <a
+                          href={`https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO}/blob/main/${g.file}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          📄 View full guide →
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          })}
 
           {/* How it works summary */}
           <div className="card" style={{ marginBottom: '1rem', borderColor: 'var(--accent)' }}>
             <div className="card-body">
               <h3>⚙️ How It Works</h3>
               <p className="text-muted" style={{ margin: '0.5rem 0' }}>
-                SpeckKit code standards are <strong>auto-applied</strong> by AI agents. Here's the workflow:
+                SpeckKit standards are consumed by AI agents following a defined discovery flow:
               </p>
               <table style={{ width: '100%', fontSize: '0.85rem', borderCollapse: 'collapse', marginTop: '0.5rem' }}>
                 <thead>
@@ -179,6 +311,19 @@ export default function Standards() {
                   </tr>
                 </tbody>
               </table>
+
+              <h4 style={{ marginTop: '1rem', fontSize: '0.85rem' }}>Agent Discovery Flow</h4>
+              <ol style={{ margin: '0.25rem 0 0 1.25rem', fontSize: '0.85rem', lineHeight: '1.7' }}>
+                <li>Read <code>AGENT_BEHAVIOR_DEFAULTS.jsonc</code> — understand defaults</li>
+                <li>Read <code>system-manifests/PROJECT_TEMPLATE.json</code> — know profiles</li>
+                <li>Ask: "What project profile?" (spec-governed / ux-demo / hybrid / ui-reference / code-standard)</li>
+                <li>Scaffold required + optional files for chosen profile</li>
+                <li>Read code standards catalog — load standards</li>
+                <li>Read UI reference catalog — know what's available</li>
+                <li>Apply code standards automatically</li>
+                <li>Ask: "Do you need UI reference context?"</li>
+                <li>Ask: "Does this project reference other SpeckKit projects?"</li>
+              </ol>
 
               <h4 style={{ marginTop: '1rem', fontSize: '0.85rem' }}>Referencing Options</h4>
               <ul style={{ margin: '0.25rem 0 0 1.25rem', fontSize: '0.85rem', lineHeight: '1.6' }}>
