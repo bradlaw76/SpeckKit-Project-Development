@@ -47,8 +47,7 @@ specs/002-baseline-spec/
 │   └── requirements.md  # Spec quality checklist
 ├── research.md          # Phase 0 output
 ├── data-model.md        # Phase 1 output
-├── quickstart.md        # Phase 1 output
-└── contracts/           # Phase 1 output (API contracts if applicable)
+└── quickstart.md        # Phase 1 output
 ```
 
 ### Source Code (repository root)

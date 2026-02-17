@@ -129,11 +129,11 @@ As an AI agent pointed at the SpeckKit registry, I want a single, comprehensive 
 
 ### Measurable Outcomes
 
-- **SC-001**: Users can identify and select the appropriate bootstrap method within 30 seconds of arriving at the Getting Started tab.
+- **SC-001**: Users can identify and select the appropriate bootstrap method immediately upon viewing the Getting Started tab — all five methods are labeled and selectable in a single card.
 - **SC-002**: All five bootstrap methods are visible and selectable without scrolling past the bootstrap card.
 - **SC-003**: 100% of guide cards link to valid files in the GitHub registry.
 - **SC-004**: The bootstrap card content and `SETUP_FOR_PROJECTS.md` methods are in sync — no prompt or snippet differs between the two sources.
-- **SC-005**: An AI agent given the Copilot Chat prompt can successfully scaffold a new project's required files within 5 minutes.
+- **SC-005**: An AI agent given the Copilot Chat prompt can successfully read `SETUP_FOR_PROJECTS.md`, determine the project profile, and scaffold the required files.
 - **SC-006**: An AI agent given the Existing Project review prompt can identify at least 1 missing or outdated file in a non-compliant project.
 
 ## Assumptions
