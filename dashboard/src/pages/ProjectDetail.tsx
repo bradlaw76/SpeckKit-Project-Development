@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../App';
-import { auditProject, type AuditResult, getComplianceColor } from '../lib/auditor';
+import { auditProject, type AuditResult, type MissingFile, getComplianceColor } from '../lib/auditor';
+import { hasTemplate, scaffoldFile, scaffoldAll, type ScaffoldResult } from '../lib/scaffold';
 import ComplianceBadge from '../components/ComplianceBadge';
 import type { FileCategory } from '../config/audit-patterns';
 
@@ -25,6 +26,9 @@ export default function ProjectDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [scaffolding, setScaffolding] = useState<Record<string, 'pending' | 'success' | 'error'>>({}); 
+  const [scaffoldErrors, setScaffoldErrors] = useState<Record<string, string>>({});
+  const [scaffoldUrls, setScaffoldUrls] = useState<Record<string, string>>({});
 
   const project = registryData?.index.projects.find(
     (p) => p.id === decodeURIComponent(projectId ?? '')
@@ -86,7 +90,46 @@ export default function ProjectDetail() {
     );
   }
 
+  // ── Scaffold helpers ──────────────────────────────────────────────
+  const repoOwner = result?.repoOwner ?? '';
+  const repoName = result?.repoName ?? '';
+
+  const handleScaffoldOne = useCallback(async (pattern: string) => {
+    if (!project || !auth.token) return;
+    setScaffolding(prev => ({ ...prev, [pattern]: 'pending' }));
+    const res = await scaffoldFile(project, repoOwner, repoName, pattern, auth.token);
+    setScaffolding(prev => ({ ...prev, [pattern]: res.success ? 'success' : 'error' }));
+    if (res.error) setScaffoldErrors(prev => ({ ...prev, [pattern]: res.error! }));
+    if (res.htmlUrl) setScaffoldUrls(prev => ({ ...prev, [pattern]: res.htmlUrl! }));
+  }, [project, auth.token, repoOwner, repoName]);
+
+  const handleScaffoldAll = useCallback(async (items: MissingFile[]) => {
+    if (!project || !auth.token) return;
+    const paths = items.map(m => m.pattern.pattern).filter(p => hasTemplate(p) && !scaffolding[p]);
+    if (paths.length === 0) return;
+    // Mark all as pending
+    setScaffolding(prev => {
+      const next = { ...prev };
+      paths.forEach(p => { next[p] = 'pending'; });
+      return next;
+    });
+    const results = await scaffoldAll(project, repoOwner, repoName, paths, auth.token);
+    const newStates: Record<string, 'success' | 'error'> = {};
+    const newErrors: Record<string, string> = {};
+    const newUrls: Record<string, string> = {};
+    results.forEach(r => {
+      newStates[r.path] = r.success ? 'success' : 'error';
+      if (r.error) newErrors[r.path] = r.error;
+      if (r.htmlUrl) newUrls[r.path] = r.htmlUrl;
+    });
+    setScaffolding(prev => ({ ...prev, ...newStates }));
+    setScaffoldErrors(prev => ({ ...prev, ...newErrors }));
+    setScaffoldUrls(prev => ({ ...prev, ...newUrls }));
+  }, [project, auth.token, repoOwner, repoName, scaffolding]);
+
   if (!result) return null;
+
+  const scaffoldableRequired = result.missingRequired.filter(m => hasTemplate(m.pattern.pattern));
 
   return (
     <div className="page">
@@ -151,31 +194,78 @@ export default function ProjectDetail() {
       {result.missingRequired.length > 0 && (
         <div className="card" style={{ marginBottom: '1.5rem' }}>
           <div className="card-body">
-            <h3>
-              ❌ Missing Required Files ({result.missingRequired.length})
-            </h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3>
+                ❌ Missing Required Files ({result.missingRequired.length})
+              </h3>
+              {auth.token && scaffoldableRequired.length > 0 && (
+                <button
+                  className="btn btn-sm"
+                  style={{ backgroundColor: '#2ea043', borderColor: '#2ea043' }}
+                  onClick={() => handleScaffoldAll(result.missingRequired)}
+                  disabled={scaffoldableRequired.every(m => !!scaffolding[m.pattern.pattern])}
+                >
+                  🚀 Create All ({scaffoldableRequired.filter(m => !scaffolding[m.pattern.pattern]).length})
+                </button>
+              )}
+            </div>
             <table className="table" style={{ marginTop: '0.75rem' }}>
               <thead>
                 <tr>
                   <th>Pattern</th>
                   <th>Category</th>
                   <th>Suggestion</th>
+                  {auth.token && <th style={{ width: '120px' }}>Action</th>}
                 </tr>
               </thead>
               <tbody>
-                {result.missingRequired.map((m, i) => (
-                  <tr key={i}>
-                    <td>
-                      <code>{m.pattern.pattern}</code>
-                    </td>
-                    <td>
-                      <span className="badge badge-red">
-                        {CATEGORY_LABELS[m.pattern.category]}
-                      </span>
-                    </td>
-                    <td>{m.suggestion}</td>
-                  </tr>
-                ))}
+                {result.missingRequired.map((m, i) => {
+                  const pat = m.pattern.pattern;
+                  const state = scaffolding[pat];
+                  return (
+                    <tr key={i}>
+                      <td>
+                        <code>{pat}</code>
+                      </td>
+                      <td>
+                        <span className="badge badge-red">
+                          {CATEGORY_LABELS[m.pattern.category]}
+                        </span>
+                      </td>
+                      <td>{m.suggestion}</td>
+                      {auth.token && (
+                        <td>
+                          {state === 'success' ? (
+                            <a
+                              href={scaffoldUrls[pat]}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="badge badge-green"
+                              style={{ textDecoration: 'none' }}
+                            >
+                              ✓ Created
+                            </a>
+                          ) : state === 'pending' ? (
+                            <span className="text-muted">Creating…</span>
+                          ) : state === 'error' ? (
+                            <span className="badge badge-red" title={scaffoldErrors[pat]}>
+                              ✗ Failed
+                            </span>
+                          ) : hasTemplate(pat) ? (
+                            <button
+                              className="btn btn-sm"
+                              onClick={() => handleScaffoldOne(pat)}
+                            >
+                              + Create
+                            </button>
+                          ) : (
+                            <span className="text-muted text-sm">No template</span>
+                          )}
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -195,22 +285,57 @@ export default function ProjectDetail() {
                   <th>Pattern</th>
                   <th>Category</th>
                   <th>Suggestion</th>
+                  {auth.token && <th style={{ width: '120px' }}>Action</th>}
                 </tr>
               </thead>
               <tbody>
-                {result.missingOptional.map((m, i) => (
-                  <tr key={i}>
-                    <td>
-                      <code>{m.pattern.pattern}</code>
-                    </td>
-                    <td>
-                      <span className="badge badge-yellow">
-                        {CATEGORY_LABELS[m.pattern.category]}
-                      </span>
-                    </td>
-                    <td>{m.suggestion}</td>
-                  </tr>
-                ))}
+                {result.missingOptional.map((m, i) => {
+                  const pat = m.pattern.pattern;
+                  const state = scaffolding[pat];
+                  return (
+                    <tr key={i}>
+                      <td>
+                        <code>{pat}</code>
+                      </td>
+                      <td>
+                        <span className="badge badge-yellow">
+                          {CATEGORY_LABELS[m.pattern.category]}
+                        </span>
+                      </td>
+                      <td>{m.suggestion}</td>
+                      {auth.token && (
+                        <td>
+                          {state === 'success' ? (
+                            <a
+                              href={scaffoldUrls[pat]}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="badge badge-green"
+                              style={{ textDecoration: 'none' }}
+                            >
+                              ✓ Created
+                            </a>
+                          ) : state === 'pending' ? (
+                            <span className="text-muted">Creating…</span>
+                          ) : state === 'error' ? (
+                            <span className="badge badge-red" title={scaffoldErrors[pat]}>
+                              ✗ Failed
+                            </span>
+                          ) : hasTemplate(pat) ? (
+                            <button
+                              className="btn btn-sm"
+                              onClick={() => handleScaffoldOne(pat)}
+                            >
+                              + Create
+                            </button>
+                          ) : (
+                            <span className="text-muted text-sm">No template</span>
+                          )}
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
