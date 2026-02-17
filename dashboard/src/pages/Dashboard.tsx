@@ -85,9 +85,15 @@ export default function Dashboard() {
     (async () => {
       setLoadingRepos(true);
       try {
-        // Fetch up to 100 repos (paginated)
-        const page1 = await listUserRepos(auth.token!, 1, 100);
-        if (!cancelled) setUserRepos(page1);
+        // Fetch repos with simple pagination (up to 500 repos)
+        const all: RepoMeta[] = [];
+        const perPage = 100;
+        for (let page = 1; page <= 5; page++) {
+          const batch = await listUserRepos(auth.token!, page, perPage);
+          all.push(...batch);
+          if (batch.length < perPage) break;
+        }
+        if (!cancelled) setUserRepos(all);
       } catch {
         // Non-critical — governed repos still work
       } finally {

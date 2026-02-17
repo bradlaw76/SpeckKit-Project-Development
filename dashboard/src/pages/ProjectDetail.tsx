@@ -152,6 +152,14 @@ export default function ProjectDetail() {
   const createdFiles = Object.entries(scaffoldUrls);
   const hasAnyScaffoldResults = Object.keys(scaffolding).some(k => scaffolding[k] === 'success' || scaffolding[k] === 'error');
 
+  // Build correct GitHub link for the repo
+  function repoLinkUrl(repo: string): string {
+    if (/github\.com\//i.test(repo)) return repo;
+    const shortMatch = repo.match(/^([^/]+)\/([^/]+)$/);
+    if (shortMatch) return `https://github.com/${shortMatch[1]}/${shortMatch[2]}`;
+    return `https://github.com/${repo}`;
+  }
+
   return (
     <div className="page">
       {/* Back + Header */}
@@ -210,7 +218,7 @@ export default function ProjectDetail() {
         <div>
           <h1>{project.name}</h1>
           <p className="text-muted">
-            <a href={`https://github.com/${project.repo}`} target="_blank" rel="noreferrer">
+            <a href={repoLinkUrl(project.repo)} target="_blank" rel="noreferrer">
               {project.repo}
             </a>
           </p>
