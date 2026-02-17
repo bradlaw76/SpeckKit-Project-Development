@@ -2,9 +2,9 @@
 =============================================================================
 DOCUMENT:     SpeckKit System Manifest Registry Index (Authoritative)
 FILE:         system-manifests/MANIFEST_INDEX.json.md
-VERSION:      1.1
+VERSION:      1.2
 AUTHOR:       bradlaw76
-LAST UPDATED: 2026-02-16
+LAST UPDATED: 2026-02-17
 
 -----------------------------------------------------------------------------
 OVERVIEW
@@ -23,6 +23,7 @@ REGISTRY ROLE
 -----------------------------------------------------------------------------
 CHANGELOG
 -----------------------------------------------------------------------------
+v1.2  2026-02-17  Added generic-activity-timeline (spec-governed, ACTIVE)
 v1.1  2026-02-16  Added codeStandardsCatalog, agentBehavior, setupGuide
 v1.0  2026-02-10  Initial version — registry and UI reference catalog only
 =============================================================================
@@ -36,7 +37,7 @@ v1.0  2026-02-10  Initial version — registry and UI reference catalog only
     "path": "/system-manifests",
     "version": "1.0",
     "purpose": "Authoritative index of all system manifests governed and reviewed using SpeckKit",
-    "lastUpdated": "2026-02-16"
+    "lastUpdated": "2026-02-17"
   },
 
   "uiReferenceCatalog": {
@@ -98,6 +99,21 @@ v1.0  2026-02-10  Initial version — registry and UI reference catalog only
         "type": "directory",
         "path": "spec/",
         "entryPoint": "01-intent.md",
+        "reviewMode": "aggregate"
+      }
+    },
+    {
+      "projectId": "generic-activity-timeline",
+      "name": "Generic Activity Timeline (Dynamics 365)",
+      "repository": "https://github.com/bradlaw76/Generic.ActivityTimeline",
+      "manifestUrl": "https://raw.githubusercontent.com/bradlaw76/Generic.ActivityTimeline/main/SYSTEM_MANIFEST.json.md",
+      "profile": "spec-governed",
+      "status": "ACTIVE",
+      "speckitReviewable": true,
+      "spec": {
+        "type": "directory",
+        "path": "specs/001-timeline-v3-sentiment/",
+        "entryPoint": "spec.md",
         "reviewMode": "aggregate"
       }
     }
