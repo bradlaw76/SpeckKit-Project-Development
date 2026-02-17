@@ -2,9 +2,9 @@
 =============================================================================
 DOCUMENT:     SpeckKit Setup Guide for Consumer Projects
 FILE:         SETUP_FOR_PROJECTS.md
-VERSION:      1.1
+VERSION:      1.2
 AUTHOR:       bradlaw76
-LAST UPDATED: 2026-02-16
+LAST UPDATED: 2026-02-17
 
 -----------------------------------------------------------------------------
 OVERVIEW
@@ -26,6 +26,8 @@ REGISTRY ROLE
 -----------------------------------------------------------------------------
 CHANGELOG
 -----------------------------------------------------------------------------
+v1.2  2026-02-17  Added "How to Bootstrap" section with 4 methods
+                  (HTML comment, Copilot Chat, PowerShell CLI, Bash CLI)
 v1.1  2026-02-16  Added Step 0 (profile scaffolding) and cross-project
                   referencing section
 v1.0  2026-02-16  Initial version — unified setup guide
@@ -39,13 +41,65 @@ v1.0  2026-02-16  Initial version — unified setup guide
 **Registry:** `https://github.com/bradlaw76/SpeckKit-Project-Development`
 **Entry Point:** This file (`SETUP_FOR_PROJECTS.md`)
 **Agent Defaults:** `AGENT_BEHAVIOR_DEFAULTS.jsonc`
-**Last Updated:** 2026-02-16
+**Last Updated:** 2026-02-17
 
 ---
 
 <!-- BELOW IS THE INSTRUCTION THAT ARE USED IN A NEW REPO TO UTLIZE THIS STANDARD BUILR PROCESS
 Set up this project using the SpeckKit registry at https://github.com/bradlaw76/SpeckKit-Project-Development — read SETUP_FOR_PROJECTS.md
 -->
+
+---
+
+## How to Bootstrap a New Project
+
+There are **four ways** to connect any repo to SpeckKit. Pick the one that fits your workflow — they all lead to the same result.
+
+### Method 1 — HTML Comment (Agent Discovery)
+
+Paste this comment into any file in a new repo (e.g., `README.md`, a spec file, or `copilot-instructions.md`). When an AI agent opens the project, it will discover SpeckKit and follow this setup guide automatically:
+
+```html
+<!-- SETUP: SpeckKit Registry Integration
+Set up this project using the SpeckKit registry at https://github.com/bradlaw76/SpeckKit-Project-Development — read SETUP_FOR_PROJECTS.md
+-->
+```
+
+### Method 2 — Copilot Chat / AI Agent Prompt
+
+Open **GitHub Copilot Chat** (or any AI agent panel) in VS Code and paste this prompt:
+
+```
+Set up this project using the SpeckKit registry at https://github.com/bradlaw76/SpeckKit-Project-Development — read SETUP_FOR_PROJECTS.md
+```
+
+The agent will read this guide, ask you which project profile to use, and scaffold all required files. Works with GitHub Copilot, Cursor, Windsurf, or any AI agent that can read URLs.
+
+### Method 3 — CLI (PowerShell)
+
+Run from your project root in PowerShell:
+
+```powershell
+# Add SpeckKit as a Git submodule and copy the quick start guide
+git submodule add https://github.com/bradlaw76/SpeckKit-Project-Development.git .speckkit-registry
+mkdir -p .github
+Copy-Item .speckkit-registry/code-standards/QUICK_START_FOR_PROJECTS.md .github/SPECKKIT_QUICKSTART.md
+# Then follow Steps 2-4 below to create copilot-instructions.md and SYSTEM_MANIFEST.json.md
+```
+
+### Method 4 — CLI (Bash / macOS / Linux)
+
+Run from your project root:
+
+```bash
+# Add SpeckKit as a Git submodule and copy the quick start guide
+git submodule add https://github.com/bradlaw76/SpeckKit-Project-Development.git .speckkit-registry
+mkdir -p .github
+cp .speckkit-registry/code-standards/QUICK_START_FOR_PROJECTS.md .github/SPECKKIT_QUICKSTART.md
+# Then follow Steps 2-4 below to create copilot-instructions.md and SYSTEM_MANIFEST.json.md
+```
+
+> **All methods** result in the same outcome: a project connected to the SpeckKit registry with code standards auto-applied and UI references available on request.
 
 ---
 

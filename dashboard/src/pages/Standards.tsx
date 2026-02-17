@@ -126,6 +126,23 @@ const BOOTSTRAP_SNIPPET = `<!-- SETUP: SpeckKit Registry Integration
 Set up this project using the SpeckKit registry at https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO} — read SETUP_FOR_PROJECTS.md
 -->`;
 
+/** CLI bootstrap snippets */
+const CLI_POWERSHELL = `# PowerShell — clone registry, scaffold copilot-instructions + manifest
+git submodule add https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO}.git .speckkit-registry
+mkdir -p .github
+Copy-Item .speckkit-registry/code-standards/QUICK_START_FOR_PROJECTS.md .github/SPECKKIT_QUICKSTART.md
+# Then follow SETUP_FOR_PROJECTS.md Steps 2-4`;
+
+const CLI_BASH = `# Bash / macOS / Linux — same flow
+git submodule add https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO}.git .speckkit-registry
+mkdir -p .github
+cp .speckkit-registry/code-standards/QUICK_START_FOR_PROJECTS.md .github/SPECKKIT_QUICKSTART.md
+# Then follow SETUP_FOR_PROJECTS.md Steps 2-4`;
+
+const COPILOT_CHAT_PROMPT = `Set up this project using the SpeckKit registry at https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO} — read SETUP_FOR_PROJECTS.md`;
+
+type BootstrapTab = 'comment' | 'cli-ps' | 'cli-bash' | 'copilot';
+
 const CATEGORY_LABELS: Record<Guide['category'], { label: string; color: string }> = {
   'entry-point': { label: '🏠 Entry Points', color: 'var(--accent)' },
   'code-standards': { label: '📝 Code Standards', color: 'var(--color-blue)' },
@@ -135,6 +152,7 @@ const CATEGORY_LABELS: Record<Guide['category'], { label: string; color: string 
 export default function Standards() {
   const { registryData, registryError } = useAppContext();
   const [activeTab, setActiveTab] = useState<'guides' | 'profiles' | 'code' | 'ui'>('guides');
+  const [bootstrapTab, setBootstrapTab] = useState<BootstrapTab>('comment');
 
   if (registryError) {
     return (
@@ -200,29 +218,125 @@ export default function Standards() {
             Start with the <strong>Unified Setup Guide</strong>, or jump to a specific quick start.
           </p>
 
-          {/* Bootstrap snippet card */}
+          {/* Bootstrap methods card */}
           <div className="card" style={{ marginBottom: '1.25rem', borderColor: 'var(--color-green)', borderWidth: 2 }}>
             <div className="card-body">
-              <h3>💡 One-Liner Bootstrap</h3>
+              <h3>💡 Bootstrap a New Project</h3>
               <p className="text-muted" style={{ margin: '0.5rem 0' }}>
-                Paste this HTML comment into any file in a new repo (e.g., <code>README.md</code> or a spec file).
-                When an AI agent opens the project, it will discover SpeckKit and follow <code>SETUP_FOR_PROJECTS.md</code> to set everything up.
+                Four ways to connect any repo to SpeckKit. Pick the one that fits your workflow:
               </p>
-              <pre style={{
-                background: 'var(--bg-tertiary, #1a1a2e)',
-                border: '1px solid var(--border)',
-                borderRadius: '0.375rem',
-                padding: '0.75rem 1rem',
-                fontSize: '0.8rem',
-                lineHeight: '1.5',
-                overflowX: 'auto',
-                whiteSpace: 'pre-wrap',
-                wordBreak: 'break-word',
-              }}>
-                <code>{BOOTSTRAP_SNIPPET}</code>
-              </pre>
-              <p className="text-muted text-sm" style={{ marginTop: '0.5rem' }}>
-                This is the same comment used inside <code>SETUP_FOR_PROJECTS.md</code> — it's the entry point for agent discovery.
+
+              {/* Bootstrap method tabs */}
+              <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+                {([
+                  { key: 'comment' as BootstrapTab, label: '📝 HTML Comment' },
+                  { key: 'copilot' as BootstrapTab, label: '🤖 Copilot Chat' },
+                  { key: 'cli-ps' as BootstrapTab, label: '⚡ PowerShell' },
+                  { key: 'cli-bash' as BootstrapTab, label: '🐚 Bash' },
+                ]).map((t) => (
+                  <button
+                    key={t.key}
+                    className={`btn btn-sm ${bootstrapTab === t.key ? 'btn-primary' : 'btn-ghost'}`}
+                    onClick={() => setBootstrapTab(t.key)}
+                    style={{ fontSize: '0.75rem' }}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+
+              {bootstrapTab === 'comment' && (
+                <>
+                  <p style={{ fontSize: '0.85rem', margin: '0 0 0.5rem' }}>
+                    Paste this HTML comment into any file in a new repo (e.g., <code>README.md</code> or a spec file).
+                    When an AI agent opens the project, it discovers SpeckKit and follows <code>SETUP_FOR_PROJECTS.md</code>.
+                  </p>
+                  <pre style={{
+                    background: 'var(--bg-tertiary, #1a1a2e)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '0.375rem',
+                    padding: '0.75rem 1rem',
+                    fontSize: '0.8rem',
+                    lineHeight: '1.5',
+                    overflowX: 'auto',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word',
+                  }}>
+                    <code>{BOOTSTRAP_SNIPPET}</code>
+                  </pre>
+                </>
+              )}
+
+              {bootstrapTab === 'copilot' && (
+                <>
+                  <p style={{ fontSize: '0.85rem', margin: '0 0 0.5rem' }}>
+                    Open <strong>GitHub Copilot Chat</strong> in VS Code (or any AI agent panel) and paste this prompt.
+                    The agent will read the setup guide and scaffold everything for you.
+                  </p>
+                  <pre style={{
+                    background: 'var(--bg-tertiary, #1a1a2e)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '0.375rem',
+                    padding: '0.75rem 1rem',
+                    fontSize: '0.8rem',
+                    lineHeight: '1.5',
+                    overflowX: 'auto',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word',
+                  }}>
+                    <code>{COPILOT_CHAT_PROMPT}</code>
+                  </pre>
+                  <p className="text-muted text-sm" style={{ marginTop: '0.5rem' }}>
+                    Works with GitHub Copilot, Cursor, Windsurf, or any AI agent that can read URLs.
+                    The agent will ask you which project profile to use and scaffold the required files.
+                  </p>
+                </>
+              )}
+
+              {bootstrapTab === 'cli-ps' && (
+                <>
+                  <p style={{ fontSize: '0.85rem', margin: '0 0 0.5rem' }}>
+                    Run in <strong>PowerShell</strong> from your project root to add SpeckKit as a Git submodule and copy the quick start guide.
+                  </p>
+                  <pre style={{
+                    background: 'var(--bg-tertiary, #1a1a2e)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '0.375rem',
+                    padding: '0.75rem 1rem',
+                    fontSize: '0.8rem',
+                    lineHeight: '1.5',
+                    overflowX: 'auto',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word',
+                  }}>
+                    <code>{CLI_POWERSHELL}</code>
+                  </pre>
+                </>
+              )}
+
+              {bootstrapTab === 'cli-bash' && (
+                <>
+                  <p style={{ fontSize: '0.85rem', margin: '0 0 0.5rem' }}>
+                    Run in <strong>Bash / macOS / Linux</strong> terminal from your project root.
+                  </p>
+                  <pre style={{
+                    background: 'var(--bg-tertiary, #1a1a2e)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '0.375rem',
+                    padding: '0.75rem 1rem',
+                    fontSize: '0.8rem',
+                    lineHeight: '1.5',
+                    overflowX: 'auto',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word',
+                  }}>
+                    <code>{CLI_BASH}</code>
+                  </pre>
+                </>
+              )}
+
+              <p className="text-muted text-sm" style={{ marginTop: '0.75rem', borderTop: '1px solid var(--border)', paddingTop: '0.5rem' }}>
+                All methods lead to the same result — a project wired to the SpeckKit registry with code standards auto-applied and UI references available on request.
               </p>
             </div>
           </div>
