@@ -10,9 +10,40 @@ function ghBlobUrl(basePath: string, filePath: string): string {
   return `https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO}/blob/main/${full}`;
 }
 
+/** Guides data — links to the onboarding docs in the repo */
+const GUIDES = [
+  {
+    title: 'Quick Start for Projects',
+    file: 'code-standards/QUICK_START_FOR_PROJECTS.md',
+    icon: '🚀',
+    summary:
+      'Fast-track setup — copy-paste two files into any VS Code project to start getting auto-applied code standard headers immediately.',
+    steps: [
+      'Create .github/copilot-instructions.md with the standards reference',
+      'Create or update SYSTEM_MANIFEST.json.md with codeStandards block',
+      'Commit and push — agents auto-apply from that point on',
+    ],
+    audience: 'Developers who want the fastest path to adoption.',
+  },
+  {
+    title: 'How to Use Code Standards',
+    file: 'code-standards/HOW_TO_USE_CODE_STANDARDS.md',
+    icon: '📖',
+    summary:
+      'Deep-dive integration guide explaining agent behavior, referencing options (submodule, raw URL, local workspace), and how to contribute new standards.',
+    steps: [
+      'Reference the standard in your project manifest',
+      'Configure Copilot instructions with rules and catalog URLs',
+      'Understand agent behavior defaults (auto-apply vs. ask-first)',
+      'Learn how to add new standards to the catalog',
+    ],
+    audience: 'Teams who want full control over integration and want to contribute standards.',
+  },
+];
+
 export default function Standards() {
   const { registryData, registryError } = useAppContext();
-  const [activeTab, setActiveTab] = useState<'profiles' | 'code' | 'ui'>('profiles');
+  const [activeTab, setActiveTab] = useState<'guides' | 'profiles' | 'code' | 'ui'>('guides');
 
   if (registryError) {
     return (
@@ -45,6 +76,12 @@ export default function Standards() {
       {/* Tabs */}
       <div className="tab-bar">
         <button
+          className={`tab ${activeTab === 'guides' ? 'tab-active' : ''}`}
+          onClick={() => setActiveTab('guides')}
+        >
+          📘 Getting Started
+        </button>
+        <button
           className={`tab ${activeTab === 'profiles' ? 'tab-active' : ''}`}
           onClick={() => setActiveTab('profiles')}
         >
@@ -63,6 +100,96 @@ export default function Standards() {
           UI References ({uiReferences?.references?.length ?? 0})
         </button>
       </div>
+
+      {/* Guides Tab */}
+      {activeTab === 'guides' && (
+        <div className="standards-content">
+          <p className="text-muted" style={{ marginBottom: '1rem' }}>
+            These guides walk you through adopting SpeckKit code standards in your own VS Code projects.
+            Pick the <strong>Quick Start</strong> for a 2-file, copy-paste setup, or the <strong>Full Guide</strong> for
+            deep integration and contributing new standards.
+          </p>
+
+          {GUIDES.map((g) => (
+            <div key={g.file} className="card" style={{ marginBottom: '1rem' }}>
+              <div className="card-body">
+                <div className="card-title-row">
+                  <h3>
+                    {g.icon} {g.title}
+                  </h3>
+                </div>
+                <p className="text-muted" style={{ margin: '0.5rem 0' }}>
+                  {g.summary}
+                </p>
+
+                <h4 style={{ marginTop: '0.75rem', fontSize: '0.85rem' }}>Steps</h4>
+                <ol style={{ margin: '0.25rem 0 0.75rem 1.25rem', fontSize: '0.875rem', lineHeight: '1.6' }}>
+                  {g.steps.map((s, i) => (
+                    <li key={i}>{s}</li>
+                  ))}
+                </ol>
+
+                <div className="card-row" style={{ borderTop: '1px solid var(--border)', paddingTop: '0.5rem' }}>
+                  <span className="card-label">Audience</span>
+                  <span style={{ fontSize: '0.85rem' }}>{g.audience}</span>
+                </div>
+
+                <p style={{ marginTop: '0.75rem' }}>
+                  <a
+                    href={`https://github.com/${REGISTRY_OWNER}/${REGISTRY_REPO}/blob/main/${g.file}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    📄 View full guide →
+                  </a>
+                </p>
+              </div>
+            </div>
+          ))}
+
+          {/* How it works summary */}
+          <div className="card" style={{ marginBottom: '1rem', borderColor: 'var(--accent)' }}>
+            <div className="card-body">
+              <h3>⚙️ How It Works</h3>
+              <p className="text-muted" style={{ margin: '0.5rem 0' }}>
+                SpeckKit code standards are <strong>auto-applied</strong> by AI agents. Here's the workflow:
+              </p>
+              <table style={{ width: '100%', fontSize: '0.85rem', borderCollapse: 'collapse', marginTop: '0.5rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid var(--border)', textAlign: 'left' }}>
+                    <th style={{ padding: '0.4rem 0.5rem' }}>Standard Type</th>
+                    <th style={{ padding: '0.4rem 0.5rem' }}>Default</th>
+                    <th style={{ padding: '0.4rem 0.5rem' }}>Agent Behavior</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                    <td style={{ padding: '0.4rem 0.5rem' }}>Code Standards (comments, headers)</td>
+                    <td style={{ padding: '0.4rem 0.5rem' }}>
+                      <span className="badge badge-green">YES — auto-apply</span>
+                    </td>
+                    <td style={{ padding: '0.4rem 0.5rem' }}>Apply automatically without asking</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '0.4rem 0.5rem' }}>UI References (Dynamics layouts)</td>
+                    <td style={{ padding: '0.4rem 0.5rem' }}>
+                      <span className="badge badge-yellow">ASK first</span>
+                    </td>
+                    <td style={{ padding: '0.4rem 0.5rem' }}>Confirm with user before loading context</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h4 style={{ marginTop: '1rem', fontSize: '0.85rem' }}>Referencing Options</h4>
+              <ul style={{ margin: '0.25rem 0 0 1.25rem', fontSize: '0.85rem', lineHeight: '1.6' }}>
+                <li><strong>Raw GitHub URL</strong> — Point agents at the raw content URL (simplest)</li>
+                <li><strong>Git Submodule</strong> — Add the registry as a submodule for local access</li>
+                <li><strong>Local Workspace</strong> — Reference from a sibling folder</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Profiles Tab */}
       {activeTab === 'profiles' && (
