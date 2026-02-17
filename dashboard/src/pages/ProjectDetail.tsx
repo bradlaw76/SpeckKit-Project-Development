@@ -44,6 +44,43 @@ export default function ProjectDetail() {
       .finally(() => setLoading(false));
   }, [project, registryData, auth.token]);
 
+  // ── Scaffold helpers (must be before early returns — React hooks rules) ──
+  const repoOwner = result?.repoOwner ?? '';
+  const repoName = result?.repoName ?? '';
+
+  const handleScaffoldOne = useCallback(async (pattern: string) => {
+    if (!project || !auth.token) return;
+    setScaffolding(prev => ({ ...prev, [pattern]: 'pending' }));
+    const res = await scaffoldFile(project, repoOwner, repoName, pattern, auth.token);
+    setScaffolding(prev => ({ ...prev, [pattern]: res.success ? 'success' : 'error' }));
+    if (res.error) setScaffoldErrors(prev => ({ ...prev, [pattern]: res.error! }));
+    if (res.htmlUrl) setScaffoldUrls(prev => ({ ...prev, [pattern]: res.htmlUrl! }));
+  }, [project, auth.token, repoOwner, repoName]);
+
+  const handleScaffoldAll = useCallback(async (items: MissingFile[]) => {
+    if (!project || !auth.token) return;
+    const paths = items.map(m => m.pattern.pattern).filter(p => hasTemplate(p) && !scaffolding[p]);
+    if (paths.length === 0) return;
+    setScaffolding(prev => {
+      const next = { ...prev };
+      paths.forEach(p => { next[p] = 'pending'; });
+      return next;
+    });
+    const results = await scaffoldAll(project, repoOwner, repoName, paths, auth.token);
+    const newStates: Record<string, 'success' | 'error'> = {};
+    const newErrors: Record<string, string> = {};
+    const newUrls: Record<string, string> = {};
+    results.forEach(r => {
+      newStates[r.path] = r.success ? 'success' : 'error';
+      if (r.error) newErrors[r.path] = r.error;
+      if (r.htmlUrl) newUrls[r.path] = r.htmlUrl;
+    });
+    setScaffolding(prev => ({ ...prev, ...newStates }));
+    setScaffoldErrors(prev => ({ ...prev, ...newErrors }));
+    setScaffoldUrls(prev => ({ ...prev, ...newUrls }));
+  }, [project, auth.token, repoOwner, repoName, scaffolding]);
+
+  // ── Early returns ─────────────────────────────────────────────────
   if (!registryData) {
     return (
       <div className="page">
@@ -89,43 +126,6 @@ export default function ProjectDetail() {
       </div>
     );
   }
-
-  // ── Scaffold helpers ──────────────────────────────────────────────
-  const repoOwner = result?.repoOwner ?? '';
-  const repoName = result?.repoName ?? '';
-
-  const handleScaffoldOne = useCallback(async (pattern: string) => {
-    if (!project || !auth.token) return;
-    setScaffolding(prev => ({ ...prev, [pattern]: 'pending' }));
-    const res = await scaffoldFile(project, repoOwner, repoName, pattern, auth.token);
-    setScaffolding(prev => ({ ...prev, [pattern]: res.success ? 'success' : 'error' }));
-    if (res.error) setScaffoldErrors(prev => ({ ...prev, [pattern]: res.error! }));
-    if (res.htmlUrl) setScaffoldUrls(prev => ({ ...prev, [pattern]: res.htmlUrl! }));
-  }, [project, auth.token, repoOwner, repoName]);
-
-  const handleScaffoldAll = useCallback(async (items: MissingFile[]) => {
-    if (!project || !auth.token) return;
-    const paths = items.map(m => m.pattern.pattern).filter(p => hasTemplate(p) && !scaffolding[p]);
-    if (paths.length === 0) return;
-    // Mark all as pending
-    setScaffolding(prev => {
-      const next = { ...prev };
-      paths.forEach(p => { next[p] = 'pending'; });
-      return next;
-    });
-    const results = await scaffoldAll(project, repoOwner, repoName, paths, auth.token);
-    const newStates: Record<string, 'success' | 'error'> = {};
-    const newErrors: Record<string, string> = {};
-    const newUrls: Record<string, string> = {};
-    results.forEach(r => {
-      newStates[r.path] = r.success ? 'success' : 'error';
-      if (r.error) newErrors[r.path] = r.error;
-      if (r.htmlUrl) newUrls[r.path] = r.htmlUrl;
-    });
-    setScaffolding(prev => ({ ...prev, ...newStates }));
-    setScaffoldErrors(prev => ({ ...prev, ...newErrors }));
-    setScaffoldUrls(prev => ({ ...prev, ...newUrls }));
-  }, [project, auth.token, repoOwner, repoName, scaffolding]);
 
   if (!result) return null;
 
