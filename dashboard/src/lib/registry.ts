@@ -9,7 +9,14 @@
  * - AGENT_BEHAVIOR_DEFAULTS.jsonc → JSONC (comments stripped)
  */
 
-import { GITHUB_RAW_BASE, REGISTRY_FILES, CACHE_TTL_MS } from '../config/constants';
+import {
+  REGISTRY_FILES,
+  CACHE_TTL_MS,
+  GITHUB_API_BASE,
+  REGISTRY_OWNER,
+  REGISTRY_REPO,
+  REGISTRY_BRANCH,
+} from '../config/constants';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -156,13 +163,22 @@ function isCacheValid(): boolean {
 // ---------------------------------------------------------------------------
 
 async function fetchRawFile(path: string, token?: string | null): Promise<string> {
-  const url = `${GITHUB_RAW_BASE}/${path}`;
-  const headers: Record<string, string> = {};
+  // Use the GitHub API contents endpoint — works for both public and private repos with auth
+  const url = `${GITHUB_API_BASE}/repos/${REGISTRY_OWNER}/${REGISTRY_REPO}/contents/${path}?ref=${REGISTRY_BRANCH}`;
+  const headers: Record<string, string> = {
+    Accept: 'application/vnd.github.raw+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
   const res = await fetch(url, { headers });
   if (!res.ok) {
+    if (res.status === 404 && !token) {
+      throw new Error(
+        'PRIVATE_REPO: The registry repo is private. Connect your GitHub account to access it.'
+      );
+    }
     throw new Error(`Failed to fetch ${path}: ${res.status} ${res.statusText}`);
   }
   return res.text();

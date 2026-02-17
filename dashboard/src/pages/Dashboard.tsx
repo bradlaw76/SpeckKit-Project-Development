@@ -72,12 +72,25 @@ export default function Dashboard() {
 
   // ------ Render ------
 
+  const isPrivateRepoError = registryError?.includes('PRIVATE_REPO');
+
   if (registryError) {
     return (
       <div className="page">
-        <div className="alert alert-error">
-          <strong>Failed to load registry:</strong> {registryError}
-        </div>
+        {isPrivateRepoError ? (
+          <div className="alert alert-warning">
+            <strong>🔒 Private Repository</strong>
+            <p style={{ margin: '0.5rem 0 0' }}>
+              The SpeckKit registry is in a private repo. Click{' '}
+              <strong>Connect GitHub</strong> in the top-right corner and enter a
+              Personal Access Token with <code>repo</code> scope to load registry data.
+            </p>
+          </div>
+        ) : (
+          <div className="alert alert-error">
+            <strong>Failed to load registry:</strong> {registryError}
+          </div>
+        )}
       </div>
     );
   }
