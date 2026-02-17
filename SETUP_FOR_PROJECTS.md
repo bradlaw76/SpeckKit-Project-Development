@@ -55,17 +55,7 @@ Set up this project using the SpeckKit registry at https://github.com/bradlaw76/
 
 There are **four ways** to connect any repo to SpeckKit. Pick the one that fits your workflow — they all lead to the same result.
 
-### Method 1 — HTML Comment (Agent Discovery)
-
-Paste this comment into any file in a new repo (e.g., `README.md`, a spec file, or `copilot-instructions.md`). When an AI agent opens the project, it will discover SpeckKit and follow this setup guide automatically:
-
-```html
-<!-- SETUP: SpeckKit Registry Integration
-Set up this project using the SpeckKit registry at https://github.com/bradlaw76/SpeckKit-Project-Development — read SETUP_FOR_PROJECTS.md
--->
-```
-
-### Method 2 — Copilot Chat / AI Agent Prompt
+### Method 1 — Copilot Chat / AI Agent Prompt (Recommended)
 
 Open **GitHub Copilot Chat** (or any AI agent panel) in VS Code and paste this prompt:
 
@@ -74,6 +64,16 @@ Set up this project using the SpeckKit registry at https://github.com/bradlaw76/
 ```
 
 The agent will read this guide, ask you which project profile to use, and scaffold all required files. Works with GitHub Copilot, Cursor, Windsurf, or any AI agent that can read URLs.
+
+### Method 2 — HTML Comment (Agent Discovery)
+
+Paste this comment into any file in a new repo (e.g., `README.md`, a spec file, or `copilot-instructions.md`). When an AI agent opens the project, it will discover SpeckKit and follow this setup guide automatically:
+
+```html
+<!-- SETUP: SpeckKit Registry Integration
+Set up this project using the SpeckKit registry at https://github.com/bradlaw76/SpeckKit-Project-Development — read SETUP_FOR_PROJECTS.md
+-->
+```
 
 ### Method 3 — CLI (PowerShell)
 

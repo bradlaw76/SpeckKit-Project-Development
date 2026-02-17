@@ -152,7 +152,7 @@ const CATEGORY_LABELS: Record<Guide['category'], { label: string; color: string 
 export default function Standards() {
   const { registryData, registryError } = useAppContext();
   const [activeTab, setActiveTab] = useState<'guides' | 'profiles' | 'code' | 'ui'>('guides');
-  const [bootstrapTab, setBootstrapTab] = useState<BootstrapTab>('comment');
+  const [bootstrapTab, setBootstrapTab] = useState<BootstrapTab>('copilot');
 
   if (registryError) {
     return (
@@ -229,8 +229,8 @@ export default function Standards() {
               {/* Bootstrap method tabs */}
               <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
                 {([
-                  { key: 'comment' as BootstrapTab, label: '📝 HTML Comment' },
                   { key: 'copilot' as BootstrapTab, label: '🤖 Copilot Chat' },
+                  { key: 'comment' as BootstrapTab, label: '📝 HTML Comment' },
                   { key: 'cli-ps' as BootstrapTab, label: '⚡ PowerShell' },
                   { key: 'cli-bash' as BootstrapTab, label: '🐚 Bash' },
                 ]).map((t) => (
