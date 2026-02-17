@@ -4,14 +4,16 @@ import ComplianceBadge from './ComplianceBadge';
 
 interface Props {
   result: AuditResult;
+  isHidden?: boolean;
+  onToggleHide?: (repoId: string) => void;
 }
 
-export default function ProjectCard({ result }: Props) {
+export default function ProjectCard({ result, isHidden, onToggleHide }: Props) {
   const navigate = useNavigate();
 
   return (
     <div
-      className="card card-interactive"
+      className={`card card-interactive${isHidden ? ' card-hidden' : ''}`}
       onClick={() => navigate(`/project/${encodeURIComponent(result.project.id)}`)}
       role="button"
       tabIndex={0}
@@ -80,14 +82,29 @@ export default function ProjectCard({ result }: Props) {
         </div>
       </div>
 
-      {/* Suggestions preview */}
-      {result.suggestions.length > 0 && (
-        <div className="card-footer">
+      {/* Footer: suggestions + hide toggle */}
+      <div className="card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {result.suggestions.length > 0 ? (
           <span className="text-muted text-sm">
             💡 {result.suggestions.length} suggestion{result.suggestions.length > 1 ? 's' : ''}
           </span>
-        </div>
-      )}
+        ) : (
+          <span />
+        )}
+        {onToggleHide && (
+          <button
+            className={`btn btn-sm ${isHidden ? 'btn-secondary' : 'btn-ghost'}`}
+            title={isHidden ? 'Unhide this repo' : 'Hide this repo'}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleHide(result.project.id);
+            }}
+            style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}
+          >
+            {isHidden ? '👁️ Unhide' : '🙈 Hide'}
+          </button>
+        )}
+      </div>
     </div>
   );
 }

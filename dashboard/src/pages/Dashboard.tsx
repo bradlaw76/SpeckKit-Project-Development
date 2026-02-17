@@ -8,6 +8,20 @@ import ProjectCard from '../components/ProjectCard';
 type ComplianceFilter = 'all' | 'compliant' | 'partial' | 'non-compliant' | 'ungoverned';
 type RepoSource = 'governed' | 'all-repos';
 
+const HIDDEN_REPOS_KEY = 'speckkit_hidden_repos';
+
+function loadHiddenRepos(): Set<string> {
+  try {
+    const raw = localStorage.getItem(HIDDEN_REPOS_KEY);
+    if (raw) return new Set(JSON.parse(raw) as string[]);
+  } catch { /* ignore */ }
+  return new Set();
+}
+
+function saveHiddenRepos(hidden: Set<string>) {
+  localStorage.setItem(HIDDEN_REPOS_KEY, JSON.stringify([...hidden]));
+}
+
 export default function Dashboard() {
   const { auth, registryData, registryError } = useAppContext();
   const [results, setResults] = useState<AuditResult[]>([]);
@@ -19,6 +33,23 @@ export default function Dashboard() {
   const [complianceFilter, setComplianceFilter] = useState<ComplianceFilter>('all');
   const [sortBy, setSortBy] = useState<'name' | 'score'>('score');
   const [repoSource, setRepoSource] = useState<RepoSource>(auth.token ? 'all-repos' : 'governed');
+
+  // Hidden repos state
+  const [hiddenRepos, setHiddenRepos] = useState<Set<string>>(loadHiddenRepos);
+  const [showHidden, setShowHidden] = useState(false);
+
+  const toggleHide = useCallback((repoId: string) => {
+    setHiddenRepos((prev) => {
+      const next = new Set(prev);
+      if (next.has(repoId)) {
+        next.delete(repoId);
+      } else {
+        next.add(repoId);
+      }
+      saveHiddenRepos(next);
+      return next;
+    });
+  }, []);
 
   // User repos state
   const [userRepos, setUserRepos] = useState<RepoMeta[]>([]);
@@ -123,8 +154,10 @@ export default function Dashboard() {
   }, [registryData, repoSource, loadingRepos, auth.token]);
 
   // Derived
-  const profiles = [...new Set(results.map((r) => r.profile))].sort();
-  const filtered = results
+  const hiddenCount = results.filter((r) => hiddenRepos.has(r.project.id)).length;
+  const visibleResults = showHidden ? results : results.filter((r) => !hiddenRepos.has(r.project.id));
+  const profiles = [...new Set(visibleResults.map((r) => r.profile))].sort();
+  const filtered = visibleResults
     .filter((r) => {
       if (filter) {
         const q = filter.toLowerCase();
@@ -155,16 +188,16 @@ export default function Dashboard() {
     });
 
   const avgScore =
-    results.length > 0
-      ? Math.round(results.reduce((s, r) => s + r.complianceScore, 0) / results.length)
+    visibleResults.length > 0
+      ? Math.round(visibleResults.reduce((s, r) => s + r.complianceScore, 0) / visibleResults.length)
       : 0;
 
   const complianceStats = {
-    compliant: results.filter((r) => getComplianceLabel(r.complianceScore) === 'compliant').length,
-    partial: results.filter((r) => getComplianceLabel(r.complianceScore) === 'partial').length,
-    nonCompliant: results.filter((r) => getComplianceLabel(r.complianceScore) === 'non-compliant').length,
-    ungoverned: results.filter((r) => r.project.id.startsWith('user-repo:')).length,
-    governed: results.filter((r) => !r.project.id.startsWith('user-repo:')).length,
+    compliant: visibleResults.filter((r) => getComplianceLabel(r.complianceScore) === 'compliant').length,
+    partial: visibleResults.filter((r) => getComplianceLabel(r.complianceScore) === 'partial').length,
+    nonCompliant: visibleResults.filter((r) => getComplianceLabel(r.complianceScore) === 'non-compliant').length,
+    ungoverned: visibleResults.filter((r) => r.project.id.startsWith('user-repo:')).length,
+    governed: visibleResults.filter((r) => !r.project.id.startsWith('user-repo:')).length,
   };
 
   // ------ Render ------
@@ -212,7 +245,8 @@ export default function Dashboard() {
           <p className="text-muted">
             {repoSource === 'governed'
               ? `${registryData.index.projects.length} governed project${registryData.index.projects.length !== 1 ? 's' : ''}`
-              : `${results.length} repos (${complianceStats.governed} governed, ${complianceStats.ungoverned} discovered)`}
+              : `${visibleResults.length} repos (${complianceStats.governed} governed, ${complianceStats.ungoverned} discovered)`}
+            {hiddenCount > 0 && ` • ${hiddenCount} hidden`}
             {loadingRepos && ' • Loading repos…'}
           </p>
         </div>
@@ -244,11 +278,11 @@ export default function Dashboard() {
       )}
 
       {/* Summary cards */}
-      {results.length > 0 && (
+      {visibleResults.length > 0 && (
         <div className="grid grid-4" style={{ marginBottom: '1rem' }}>
           <div className="card" onClick={() => setComplianceFilter('all')} role="button" style={{ cursor: 'pointer', outline: complianceFilter === 'all' ? '2px solid var(--color-primary)' : 'none' }}>
             <div className="card-body stat-card">
-              <span className="stat-value">{results.length}</span>
+              <span className="stat-value">{visibleResults.length}</span>
               <span className="stat-label">Total • {avgScore}% Avg</span>
             </div>
           </div>
@@ -292,7 +326,7 @@ export default function Dashboard() {
       )}
 
       {/* Filters */}
-      {results.length > 0 && (
+      {visibleResults.length > 0 && (
         <div className="filter-bar">
           <input
             type="text"
@@ -332,6 +366,16 @@ export default function Dashboard() {
             <option value="score">Sort by Compliance</option>
             <option value="name">Sort by Name</option>
           </select>
+          {hiddenCount > 0 && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', whiteSpace: 'nowrap', fontSize: '0.85rem' }}>
+              <input
+                type="checkbox"
+                checked={showHidden}
+                onChange={(e) => setShowHidden(e.target.checked)}
+              />
+              Show Hidden ({hiddenCount})
+            </label>
+          )}
         </div>
       )}
 
@@ -339,10 +383,15 @@ export default function Dashboard() {
       {filtered.length > 0 ? (
         <div className="grid grid-2">
           {filtered.map((r) => (
-            <ProjectCard key={r.project.id} result={r} />
+            <ProjectCard
+              key={r.project.id}
+              result={r}
+              isHidden={hiddenRepos.has(r.project.id)}
+              onToggleHide={toggleHide}
+            />
           ))}
         </div>
-      ) : results.length > 0 ? (
+      ) : visibleResults.length > 0 ? (
         <div className="empty-state">No projects match your filters.</div>
       ) : !loading ? (
         <div className="empty-state">
