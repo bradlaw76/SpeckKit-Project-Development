@@ -47,25 +47,31 @@ export default function App() {
   const [registryData, setRegistryData] = useState<RegistryData | null>(null);
   const [registryError, setRegistryError] = useState<string | null>(null);
   const [showAuth, setShowAuth] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
-  // Restore saved auth on mount
+  // Restore saved auth on mount — must complete before registry fetch
   useEffect(() => {
     const stored = getStoredAuth();
     if (stored.token) {
-      validateToken(stored.token).then((result) => {
-        if (result.valid) {
-          setAuth({
-            method: stored.method,
-            token: stored.token,
-            user: result.user,
-            scopes: result.scopes,
-          });
-        }
-      });
+      validateToken(stored.token)
+        .then((result) => {
+          if (result.valid) {
+            setAuth({
+              method: stored.method,
+              token: stored.token,
+              user: result.user,
+              scopes: result.scopes,
+            });
+          }
+        })
+        .catch(() => {})
+        .finally(() => setAuthChecked(true));
+    } else {
+      setAuthChecked(true);
     }
   }, []);
 
-  // Load registry data on mount and when auth changes
+  // Load registry data once auth check is done, and whenever token changes
   const refreshRegistry = async () => {
     try {
       setRegistryError(null);
@@ -77,10 +83,15 @@ export default function App() {
   };
 
   useEffect(() => {
+    if (!authChecked) return; // wait for stored-token check before first fetch
+    setRegistryError(null);
     loadRegistryData(auth.token)
-      .then(setRegistryData)
+      .then((data) => {
+        setRegistryData(data);
+        setRegistryError(null);
+      })
       .catch((err) => setRegistryError(String(err)));
-  }, [auth.token]);
+  }, [auth.token, authChecked]);
 
   return (
     <AppContext.Provider value={{ auth, setAuth, registryData, registryError, refreshRegistry }}>
