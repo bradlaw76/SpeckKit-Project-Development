@@ -1,5 +1,5 @@
 {
-  "templateVersion": "1.1",
+  "templateVersion": "1.2",
 
   "profiles": {
     "spec-governed": {
@@ -68,6 +68,34 @@
     }
   },
 
+  "projectReferences": {
+    "description": "Schema for cross-project references between SpeckKit-governed projects",
+    "referenceSchema": {
+      "projectId": "string — the referenced project's ID from MANIFEST_INDEX",
+      "relationship": "depends-on | shares-patterns | extends | sibling",
+      "manifestUrl": "string — URL to the referenced project's SYSTEM_MANIFEST.json.md",
+      "reason": "string — why this reference exists"
+    },
+    "relationships": [
+      {
+        "id": "depends-on",
+        "description": "This project consumes APIs, schemas, or components from the referenced project"
+      },
+      {
+        "id": "shares-patterns",
+        "description": "Both projects share UI patterns, code conventions, or entity models"
+      },
+      {
+        "id": "extends",
+        "description": "This project extends or builds on the referenced project"
+      },
+      {
+        "id": "sibling",
+        "description": "Related projects under the same product umbrella"
+      }
+    ]
+  },
+
   "defaults": {
     "status": "DEVELOPMENT",
     "profile": "hybrid"
@@ -75,5 +103,7 @@
 
   "namingRules": {
     "projectId": "lowercase-hyphen"
-  }
+  },
+
+  "setupGuide": "SETUP_FOR_PROJECTS.md"
 }

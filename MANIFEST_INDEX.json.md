@@ -2,7 +2,7 @@
 =============================================================================
 DOCUMENT:     SpeckKit System Manifest Registry Index (Root Copy)
 FILE:         MANIFEST_INDEX.json.md
-VERSION:      1.1
+VERSION:      1.2
 AUTHOR:       bradlaw76
 LAST UPDATED: 2026-02-16
 
@@ -23,6 +23,7 @@ REGISTRY ROLE
 -----------------------------------------------------------------------------
 CHANGELOG
 -----------------------------------------------------------------------------
+v1.2  2026-02-16  Synced project data with authoritative copy
 v1.1  2026-02-16  Added codeStandardsCatalog, agentBehavior, setupGuide
 v1.0  2026-02-10  Initial version — registry and UI reference catalog only
 =============================================================================
@@ -72,22 +73,34 @@ v1.0  2026-02-10  Initial version — registry and UI reference catalog only
 
   "projects": [
     {
-      "id": "appointment-scheduling",
-      "name": "Appointment Scheduling",
-      "repo": "https://github.com/bradlaw76/appointment-scheduling",
-      "manifestUrl": "https://github.com/bradlaw76/appointment-scheduling/blob/main/SYSTEM_MANIFEST.json.md",
-      "status": "DEVELOPMENT",
-      "type": "hybrid",
-      "speckitReviewable": true
+      "projectId": "appointment-scheduling",
+      "name": "Appointment Scheduling Demo (Power Pages)",
+      "repository": "https://github.com/bradlaw76/PowerPagesAppointment-Scheduling",
+      "manifestUrl": "https://raw.githubusercontent.com/bradlaw76/PowerPagesAppointment-Scheduling/main/SYSTEM_MANIFEST.json.md",
+      "profile": "hybrid",
+      "status": "ACTIVE",
+      "speckitReviewable": true,
+      "spec": {
+        "type": "directory",
+        "path": "spec/",
+        "entryPoint": "01-intent.md",
+        "reviewMode": "aggregate"
+      }
     },
     {
-      "id": "generic-code-snippet-manager",
+      "projectId": "generic-code-snippet-manager",
       "name": "Generic Code Snippet Manager",
-      "repo": "https://github.com/bradlaw76/Generic.CodeSnippetManager",
-      "manifestUrl": "https://github.com/bradlaw76/Generic.CodeSnippetManager/blob/main/SYSTEM_MANIFEST.json.md",
+      "repository": "https://github.com/bradlaw76/Generic.CodeSnippetManager",
+      "manifestUrl": "https://raw.githubusercontent.com/bradlaw76/Generic.CodeSnippetManager/main/SYSTEM_MANIFEST.json.md",
+      "profile": "spec-governed",
       "status": "DEVELOPMENT",
-      "type": "spec-governed",
-      "speckitReviewable": true
+      "speckitReviewable": true,
+      "spec": {
+        "type": "directory",
+        "path": "spec/",
+        "entryPoint": "01-intent.md",
+        "reviewMode": "aggregate"
+      }
     }
   ]
 }

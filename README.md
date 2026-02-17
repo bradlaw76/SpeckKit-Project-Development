@@ -2,7 +2,7 @@
 =============================================================================
 DOCUMENT:     SpeckKit Manifest Registry — README
 FILE:         README.md
-VERSION:      1.2
+VERSION:      1.3
 AUTHOR:       bradlaw76
 LAST UPDATED: 2026-02-16
 
@@ -11,7 +11,8 @@ OVERVIEW
 -----------------------------------------------------------------------------
 Primary documentation file for the SpeckKit Manifest Registry. Provides the
 executive summary, repository structure, registry rules, agent behavior
-defaults, and catalog references for all governed projects.
+defaults, catalog references, profile scaffolding, and cross-project
+referencing for all governed projects.
 
 -----------------------------------------------------------------------------
 REGISTRY ROLE
@@ -24,6 +25,8 @@ REGISTRY ROLE
 -----------------------------------------------------------------------------
 CHANGELOG
 -----------------------------------------------------------------------------
+v1.3  2026-02-16  Updated setup guide references for profile scaffolding
+                  and cross-project referencing
 v1.2  2026-02-16  Added code standards, UI references, agent behavior,
                   unified setup guide references
 v1.1  2026-02-10  Added UI reference catalog and folder structure
@@ -384,9 +387,11 @@ When an agent is pointed at this repo, it should read `AGENT_BEHAVIOR_DEFAULTS.j
 **One file covers everything:** [`SETUP_FOR_PROJECTS.md`](SETUP_FOR_PROJECTS.md)
 
 This is the single entry point for any VS Code project that wants to consume SpeckKit standards and references. It includes:
+- **Step 0 — Profile Selection:** Choose a project profile (spec-governed, ux-demo, hybrid, ui-reference, code-standard) and scaffold the required template files
 - A decision tree for choosing the right connection method (submodule, local path, or raw URL)
 - Exact copy-paste content for `.github/copilot-instructions.md`
 - Exact copy-paste content for `SYSTEM_MANIFEST.json.md`
+- **Cross-project referencing** — how governed projects discover and reference each other via `projectReferences` in their manifests
 - The agent discovery flow
 
 ---
@@ -498,4 +503,3 @@ Any project not listed here:
 
 **Status:** ACTIVE & ENFORCING
 **Next Review:** Q2 2026
-Just say the word.

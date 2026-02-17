@@ -39,19 +39,11 @@ v1.0  2026-02-16  Initial version — component-header-block standard
   },
 
   "agentBehavior": {
-    "description": "Default behavior rules for AI agents consuming these standards",
-    "standards": {
-      "code-standards": {
-        "defaultApply": true,
-        "agentPrompt": "Apply code standards (comment headers, documentation blocks) automatically unless the user explicitly opts out.",
-        "confirmBeforeApplying": false
-      },
-      "ui-references": {
-        "defaultApply": false,
-        "agentPrompt": "Ask the user before loading UI reference context. UI references are opt-in per task.",
-        "confirmBeforeApplying": true
-      }
-    }
+    "description": "Default behavior rules for AI agents consuming code standards",
+    "defaultApply": true,
+    "agentPrompt": "Apply code standards (comment headers, documentation blocks) automatically unless the user explicitly opts out.",
+    "confirmBeforeApplying": false,
+    "note": "For UI reference agent behavior, see /AGENT_BEHAVIOR_DEFAULTS.jsonc"
   },
 
   "folderConvention": {
