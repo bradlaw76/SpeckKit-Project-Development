@@ -9,11 +9,6 @@ interface Props {
 export default function ProjectCard({ result }: Props) {
   const navigate = useNavigate();
 
-  const matchedCount = Object.values(result.matchedFiles).reduce(
-    (sum, files) => sum + files.length,
-    0
-  );
-
   return (
     <div
       className="card card-interactive"
@@ -51,12 +46,18 @@ export default function ProjectCard({ result }: Props) {
           </span>
         </div>
 
-        {/* File counts */}
+        {/* Required file counts */}
         <div className="card-row">
-          <span className="card-label">Files Matched</span>
+          <span className="card-label">Required Files</span>
           <span>
-            {matchedCount} / {result.totalFiles}
+            {result.foundRequired} / {result.totalRequired}
           </span>
+        </div>
+
+        {/* Total repo files */}
+        <div className="card-row">
+          <span className="card-label">Total Files</span>
+          <span>{result.totalFiles}</span>
         </div>
 
         {/* Missing required */}

@@ -18,11 +18,20 @@ export default function Dashboard() {
   const [profileFilter, setProfileFilter] = useState('all');
   const [complianceFilter, setComplianceFilter] = useState<ComplianceFilter>('all');
   const [sortBy, setSortBy] = useState<'name' | 'score'>('score');
-  const [repoSource, setRepoSource] = useState<RepoSource>('governed');
+  const [repoSource, setRepoSource] = useState<RepoSource>(auth.token ? 'all-repos' : 'governed');
 
   // User repos state
   const [userRepos, setUserRepos] = useState<RepoMeta[]>([]);
   const [loadingRepos, setLoadingRepos] = useState(false);
+
+  // Auto-switch to 'all-repos' when user connects a token
+  useEffect(() => {
+    if (auth.token && repoSource === 'governed') {
+      setRepoSource('all-repos');
+      setResults([]); // reset so audit re-runs
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth.token]);
 
   const runAudit = useCallback(async () => {
     if (!registryData) return;

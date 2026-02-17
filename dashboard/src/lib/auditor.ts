@@ -53,6 +53,10 @@ export interface AuditResult {
   missingRequired: MissingFile[];
   /** Optional files that are missing */
   missingOptional: MissingFile[];
+  /** Total required files for the profile */
+  totalRequired: number;
+  /** Found required files */
+  foundRequired: number;
   /** Compliance score: (found required / total required) * 100 */
   complianceScore: number;
   /** Suggestions for improving compliance */
@@ -334,6 +338,8 @@ export async function auditProject(
     allMatches,
     missingRequired,
     missingOptional,
+    totalRequired,
+    foundRequired,
     complianceScore,
     suggestions,
     projectReferences,
@@ -400,6 +406,8 @@ function createErrorResult(project: RegistryProject, error: string): AuditResult
     allMatches: [],
     missingRequired: [],
     missingOptional: [],
+    totalRequired: 0,
+    foundRequired: 0,
     complianceScore: 0,
     suggestions: [],
     projectReferences: [],
