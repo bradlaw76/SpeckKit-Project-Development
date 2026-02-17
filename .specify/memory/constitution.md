@@ -1,50 +1,57 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- Sync Impact Report
+  Version change: 0.0.0 → 1.0.0
+  Added principles: Registry-First, Profile-Driven Compliance, Graceful Degradation, Spec-Driven Development, Simplicity & Incrementalism
+  Added sections: Security & Authentication, Development Workflow
+  Templates requiring updates: ✅ constitution.md updated
+  Follow-up TODOs: none
+-->
+
+# SpeckKit Project Development Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Registry-First
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+The SpeckKit System Manifest Registry is the single source of truth for all governance data. Every project audit, compliance check, and standard reference MUST resolve against the authoritative registry. Duplicate or local copies of governance data are convenience only — the registry always wins. All registry data files MUST use structured JSON embedded in Markdown (`.json.md`) for human readability with machine parseability.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Profile-Driven Compliance
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Every governed project MUST declare a SpeckKit profile (e.g., `spec-governed`, `hybrid`, `ux-demo`). The profile defines which files are required, optional, and informational. Compliance scores MUST be computed as the ratio of found-required-files to total-required-files for the project's profile. Ungoverned projects (not in the registry) MUST be clearly distinguished from governed ones — they are discoverable but not scored against profile requirements.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. Graceful Degradation
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+The dashboard MUST never crash due to API failures, malformed data, or authentication issues. Errors MUST be surfaced as user-friendly messages while preserving all available functionality. Private repos MUST prompt for authentication rather than failing silently. Cached data MUST be preserved and served when fresh data is unavailable.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. Spec-Driven Development
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Features MUST be specified before implementation. Specifications define WHAT and WHY, never HOW. Each user story MUST be independently testable and deliver standalone value. Plans, tasks, and implementation follow from the spec — not the other way around.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Simplicity & Incrementalism
+
+Start with the simplest solution that delivers value. Avoid premature abstraction — add complexity only when justified by concrete needs. Ship working increments frequently. Every commit MUST leave the project in a deployable state.
+
+## Security & Authentication
+
+- Personal Access Tokens MUST be stored only in browser storage (never committed to source).
+- Tokens MUST be transmitted only via HTTPS and Authorization headers.
+- The dashboard MUST function in a degraded mode without authentication (showing public data only).
+- The `.github/` directory SHOULD be reviewed for credential leakage before commits.
+
+## Development Workflow
+
+- All changes MUST be committed with descriptive conventional commit messages (`feat:`, `fix:`, `chore:`, `docs:`).
+- TypeScript strict mode MUST be enforced — no `any` types without justification.
+- The dashboard MUST pass `tsc --noEmit` before every push.
+- Feature branches MUST follow the `NNN-feature-name` naming convention.
+- Specs, plans, and tasks MUST live in `specs/<branch-name>/` directories.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all ad-hoc practices. Amendments require:
+1. A documented rationale for the change.
+2. Version increment following semantic versioning (MAJOR for principle removal/redefinition, MINOR for additions, PATCH for clarifications).
+3. Updated `LAST_AMENDED_DATE`.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+All code reviews and audits MUST verify compliance with these principles. Complexity MUST be justified by concrete user needs, not speculative requirements.
+
+**Version**: 1.0.0 | **Ratified**: 2026-02-17 | **Last Amended**: 2026-02-17
