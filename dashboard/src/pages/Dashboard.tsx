@@ -276,8 +276,9 @@ export default function Dashboard() {
           boxShadow: '0 2px 12px rgba(0, 0, 0, 0.3)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          {/* Left side: Title */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <img
               src={`${import.meta.env.BASE_URL}beacer.gif`}
               alt="SpeckKit mascot"
@@ -289,9 +290,9 @@ export default function Dashboard() {
                 padding: '4px',
               }}
             />
-            <div style={{ flex: 1 }}>
-              <h1 style={{ margin: 0, color: '#38bdf8', letterSpacing: '-0.5px' }}>Project Dashboard</h1>
-              <p className="text-muted" style={{ margin: '0.15rem 0 0 0' }}>
+            <div>
+              <h1 style={{ margin: 0, color: '#38bdf8', letterSpacing: '-0.5px', fontSize: '1.75rem' }}>Project Dashboard</h1>
+              <p className="text-muted" style={{ margin: '0.25rem 0 0 0', fontSize: '0.875rem' }}>
                 {repoSource === 'governed'
                   ? `${registryData.index.projects.length} governed project${registryData.index.projects.length !== 1 ? 's' : ''}`
                   : `${visibleResults.length} repos (${complianceStats.governed} governed, ${complianceStats.ungoverned} discovered)`}
@@ -300,7 +301,9 @@ export default function Dashboard() {
               </p>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexShrink: 0 }}>
+
+          {/* Right side: Controls */}
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <select
               className="input"
               value={repoSource}
@@ -308,69 +311,72 @@ export default function Dashboard() {
                 setRepoSource(e.target.value as RepoSource);
                 setResults([]); // reset so audit re-runs
               }}
-              style={{ width: 'auto' }}
+              style={{ minWidth: '150px' }}
               disabled={!auth.token}
               title={!auth.token ? 'Connect GitHub to view all your repos' : undefined}
             >
               <option value="governed">Governed Only</option>
               <option value="all-repos">All My Repos</option>
             </select>
-            <button className="btn btn-primary" onClick={runAudit} disabled={loading}>
-              {loading ? `Auditing… (${progress.done}/${progress.total})` : '🔄 Run Audit'}
+            <button 
+              className="btn btn-primary" 
+              onClick={runAudit} 
+              disabled={loading}
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              {loading ? `Auditing... (${progress.done}/${progress.total})` : '🔄 Run Audit'}
             </button>
           </div>
         </div>
-        
-        {/* Progress Bar - Full Width */}
-        {loading && (
+      </div>
+
+      {/* Progress Bar - Separate section below header */}
+      {loading && (
+        <div style={{ 
+          marginTop: '1rem',
+          padding: '0.75rem 1rem',
+          background: 'rgba(56, 189, 248, 0.15)',
+          border: '2px solid #38bdf8',
+          borderRadius: '8px'
+        }}>
           <div style={{ 
-            marginTop: '1rem',
-            padding: '0.75rem 1rem',
-            background: 'rgba(56, 189, 248, 0.15)',
-            border: '2px solid #38bdf8',
-            borderRadius: '6px'
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            marginBottom: '0.5rem'
           }}>
             <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center',
-              marginBottom: '0.5rem'
+              color: '#e2e8f0',
+              fontSize: '0.875rem',
+              fontFamily: 'system-ui, -apple-system, sans-serif'
             }}>
-              <div style={{ 
-                color: '#e2e8f0',
-                fontSize: '0.875rem',
-                fontFamily: 'system-ui, -apple-system, sans-serif'
-              }}>
-                {currentProject ? `Auditing ${currentProject}` : 'Starting audit...'}
-              </div>
-              <div style={{ 
-                color: '#38bdf8', 
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                fontFamily: 'system-ui, -apple-system, sans-serif'
-              }}>
-                {progress.done} / {progress.total}
-              </div>
+              {currentProject ? `Auditing: ${currentProject}` : 'Starting audit...'}
             </div>
-            <div style={{
-              width: '100%',
-              height: '10px',
-              background: 'rgba(0,0,0,0.4)',
-              borderRadius: '5px',
-              overflow: 'hidden',
-              border: '1px solid rgba(56, 189, 248, 0.4)'
+            <div style={{ 
+              color: '#38bdf8', 
+              fontSize: '0.875rem',
+              fontWeight: '600',
+              fontFamily: 'system-ui, -apple-system, sans-serif'
             }}>
-              <div style={{
-                width: `${progress.total > 0 ? (progress.done / progress.total) * 100 : 0}%`,
-                height: '100%',
-                background: 'linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%)',
-                transition: 'width 0.4s ease-out',
-                boxShadow: '0 0 10px rgba(56, 189, 248, 0.8)'
-              }} />
+              {progress.done} / {progress.total}
             </div>
           </div>
-        )}
-      </div>
+          <div style={{
+            width: '100%',
+            height: '8px',
+            background: 'rgba(0,0,0,0.4)',
+            borderRadius: '4px',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              width: `${progress.total > 0 ? (progress.done / progress.total) * 100 : 0}%`,
+              height: '100%',
+              background: 'linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%)',
+              transition: 'width 0.3s ease-out'
+            }} />
+          </div>
+        </div>
+      )}
 
       {repoSource === 'all-repos' && !auth.token && (
         <div className="alert alert-warning" style={{ marginBottom: '0.75rem' }}>
