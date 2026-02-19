@@ -2,9 +2,9 @@
 =============================================================================
 DOCUMENT:     SpeckKit System Manifest Registry Index (Authoritative)
 FILE:         system-manifests/MANIFEST_INDEX.json.md
-VERSION:      1.2
+VERSION:      1.3
 AUTHOR:       bradlaw76
-LAST UPDATED: 2026-02-17
+LAST UPDATED: 2026-02-19
 
 -----------------------------------------------------------------------------
 OVERVIEW
@@ -23,6 +23,7 @@ REGISTRY ROLE
 -----------------------------------------------------------------------------
 CHANGELOG
 -----------------------------------------------------------------------------
+v1.3  2026-02-19  Added generic-powerbi-multitab (ux-demo, DEVELOPMENT)
 v1.2  2026-02-17  Added generic-activity-timeline (spec-governed, ACTIVE)
 v1.1  2026-02-16  Added codeStandardsCatalog, agentBehavior, setupGuide
 v1.0  2026-02-10  Initial version — registry and UI reference catalog only
@@ -37,7 +38,7 @@ v1.0  2026-02-10  Initial version — registry and UI reference catalog only
     "path": "/system-manifests",
     "version": "1.0",
     "purpose": "Authoritative index of all system manifests governed and reviewed using SpeckKit",
-    "lastUpdated": "2026-02-17"
+    "lastUpdated": "2026-02-19"
   },
 
   "uiReferenceCatalog": {
@@ -116,6 +117,15 @@ v1.0  2026-02-10  Initial version — registry and UI reference catalog only
         "entryPoint": "spec.md",
         "reviewMode": "aggregate"
       }
+    },
+    {
+      "projectId": "generic-powerbi-multitab",
+      "name": "Generic Power BI Multi-Tab Dashboard",
+      "repository": "https://github.com/bradlaw76/Generic.PowerBiMultiTab",
+      "manifestUrl": "https://raw.githubusercontent.com/bradlaw76/Generic.PowerBiMultiTab/main/Generic.PowerBiMultiTabs/SYSTEM_MANIFEST.json.md",
+      "profile": "ux-demo",
+      "status": "DEVELOPMENT",
+      "speckitReviewable": true
     }
   ]
 }
