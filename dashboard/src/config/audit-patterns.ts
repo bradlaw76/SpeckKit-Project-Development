@@ -98,6 +98,53 @@ export const AUDIT_PATTERNS: AuditPattern[] = [
     suggestion: 'This profile requires TEST_ACCEPTANCE.md with acceptance test criteria.',
   },
 
+  // === Spec-Kit CLI (.specify/) Structure ===
+  {
+    pattern: '.specify/memory/constitution.md',
+    label: 'Specify Constitution',
+    category: 'speckkit-required',
+    requiredBy: ['spec-governed', 'hybrid'],
+    optionalFor: ['ux-demo'],
+    priority: 7,
+    suggestion: 'Run `specify init . --ai <assistant>` to scaffold the .specify/ directory with a constitution.',
+  },
+  {
+    pattern: '.specify/specs/**',
+    label: 'Specify Specs',
+    category: 'speckkit-optional',
+    requiredBy: ['spec-governed'],
+    optionalFor: ['hybrid'],
+    priority: 8,
+    suggestion: 'Create feature specs under .specify/specs/ using `specify init` or manually. Required for spec-governed projects.',
+  },
+  {
+    pattern: '.specify/templates/**',
+    label: 'Specify Templates',
+    category: 'speckkit-optional',
+    requiredBy: [],
+    optionalFor: ['spec-governed', 'hybrid'],
+    priority: 9,
+    suggestion: 'Add spec templates under .specify/templates/ to standardize feature specifications.',
+  },
+  {
+    pattern: '.github/agents/**',
+    label: 'GitHub Agents',
+    category: 'speckkit-optional',
+    requiredBy: [],
+    optionalFor: ['spec-governed', 'hybrid'],
+    priority: 8,
+    suggestion: 'Add .github/agents/ for AI agent configuration. Created automatically by `specify init`.',
+  },
+  {
+    pattern: '.github/prompts/**',
+    label: 'GitHub Prompts',
+    category: 'speckkit-optional',
+    requiredBy: [],
+    optionalFor: ['spec-governed', 'hybrid'],
+    priority: 8,
+    suggestion: 'Add .github/prompts/ for reusable AI prompts. Created automatically by `specify init`.',
+  },
+
   // === Governance / Documentation ===
   {
     pattern: 'README.md',

@@ -3,10 +3,12 @@ import { Routes, Route, NavLink } from 'react-router-dom';
 import { getStoredAuth, validateToken, type AuthState } from './lib/auth';
 import type { RegistryData } from './lib/registry';
 import { loadRegistryData } from './lib/registry';
+import type { AuditResult } from './lib/auditor';
 import AuthPanel from './components/AuthPanel';
 import Dashboard from './pages/Dashboard';
 import ProjectDetail from './pages/ProjectDetail';
 import Standards from './pages/Standards';
+import SpeckKitSetup from './pages/SpeckKitSetup';
 import './App.css';
 
 // ---------------------------------------------------------------------------
@@ -19,6 +21,8 @@ interface AppContextValue {
   registryData: RegistryData | null;
   registryError: string | null;
   refreshRegistry: () => Promise<void>;
+  auditResults: AuditResult[];
+  setAuditResults: (results: AuditResult[]) => void;
 }
 
 export const AppContext = createContext<AppContextValue>({
@@ -27,6 +31,8 @@ export const AppContext = createContext<AppContextValue>({
   registryData: null,
   registryError: null,
   refreshRegistry: async () => {},
+  auditResults: [],
+  setAuditResults: () => {},
 });
 
 export function useAppContext() {
@@ -46,6 +52,7 @@ export default function App() {
   });
   const [registryData, setRegistryData] = useState<RegistryData | null>(null);
   const [registryError, setRegistryError] = useState<string | null>(null);
+  const [auditResults, setAuditResults] = useState<AuditResult[]>([]);
   const [showAuth, setShowAuth] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
 
@@ -94,7 +101,7 @@ export default function App() {
   }, [auth.token, authChecked]);
 
   return (
-    <AppContext.Provider value={{ auth, setAuth, registryData, registryError, refreshRegistry }}>
+    <AppContext.Provider value={{ auth, setAuth, registryData, registryError, refreshRegistry, auditResults, setAuditResults }}>
       <div className="app">
         {/* Navigation */}
         <nav className="nav">
@@ -115,6 +122,12 @@ export default function App() {
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
             >
               Standards
+            </NavLink>
+            <NavLink
+              to="/setup"
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              🛠️ Setup
             </NavLink>
           </div>
 
@@ -148,6 +161,7 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/project/:projectId" element={<ProjectDetail />} />
             <Route path="/standards" element={<Standards />} />
+            <Route path="/setup" element={<SpeckKitSetup />} />
           </Routes>
         </main>
       </div>

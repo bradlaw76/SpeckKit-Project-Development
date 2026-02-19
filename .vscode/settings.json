@@ -10,5 +10,6 @@
         "speckit.plan": true,
         "speckit.tasks": true,
         "speckit.implement": true
-    }
+    },
+    "liveServer.settings.port": 5501
 }

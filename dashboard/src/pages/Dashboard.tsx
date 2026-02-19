@@ -23,7 +23,7 @@ function saveHiddenRepos(hidden: Set<string>) {
 }
 
 export default function Dashboard() {
-  const { auth, registryData, registryError } = useAppContext();
+  const { auth, registryData, registryError, setAuditResults } = useAppContext();
   const [results, setResults] = useState<AuditResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState({ done: 0, total: 0 });
@@ -65,7 +65,17 @@ export default function Dashboard() {
   }, [auth.token]);
 
   const runAudit = useCallback(async () => {
-    if (!registryData) return;
+    console.log('🔄 Run Audit button clicked');
+    if (!registryData) {
+      console.warn('❌ Cannot run audit: No registry data loaded');
+      return;
+    }
+
+    console.log('✅ Starting audit with registry data:', {
+      projectCount: registryData.index.projects.length,
+      repoSource,
+      hasToken: !!auth.token
+    });
 
     let projectsToAudit: RegistryProject[] = [...registryData.index.projects];
 
@@ -93,24 +103,35 @@ export default function Dashboard() {
       projectsToAudit = [...projectsToAudit, ...ungovernedProjects];
     }
 
-    if (projectsToAudit.length === 0) return;
+    if (projectsToAudit.length === 0) {
+      console.warn('❌ No projects to audit');
+      return;
+    }
 
+    console.log(`📊 Auditing ${projectsToAudit.length} projects...`);
     setLoading(true);
     setAuditError(null);
     setResults([]);
     setProgress({ done: 0, total: projectsToAudit.length });
 
     try {
-      const auditResults = await auditAllProjects(
+      const freshResults = await auditAllProjects(
         projectsToAudit,
         registryData.template,
         auth.token ?? null,
-        (done, total) => setProgress({ done, total })
+        (done, total) => {
+          console.log(`⏳ Progress: ${done}/${total}`);
+          setProgress({ done, total });
+        }
       );
-      setResults(auditResults);
+      console.log(`✅ Audit complete! Found ${freshResults.length} results`);
+      setResults(freshResults);
+      setAuditResults(freshResults);
     } catch (err) {
+      console.error('❌ Audit failed:', err);
       setAuditError(String(err));
     } finally {
+      console.log('🏁 Audit finished, loading state cleared');
       setLoading(false);
     }
   }, [registryData, auth.token, repoSource, userRepos]);
@@ -239,16 +260,38 @@ export default function Dashboard() {
   return (
     <div className="page">
       {/* Header */}
-      <div className="section-header">
-        <div>
-          <h1>Project Dashboard</h1>
-          <p className="text-muted">
-            {repoSource === 'governed'
-              ? `${registryData.index.projects.length} governed project${registryData.index.projects.length !== 1 ? 's' : ''}`
-              : `${visibleResults.length} repos (${complianceStats.governed} governed, ${complianceStats.ungoverned} discovered)`}
-            {hiddenCount > 0 && ` • ${hiddenCount} hidden`}
-            {loadingRepos && ' • Loading repos…'}
-          </p>
+      <div
+        className="section-header"
+        style={{
+          background: 'linear-gradient(135deg, #1a2a3a 0%, #0d1f2d 100%)',
+          borderRadius: '12px',
+          padding: '1.25rem 1.5rem',
+          border: '1px solid rgba(56, 189, 248, 0.2)',
+          boxShadow: '0 2px 12px rgba(0, 0, 0, 0.3)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <img
+            src={`${import.meta.env.BASE_URL}beacer.gif`}
+            alt="SpeckKit mascot"
+            style={{
+              height: '52px',
+              width: 'auto',
+              borderRadius: '8px',
+              background: 'rgba(255,255,255,0.08)',
+              padding: '4px',
+            }}
+          />
+          <div>
+            <h1 style={{ margin: 0, color: '#38bdf8', letterSpacing: '-0.5px' }}>Project Dashboard</h1>
+            <p className="text-muted" style={{ margin: '0.15rem 0 0 0' }}>
+              {repoSource === 'governed'
+                ? `${registryData.index.projects.length} governed project${registryData.index.projects.length !== 1 ? 's' : ''}`
+                : `${visibleResults.length} repos (${complianceStats.governed} governed, ${complianceStats.ungoverned} discovered)`}
+              {hiddenCount > 0 && ` • ${hiddenCount} hidden`}
+              {loadingRepos && ' • Loading repos…'}
+            </p>
+          </div>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           <select

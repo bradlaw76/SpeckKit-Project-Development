@@ -5,9 +5,17 @@
 **Status**: Draft  
 **Input**: User description: "Create baseline specification" — formalizing the SpeckKit bootstrap, onboarding guides, and existing-project review workflow as a governed feature specification.
 
+## Clarifications
+
+### Session 2026-02-17
+
+- Q: Should spec-kit CLI initialization (`specify init`) be added as a 6th bootstrap method in this spec, a separate feature spec, or just a guide card? → A: All three layered — add a 6th bootstrap method tab AND a guide card in this spec (002), plus plan a separate `003-speckit-cli-init` feature spec for deeper CLI integration work.
+
 ## Context
 
 The SpeckKit Compliance Dashboard includes a **Getting Started** tab on the Standards page that surfaces onboarding guides, bootstrap methods, and a "How It Works" section to help users and AI agents connect any project to the SpeckKit registry. Additionally, the `SETUP_FOR_PROJECTS.md` document serves as the single entry point for all bootstrap workflows. These capabilities were built iteratively but have **no formal specification** — this spec closes that gap.
+
+The GitHub `spec-kit` CLI (`specify` command) provides automated initialization of the `.specify/` directory structure for both new (greenfield) and existing (brownfield) repositories. This spec includes spec-kit CLI initialization as a 6th bootstrap method and an informational guide card, with deeper CLI integration deferred to a dedicated feature spec (`003-speckit-cli-init`).
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -21,10 +29,10 @@ As a developer or AI agent, I want to see all available methods for connecting a
 
 **Acceptance Scenarios**:
 
-1. **Given** the dashboard Standards page is loaded, **When** the user selects the "Getting Started" tab, **Then** a bootstrap card is displayed with the title "Bootstrap or Review a Project" and five selectable method tabs.
+1. **Given** the dashboard Standards page is loaded, **When** the user selects the "Getting Started" tab, **Then** a bootstrap card is displayed with the title "Bootstrap or Review a Project" and six selectable method tabs.
 2. **Given** the Getting Started tab is active, **When** the user clicks the "Copilot Chat" tab, **Then** the Copilot Chat prompt is displayed in a code block that can be copied.
 3. **Given** the Getting Started tab is active, **When** the user clicks the "Existing Project" tab, **Then** the review prompt is displayed with an explanation of the 5-step agent review flow.
-4. **Given** the Getting Started tab is active, **When** the user clicks any of the five method tabs (Copilot Chat, Existing Project, HTML Comment, PowerShell, Bash), **Then** the corresponding snippet and instructions are shown and the previously active method content is hidden.
+4. **Given** the Getting Started tab is active, **When** the user clicks any of the six method tabs (Copilot Chat, Existing Project, HTML Comment, PowerShell, Bash, Spec-Kit CLI), **Then** the corresponding snippet and instructions are shown and the previously active method content is hidden.
 5. **Given** the dashboard loads for the first time, **When** the Getting Started tab renders, **Then** "Copilot Chat" is the default selected bootstrap method.
 
 ---
@@ -88,7 +96,7 @@ As an AI agent pointed at the SpeckKit registry, I want a single, comprehensive 
 
 **Acceptance Scenarios**:
 
-1. **Given** `SETUP_FOR_PROJECTS.md` exists in the registry, **When** an agent reads it, **Then** the document contains five bootstrap methods, a profile decision tree, required/optional file tables for all five profiles, stub templates, step-by-step connection instructions, and a quick links table.
+1. **Given** `SETUP_FOR_PROJECTS.md` exists in the registry, **When** an agent reads it, **Then** the document contains six bootstrap methods, a profile decision tree, required/optional file tables for all five profiles, stub templates, step-by-step connection instructions, and a quick links table.
 2. **Given** an agent reads `SETUP_FOR_PROJECTS.md`, **When** it follows the 9-step agent discovery flow, **Then** it can determine the project profile, scaffold required files, apply code standards, and ask about UI references — all from information in this single document.
 3. **Given** a user follows Method 5 (Review an Existing Project), **When** the agent compares the project against the profile requirements, **Then** it accurately identifies missing, outdated, or non-compliant files.
 
@@ -100,13 +108,14 @@ As an AI agent pointed at the SpeckKit registry, I want a single, comprehensive 
 - What happens when a bootstrap prompt URL contains a private registry? → The agent will encounter a 404 and should prompt the user for a Personal Access Token.
 - What happens when a user copies a snippet that references a moved or renamed file? → The snippet uses stable URLs pointing to `SETUP_FOR_PROJECTS.md` which is the canonical entry point and should not be renamed.
 - What happens when a new bootstrap method is added? → The `BootstrapTab` type, tab array, and `SETUP_FOR_PROJECTS.md` must all be updated together to stay in sync.
+- What happens when `uv` is not installed on the user's machine? → The Spec-Kit CLI tab displays a prerequisite note explaining that `uv` (and Python 3.10+) must be installed first, with a link to the uv installation guide.
 - What happens when a guide file is removed from the registry? → The guide card's "View full guide" link will return a 404. The GUIDES array should be updated to match registry contents.
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-- **FR-001**: The Getting Started tab MUST display a bootstrap card with five selectable method tabs: Copilot Chat, Existing Project, HTML Comment, PowerShell, and Bash.
+- **FR-001**: The Getting Started tab MUST display a bootstrap card with six selectable method tabs: Copilot Chat, Existing Project, HTML Comment, PowerShell, Bash, and Spec-Kit CLI.
 - **FR-002**: The Copilot Chat tab MUST be the default selected tab when the Getting Started tab first renders.
 - **FR-003**: Each bootstrap method tab MUST display a copy-ready code snippet or prompt with a description of how and when to use it.
 - **FR-004**: The Existing Project tab MUST display a review prompt that instructs the agent to read `SETUP_FOR_PROJECTS.md`, identify the project profile, compare files, and scaffold/update anything missing or outdated.
@@ -118,10 +127,12 @@ As an AI agent pointed at the SpeckKit registry, I want a single, comprehensive 
 - **FR-010**: `SETUP_FOR_PROJECTS.md` MUST include a "Review an Existing Project" method (Method 5) with a prompt that instructs the agent to compare the project's files against the profile requirements.
 - **FR-011**: All bootstrap prompts and snippets in the dashboard MUST match the corresponding content in `SETUP_FOR_PROJECTS.md` to avoid drift between the two sources.
 - **FR-012**: The Getting Started tab footer MUST display a summary statement that all methods lead to the same outcome.
+- **FR-013**: The Spec-Kit CLI tab MUST display the `specify init` command with instructions for both greenfield (`specify init <project-name> --ai <assistant>`) and brownfield (`specify init . --ai <assistant>`) scenarios, plus a one-time machine setup command (`uv tool install specify-cli`).
+- **FR-014**: The Getting Started tab MUST include a "Spec-Kit CLI Setup" guide card in the Entry Points category, with summary, installation steps, audience, and a link to the spec-kit repository.
 
 ### Key Entities
 
-- **Bootstrap Method**: A way to connect a project to SpeckKit. Key attributes: method key (e.g., `copilot`, `review`, `comment`, `cli-ps`, `cli-bash`), display label, icon, snippet/prompt text, description.
+- **Bootstrap Method**: A way to connect a project to SpeckKit. Key attributes: method key (e.g., `copilot`, `review`, `comment`, `cli-ps`, `cli-bash`, `cli-specify`), display label, icon, snippet/prompt text, description.
 - **Onboarding Guide**: A documentation resource for understanding SpeckKit integration. Key attributes: title, file path, icon, summary, steps, audience, category (entry-point / code-standards / ui-references), optional badge.
 - **Agent Discovery Flow**: The 9-step sequence an AI agent follows when pointed at the SpeckKit registry. Key attributes: step number, action verb (Read/Ask/Scaffold/Apply), target resource.
 
@@ -130,7 +141,7 @@ As an AI agent pointed at the SpeckKit registry, I want a single, comprehensive 
 ### Measurable Outcomes
 
 - **SC-001**: Users can identify and select the appropriate bootstrap method immediately upon viewing the Getting Started tab — all five methods are labeled and selectable in a single card.
-- **SC-002**: All five bootstrap methods are visible and selectable without scrolling past the bootstrap card.
+- **SC-002**: All six bootstrap methods are visible and selectable without scrolling past the bootstrap card.
 - **SC-003**: 100% of guide cards link to valid files in the GitHub registry.
 - **SC-004**: The bootstrap card content and `SETUP_FOR_PROJECTS.md` methods are in sync — no prompt or snippet differs between the two sources.
 - **SC-005**: An AI agent given the Copilot Chat prompt can successfully read `SETUP_FOR_PROJECTS.md`, determine the project profile, and scaffold the required files.
@@ -143,3 +154,5 @@ As an AI agent pointed at the SpeckKit registry, I want a single, comprehensive 
 - The five project profiles (spec-governed, ux-demo, hybrid, ui-reference, code-standard) are the complete set; new profiles would require both document and dashboard updates.
 - Bootstrap methods target AI agents that can read GitHub URLs (Copilot, Cursor, Windsurf); agents without URL-reading capability fall back to the CLI or HTML comment methods.
 - The dashboard's Getting Started tab is the primary UI surface for bootstrap discovery; `SETUP_FOR_PROJECTS.md` is the primary document surface.
+- The `specify` CLI from `github/spec-kit` is installed via `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git` and requires Python 3.10+ with `uv` available.
+- Deeper spec-kit CLI integration (e.g., running `/speckit.*` commands, CI integration, spec lifecycle automation) is deferred to a dedicated `003-speckit-cli-init` feature spec.

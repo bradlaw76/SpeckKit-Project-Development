@@ -206,26 +206,55 @@ export async function auditProject(
 
   const { owner, repo } = parsed;
 
-  // 1. Crawl the full repo tree
+  // 1. Crawl the full repo tree (try main, fall back to repo's default branch)
   let tree: TreeEntry[] = [];
   let isPrivate = false;
+  let defaultBranch = 'main';
   try {
     const treeResult = await getRepoTree(owner, repo, 'main', token);
     tree = treeResult.tree.filter(e => e.type === 'blob'); // files only
     if (treeResult.truncated) {
       errors.push('Repository tree was truncated — very large repo. Some files may be missing from audit.');
     }
-  } catch (err) {
-    return createErrorResult(project, `Failed to fetch repo tree: ${err}`);
+  } catch (mainErr) {
+    // 409 = empty repo or no 'main' branch — try the repo's default branch
+    const is409 = String(mainErr).includes('409');
+    if (is409) {
+      try {
+        const { getRepoMeta } = await import('./github-api');
+        const meta = await getRepoMeta(owner, repo, token);
+        isPrivate = meta.private;
+        defaultBranch = meta.default_branch || 'main';
+
+        if (defaultBranch !== 'main') {
+          // Retry with the actual default branch
+          const treeResult = await getRepoTree(owner, repo, defaultBranch, token);
+          tree = treeResult.tree.filter(e => e.type === 'blob');
+          if (treeResult.truncated) {
+            errors.push('Repository tree was truncated — very large repo. Some files may be missing from audit.');
+          }
+        } else {
+          // Repo is likely empty (main exists but 409) — treat as zero files
+          errors.push('Repository appears to be empty (no commits yet).');
+        }
+      } catch {
+        // Repo is empty or inaccessible — return gracefully with zero files
+        errors.push('Repository appears to be empty or inaccessible (409 Conflict).');
+      }
+    } else {
+      return createErrorResult(project, `Failed to fetch repo tree: ${mainErr}`);
+    }
   }
 
-  // 2. Try to detect if private
-  try {
-    const { getRepoMeta } = await import('./github-api');
-    const meta = await getRepoMeta(owner, repo, token);
-    isPrivate = meta.private;
-  } catch {
-    // Can't determine — assume public
+  // 2. Try to detect if private (may already be set from fallback above)
+  if (!isPrivate) {
+    try {
+      const { getRepoMeta } = await import('./github-api');
+      const meta = await getRepoMeta(owner, repo, token);
+      isPrivate = meta.private;
+    } catch {
+      // Can't determine — assume public
+    }
   }
 
   // 3. Determine the project's profile

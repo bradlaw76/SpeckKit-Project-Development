@@ -21,7 +21,7 @@ const CATEGORY_LABELS: Record<FileCategory, string> = {
 export default function ProjectDetail() {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
-  const { auth, registryData } = useAppContext();
+  const { auth, registryData, auditResults } = useAppContext();
   const [result, setResult] = useState<AuditResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,9 +31,12 @@ export default function ProjectDetail() {
   const [scaffoldUrls, setScaffoldUrls] = useState<Record<string, string>>({});
   const [reauditing, setReauditing] = useState(false);
 
-  const project = registryData?.index.projects.find(
-    (p) => p.id === decodeURIComponent(projectId ?? '')
-  );
+  const decodedId = decodeURIComponent(projectId ?? '');
+
+  // Look up project: first from governed registry, then from cached audit results (ungoverned repos)
+  const project = registryData?.index.projects.find((p) => p.id === decodedId)
+    ?? auditResults.find((r) => r.project.id === decodedId)?.project
+    ?? null;
 
   useEffect(() => {
     if (!project || !registryData) return;
