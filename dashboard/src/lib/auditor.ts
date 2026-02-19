@@ -258,7 +258,10 @@ export async function auditProject(
   }
 
   // 3. Determine the project's profile
-  const profile = project.type || template.defaults.profile;
+  // For ungoverned repos, use 'ungoverned' profile (minimal requirements)
+  // For governed repos without explicit type, use template default
+  const profile = project.type === 'ungoverned' ? 'ungoverned' : (project.type || template.defaults.profile);
+  console.log(`📋 Auditing ${project.name} with profile: ${profile} (type: ${project.type || 'default'})`);
 
   // 4. Match files against patterns
   const matchedFiles: Record<FileCategory, FileMatch[]> = {
@@ -316,15 +319,17 @@ export async function auditProject(
     }
   }
 
-  // 7. Check for README (recommended for all)
+  // 7. Check for README (recommended for all non-ungoverned profiles, required for ungoverned)
   const hasReadme = tree.some(f => matchesPattern(f.path, 'README.md'));
-  if (!hasReadme) {
+  if (!hasReadme && profile !== 'ungoverned') {
+    // For governed profiles, README is recommended
     missingRequired.push({
       pattern: AUDIT_PATTERNS.find(p => p.pattern === 'README.md')!,
       severity: 'recommended',
       suggestion: 'Every repository should have a README.md file.',
     });
   }
+  // Note: For ungoverned, README is already checked in requiredPatterns loop
 
   // 8. Compute compliance score
   const totalRequired = requiredPatterns.length;

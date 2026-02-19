@@ -150,10 +150,10 @@ export const AUDIT_PATTERNS: AuditPattern[] = [
     pattern: 'README.md',
     label: 'README',
     category: 'documentation',
-    requiredBy: [],
+    requiredBy: ['ungoverned'],
     optionalFor: [],
     priority: 10,
-    suggestion: 'Every repository should have a README.md.',
+    suggestion: 'Every repository should have a README.md file describing the project.',
   },
   {
     pattern: '**/CONSTITUTION*.md',

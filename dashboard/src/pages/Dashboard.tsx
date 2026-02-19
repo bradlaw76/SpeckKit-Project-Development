@@ -282,7 +282,7 @@ export default function Dashboard() {
               padding: '4px',
             }}
           />
-          <div>
+          <div style={{ flex: 1 }}>
             <h1 style={{ margin: 0, color: '#38bdf8', letterSpacing: '-0.5px' }}>Project Dashboard</h1>
             <p className="text-muted" style={{ margin: '0.15rem 0 0 0' }}>
               {repoSource === 'governed'
@@ -291,6 +291,40 @@ export default function Dashboard() {
               {hiddenCount > 0 && ` • ${hiddenCount} hidden`}
               {loadingRepos && ' • Loading repos…'}
             </p>
+            {loading && (
+              <div style={{ marginTop: '0.75rem' }}>
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  fontSize: '0.813rem',
+                  color: '#94a3b8',
+                  marginBottom: '0.375rem'
+                }}>
+                  <span>🔄 Auditing projects...</span>
+                  <span style={{ fontWeight: '600', color: '#38bdf8' }}>
+                    {progress.done} / {progress.total}
+                  </span>
+                </div>
+                <div style={{
+                  width: '100%',
+                  height: '6px',
+                  background: 'rgba(0,0,0,0.3)',
+                  borderRadius: '999px',
+                  overflow: 'hidden',
+                  boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.2)'
+                }}>
+                  <div style={{
+                    width: `${progress.total > 0 ? (progress.done / progress.total) * 100 : 0}%`,
+                    height: '100%',
+                    background: 'linear-gradient(90deg, #0ea5e9 0%, #38bdf8 50%, #7dd3fc 100%)',
+                    borderRadius: '999px',
+                    transition: 'width 0.3s ease',
+                    boxShadow: '0 0 8px rgba(56, 189, 248, 0.6)'
+                  }} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
