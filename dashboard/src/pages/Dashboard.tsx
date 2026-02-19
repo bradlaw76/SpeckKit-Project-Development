@@ -273,8 +273,8 @@ export default function Dashboard() {
           boxShadow: '0 2px 12px rgba(0, 0, 0, 0.3)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', marginBottom: loading ? '1rem' : 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1 }}>
             <img
               src={`${import.meta.env.BASE_URL}beacer.gif`}
               alt="SpeckKit mascot"
@@ -286,7 +286,7 @@ export default function Dashboard() {
                 padding: '4px',
               }}
             />
-            <div>
+            <div style={{ flex: 1 }}>
               <h1 style={{ margin: 0, color: '#38bdf8', letterSpacing: '-0.5px' }}>Project Dashboard</h1>
               <p className="text-muted" style={{ margin: '0.15rem 0 0 0' }}>
                 {repoSource === 'governed'
@@ -297,30 +297,30 @@ export default function Dashboard() {
               </p>
             </div>
           </div>
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <select
-            className="input"
-            value={repoSource}
-            onChange={(e) => {
-              setRepoSource(e.target.value as RepoSource);
-              setResults([]); // reset so audit re-runs
-            }}
-            style={{ width: 'auto' }}
-            disabled={!auth.token}
-            title={!auth.token ? 'Connect GitHub to view all your repos' : undefined}
-          >
-            <option value="governed">Governed Only</option>
-            <option value="all-repos">All My Repos</option>
-          </select>
-          <button className="btn btn-primary" onClick={runAudit} disabled={loading}>
-            {loading ? `Auditing… (${progress.done}/${progress.total})` : '🔄 Run Audit'}
-          </button>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexShrink: 0 }}>
+            <select
+              className="input"
+              value={repoSource}
+              onChange={(e) => {
+                setRepoSource(e.target.value as RepoSource);
+                setResults([]); // reset so audit re-runs
+              }}
+              style={{ width: 'auto' }}
+              disabled={!auth.token}
+              title={!auth.token ? 'Connect GitHub to view all your repos' : undefined}
+            >
+              <option value="governed">Governed Only</option>
+              <option value="all-repos">All My Repos</option>
+            </select>
+            <button className="btn btn-primary" onClick={runAudit} disabled={loading}>
+              {loading ? `Auditing… (${progress.done}/${progress.total})` : '🔄 Run Audit'}
+            </button>
           </div>
         </div>
         
         {/* Progress Bar - Full Width */}
         {loading && (
-          <div style={{ marginTop: '0.75rem' }}>
+          <div style={{ marginTop: '1rem' }}>
             <div style={{ 
               display: 'flex', 
               justifyContent: 'space-between', 
