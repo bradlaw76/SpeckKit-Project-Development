@@ -267,16 +267,17 @@ export default function Dashboard() {
     <div className="page">
       {/* Header */}
       <div
-        className="section-header"
         style={{
+          display: 'block',
           background: 'linear-gradient(135deg, #1a2a3a 0%, #0d1f2d 100%)',
           borderRadius: '12px',
           padding: '1.25rem 1.5rem',
           border: '1px solid rgba(56, 189, 248, 0.2)',
           boxShadow: '0 2px 12px rgba(0, 0, 0, 0.3)',
+          marginBottom: '1rem',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           {/* Left side: Title */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <img
