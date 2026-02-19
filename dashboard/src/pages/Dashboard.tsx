@@ -27,6 +27,7 @@ export default function Dashboard() {
   const [results, setResults] = useState<AuditResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState({ done: 0, total: 0 });
+  const [currentProject, setCurrentProject] = useState<string>('');
   const [auditError, setAuditError] = useState<string | null>(null);
   const [filter, setFilter] = useState('');
   const [profileFilter, setProfileFilter] = useState('all');
@@ -113,15 +114,17 @@ export default function Dashboard() {
     setAuditError(null);
     setResults([]);
     setProgress({ done: 0, total: projectsToAudit.length });
+    setCurrentProject('');
 
     try {
       const freshResults = await auditAllProjects(
         projectsToAudit,
         registryData.template,
         auth.token ?? null,
-        (done, total) => {
-          console.log(`⏳ Progress: ${done}/${total}`);
+        (done, total, current) => {
+          console.log(`⏳ Progress: ${done}/${total} - Auditing: ${current}`);
           setProgress({ done, total });
+          setCurrentProject(current);
         }
       );
       console.log(`✅ Audit complete! Found ${freshResults.length} results`);
@@ -270,63 +273,30 @@ export default function Dashboard() {
           boxShadow: '0 2px 12px rgba(0, 0, 0, 0.3)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <img
-            src={`${import.meta.env.BASE_URL}beacer.gif`}
-            alt="SpeckKit mascot"
-            style={{
-              height: '52px',
-              width: 'auto',
-              borderRadius: '8px',
-              background: 'rgba(255,255,255,0.08)',
-              padding: '4px',
-            }}
-          />
-          <div style={{ flex: 1 }}>
-            <h1 style={{ margin: 0, color: '#38bdf8', letterSpacing: '-0.5px' }}>Project Dashboard</h1>
-            <p className="text-muted" style={{ margin: '0.15rem 0 0 0' }}>
-              {repoSource === 'governed'
-                ? `${registryData.index.projects.length} governed project${registryData.index.projects.length !== 1 ? 's' : ''}`
-                : `${visibleResults.length} repos (${complianceStats.governed} governed, ${complianceStats.ungoverned} discovered)`}
-              {hiddenCount > 0 && ` • ${hiddenCount} hidden`}
-              {loadingRepos && ' • Loading repos…'}
-            </p>
-            {loading && (
-              <div style={{ marginTop: '0.75rem' }}>
-                <div style={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'center',
-                  fontSize: '0.813rem',
-                  color: '#94a3b8',
-                  marginBottom: '0.375rem'
-                }}>
-                  <span>🔄 Auditing projects...</span>
-                  <span style={{ fontWeight: '600', color: '#38bdf8' }}>
-                    {progress.done} / {progress.total}
-                  </span>
-                </div>
-                <div style={{
-                  width: '100%',
-                  height: '6px',
-                  background: 'rgba(0,0,0,0.3)',
-                  borderRadius: '999px',
-                  overflow: 'hidden',
-                  boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.2)'
-                }}>
-                  <div style={{
-                    width: `${progress.total > 0 ? (progress.done / progress.total) * 100 : 0}%`,
-                    height: '100%',
-                    background: 'linear-gradient(90deg, #0ea5e9 0%, #38bdf8 50%, #7dd3fc 100%)',
-                    borderRadius: '999px',
-                    transition: 'width 0.3s ease',
-                    boxShadow: '0 0 8px rgba(56, 189, 248, 0.6)'
-                  }} />
-                </div>
-              </div>
-            )}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', marginBottom: loading ? '1rem' : 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <img
+              src={`${import.meta.env.BASE_URL}beacer.gif`}
+              alt="SpeckKit mascot"
+              style={{
+                height: '52px',
+                width: 'auto',
+                borderRadius: '8px',
+                background: 'rgba(255,255,255,0.08)',
+                padding: '4px',
+              }}
+            />
+            <div>
+              <h1 style={{ margin: 0, color: '#38bdf8', letterSpacing: '-0.5px' }}>Project Dashboard</h1>
+              <p className="text-muted" style={{ margin: '0.15rem 0 0 0' }}>
+                {repoSource === 'governed'
+                  ? `${registryData.index.projects.length} governed project${registryData.index.projects.length !== 1 ? 's' : ''}`
+                  : `${visibleResults.length} repos (${complianceStats.governed} governed, ${complianceStats.ungoverned} discovered)`}
+                {hiddenCount > 0 && ` • ${hiddenCount} hidden`}
+                {loadingRepos && ' • Loading repos…'}
+              </p>
+            </div>
           </div>
-        </div>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           <select
             className="input"
@@ -345,7 +315,55 @@ export default function Dashboard() {
           <button className="btn btn-primary" onClick={runAudit} disabled={loading}>
             {loading ? `Auditing… (${progress.done}/${progress.total})` : '🔄 Run Audit'}
           </button>
+          </div>
         </div>
+        
+        {/* Progress Bar - Full Width */}
+        {loading && (
+          <div style={{ marginTop: '0.75rem' }}>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'center',
+              fontSize: '0.813rem',
+              color: '#94a3b8',
+              marginBottom: '0.375rem'
+            }}>
+              <span style={{ 
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                color: '#e2e8f0'
+              }}>
+                <span>🔄</span>
+                <span>
+                  Auditing <strong style={{ color: '#38bdf8', fontWeight: '600' }}>{currentProject}</strong>
+                </span>
+              </span>
+              <span style={{ fontWeight: '600', color: '#38bdf8' }}>
+                {progress.done} / {progress.total}
+              </span>
+            </div>
+            <div style={{
+              width: '100%',
+              height: '8px',
+              background: 'rgba(0,0,0,0.3)',
+              borderRadius: '999px',
+              overflow: 'hidden',
+              boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.3)'
+            }}>
+              <div style={{
+                width: `${progress.total > 0 ? (progress.done / progress.total) * 100 : 0}%`,
+                height: '100%',
+                background: 'linear-gradient(90deg, #0ea5e9 0%, #38bdf8 50%, #7dd3fc 100%)',
+                borderRadius: '999px',
+                transition: 'width 0.3s ease',
+                boxShadow: '0 0 10px rgba(56, 189, 248, 0.8)',
+                animation: 'pulse 2s ease-in-out infinite'
+              }} />
+            </div>
+          </div>
+        )}
       </div>
 
       {repoSource === 'all-repos' && !auth.token && (
