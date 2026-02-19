@@ -110,6 +110,7 @@ export default function Dashboard() {
     }
 
     console.log(`📊 Auditing ${projectsToAudit.length} projects...`);
+    console.log('🔄 Setting loading to TRUE');
     setLoading(true);
     setAuditError(null);
     setResults([]);
@@ -260,6 +261,8 @@ export default function Dashboard() {
     );
   }
 
+  console.log('🎨 Rendering Dashboard - loading state:', loading, 'progress:', progress);
+
   return (
     <div className="page">
       {/* Header */}
@@ -320,37 +323,44 @@ export default function Dashboard() {
         
         {/* Progress Bar - Full Width */}
         {loading && (
-          <div style={{ marginTop: '1rem' }}>
+          <div style={{ 
+            marginTop: '1rem',
+            padding: '1rem',
+            background: 'rgba(56, 189, 248, 0.1)',
+            border: '2px solid #38bdf8',
+            borderRadius: '8px'
+          }}>
             <div style={{ 
               display: 'flex', 
               justifyContent: 'space-between', 
               alignItems: 'center',
-              fontSize: '0.813rem',
-              color: '#94a3b8',
-              marginBottom: '0.375rem'
+              fontSize: '0.875rem',
+              color: '#e2e8f0',
+              marginBottom: '0.75rem',
+              fontWeight: '500'
             }}>
               <span style={{ 
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.5rem',
-                color: '#e2e8f0'
+                gap: '0.5rem'
               }}>
                 <span>🔄</span>
                 <span>
-                  Auditing <strong style={{ color: '#38bdf8', fontWeight: '600' }}>{currentProject}</strong>
+                  Auditing: <strong style={{ color: '#38bdf8', fontWeight: '700' }}>{currentProject || 'Starting...'}</strong>
                 </span>
               </span>
-              <span style={{ fontWeight: '600', color: '#38bdf8' }}>
+              <span style={{ fontWeight: '700', color: '#38bdf8', fontSize: '1rem' }}>
                 {progress.done} / {progress.total}
               </span>
             </div>
             <div style={{
               width: '100%',
-              height: '8px',
-              background: 'rgba(0,0,0,0.3)',
+              height: '12px',
+              background: 'rgba(0,0,0,0.4)',
               borderRadius: '999px',
               overflow: 'hidden',
-              boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.3)'
+              boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.4)',
+              border: '1px solid rgba(56, 189, 248, 0.3)'
             }}>
               <div style={{
                 width: `${progress.total > 0 ? (progress.done / progress.total) * 100 : 0}%`,
@@ -358,8 +368,7 @@ export default function Dashboard() {
                 background: 'linear-gradient(90deg, #0ea5e9 0%, #38bdf8 50%, #7dd3fc 100%)',
                 borderRadius: '999px',
                 transition: 'width 0.3s ease',
-                boxShadow: '0 0 10px rgba(56, 189, 248, 0.8)',
-                animation: 'pulse 2s ease-in-out infinite'
+                boxShadow: '0 0 12px rgba(56, 189, 248, 0.9)',
               }} />
             </div>
           </div>
