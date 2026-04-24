@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import ProjectDetail from './pages/ProjectDetail';
 import Standards from './pages/Standards';
 import SpeckKitSetup from './pages/SpeckKitSetup';
+import Instructions from './pages/Instructions';
 import './App.css';
 
 // ---------------------------------------------------------------------------
@@ -124,6 +125,12 @@ export default function App() {
               Standards
             </NavLink>
             <NavLink
+              to="/instructions"
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              Instructions
+            </NavLink>
+            <NavLink
               to="/setup"
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
             >
@@ -161,6 +168,7 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/project/:projectId" element={<ProjectDetail />} />
             <Route path="/standards" element={<Standards />} />
+            <Route path="/instructions" element={<Instructions />} />
             <Route path="/setup" element={<SpeckKitSetup />} />
           </Routes>
         </main>
