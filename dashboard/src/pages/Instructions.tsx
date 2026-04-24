@@ -1,3 +1,3 @@
 export default function Instructions() {
-  return <div className="page-content"><h1 className="page-title">Instructions</h1></div>;
+  return <div className="page"><h1>Instructions</h1></div>;
 }
