@@ -121,7 +121,7 @@ echo "## From Constitution\\n$(cat .specify/features/<name>/constitution.md)" >>
         </table>
       </section>
 
-      {/* Integration rules + Common mistakes */}
+      {/* Integration rules */}
       <section className="instructions-section">
         <h2>Integration Rules</h2>
         <ul>
@@ -131,7 +131,10 @@ echo "## From Constitution\\n$(cat .specify/features/<name>/constitution.md)" >>
           <li><strong>taskstoissues before Ralph.</strong> Run <code>/speckit.taskstoissues</code> before <code>squad watch</code> — Ralph needs GitHub Issues as input.</li>
           <li><strong>Parallel = dependency-free only.</strong> Use the dependency graph in <code>tasks.md</code> to identify safe tasks.</li>
         </ul>
+      </section>
 
+      {/* Common mistakes */}
+      <section className="instructions-section">
         <h2>Common Mistakes</h2>
         <table className="table">
           <thead>
