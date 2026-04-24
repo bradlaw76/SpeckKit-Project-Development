@@ -672,3 +672,149 @@
   height: 24px;
   border-radius: 50%;
 }
+
+/* --- Instructions Page --- */
+.instructions-reference {
+  max-width: 860px;
+}
+
+.instructions-section {
+  margin-bottom: 2.5rem;
+}
+
+.instructions-section h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.instructions-section h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.code-block {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-size: 0.8rem;
+  font-family: monospace;
+  white-space: pre-wrap;
+  color: var(--text-secondary);
+  margin: 0.5rem 0;
+}
+
+/* Checklist */
+.instructions-checklist {
+  max-width: 680px;
+}
+
+.checklist-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.checklist-progress {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.progress-bar {
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.2s ease;
+}
+
+.checklist-phase {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.checklist-phase.phase-complete {
+  border-color: var(--accent);
+  opacity: 0.85;
+}
+
+.phase-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--bg-secondary);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.phase-header:hover {
+  background: var(--bg-tertiary);
+}
+
+.phase-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.phase-meta {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.phase-items {
+  list-style: none;
+  padding: 0.5rem 1rem 0.75rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg-primary);
+}
+
+.phase-item label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.phase-item.item-checked label {
+  color: var(--text-secondary);
+  text-decoration: line-through;
+}
+
+.item-code {
+  font-size: 0.75rem;
+  background: var(--bg-tertiary);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  color: var(--accent);
+  font-family: monospace;
+}
