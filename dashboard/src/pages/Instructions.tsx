@@ -154,6 +154,153 @@ echo "## From Constitution\\n$(cat .specify/features/<name>/constitution.md)" >>
   );
 }
 
+// ---------------------------------------------------------------------------
+// Checklist data
+// ---------------------------------------------------------------------------
+
+interface ChecklistItem {
+  id: string;
+  label: string;
+  code?: string;
+}
+
+interface ChecklistPhase {
+  id: string;
+  title: string;
+  items: ChecklistItem[];
+}
+
+const PHASES: ChecklistPhase[] = [
+  {
+    id: 'specify',
+    title: 'Phase 1: Specify',
+    items: [
+      { id: 'specify-init', label: 'Run specify init', code: 'specify init' },
+      { id: 'squad-init', label: 'Run squad init', code: 'squad init' },
+      { id: 'seed-decisions', label: 'Seed .squad/decisions.md from constitution principles' },
+      { id: 'speckit-specify', label: 'Run /speckit.specify', code: '/speckit.specify' },
+      { id: 'speckit-clarify', label: 'Run /speckit.clarify', code: '/speckit.clarify' },
+      { id: 'speckit-plan', label: 'Run /speckit.plan', code: '/speckit.plan' },
+      { id: 'speckit-tasks', label: 'Run /speckit.tasks', code: '/speckit.tasks' },
+    ],
+  },
+  {
+    id: 'route',
+    title: 'Phase 2: Route',
+    items: [
+      { id: 'map-tasks', label: 'Map task categories to agents in .squad/routing.md' },
+      { id: 'identify-parallel', label: 'Identify dependency-free tasks for parallel execution' },
+      { id: 'taskstoissues', label: 'Run /speckit.taskstoissues', code: '/speckit.taskstoissues' },
+    ],
+  },
+  {
+    id: 'execute',
+    title: 'Phase 3: Execute',
+    items: [
+      { id: 'design-review', label: 'Design Review ceremony completed (if 2+ agents on shared systems)' },
+      { id: 'spawn-agents', label: 'Agents spawned for parallel task groups' },
+      { id: 'decisions-inbox', label: 'Decisions written to .squad/decisions/inbox/' },
+      { id: 'squad-watch', label: 'squad watch activated (Ralph polling)', code: 'squad watch' },
+    ],
+  },
+  {
+    id: 'validate',
+    title: 'Phase 4: Validate',
+    items: [
+      { id: 'checklist', label: 'Run /speckit.checklist', code: '/speckit.checklist' },
+      { id: 'analyze', label: 'Run /speckit.analyze', code: '/speckit.analyze' },
+      { id: 'history', label: 'Agent learnings confirmed in .squad/agents/<name>/history.md' },
+    ],
+  },
+];
+
+const STORAGE_KEY = 'speckkit-instructions-checklist';
+
+function loadCheckedItems(): Record<string, boolean> {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveCheckedItems(items: Record<string, boolean>) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+}
+
 function ChecklistTab() {
-  return <div>Checklist content coming soon.</div>;
+  const [checked, setChecked] = useState<Record<string, boolean>>(loadCheckedItems);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>(
+    Object.fromEntries(PHASES.map((p) => [p.id, true]))
+  );
+
+  function toggle(itemId: string) {
+    const next = { ...checked, [itemId]: !checked[itemId] };
+    setChecked(next);
+    saveCheckedItems(next);
+  }
+
+  function togglePhase(phaseId: string) {
+    setExpanded((prev) => ({ ...prev, [phaseId]: !prev[phaseId] }));
+  }
+
+  function reset() {
+    setChecked({});
+    saveCheckedItems({});
+  }
+
+  const totalItems = PHASES.flatMap((p) => p.items).length;
+  const doneItems = Object.values(checked).filter(Boolean).length;
+  const pct = Math.round((doneItems / totalItems) * 100);
+
+  return (
+    <div className="instructions-checklist">
+      <div className="checklist-header">
+        <div className="checklist-progress">
+          <span>{doneItems} / {totalItems} steps complete ({pct}%)</span>
+          <div className="progress-bar">
+            <div className="progress-fill" style={{ width: `${pct}%` }} />
+          </div>
+        </div>
+        <button className="btn btn-sm" onClick={reset}>Reset</button>
+      </div>
+
+      {PHASES.map((phase) => {
+        const phaseItems = phase.items;
+        const phaseDone = phaseItems.filter((i) => checked[i.id]).length;
+        const isComplete = phaseDone === phaseItems.length;
+        const isOpen = expanded[phase.id];
+
+        return (
+          <div key={phase.id} className={`checklist-phase ${isComplete ? 'phase-complete' : ''}`}>
+            <button className="phase-header" onClick={() => togglePhase(phase.id)}>
+              <span className="phase-title">
+                {isComplete ? '✅' : '⬜'} {phase.title}
+              </span>
+              <span className="phase-meta">{phaseDone}/{phaseItems.length} {isOpen ? '▲' : '▼'}</span>
+            </button>
+
+            {isOpen && (
+              <ul className="phase-items">
+                {phaseItems.map((item) => (
+                  <li key={item.id} className={`phase-item ${checked[item.id] ? 'item-checked' : ''}`}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={!!checked[item.id]}
+                        onChange={() => toggle(item.id)}
+                      />
+                      <span>{item.label}</span>
+                      {item.code && <code className="item-code">{item.code}</code>}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
 }
