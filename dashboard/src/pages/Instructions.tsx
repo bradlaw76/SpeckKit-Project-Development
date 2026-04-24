@@ -259,7 +259,7 @@ function ChecklistTab() {
       <div className="checklist-header">
         <div className="checklist-progress">
           <span>{doneItems} / {totalItems} steps complete ({pct}%)</span>
-          <div className="progress-bar">
+          <div className="checklist-bar">
             <div className="progress-fill" style={{ width: `${pct}%` }} />
           </div>
         </div>
