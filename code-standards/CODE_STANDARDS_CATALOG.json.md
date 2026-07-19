@@ -70,6 +70,18 @@ v1.0  2026-02-16  Initial version — component-header-block standard
       "tags": ["comments", "documentation", "component", "header", "power-pages", "web-api", "crud"],
       "created": "2026-02-16",
       "status": "ACTIVE"
+    },
+    {
+      "id": "component-header-block-powershell",
+      "name": "Component Header Comment Block — PowerShell Variant",
+      "category": "comments",
+      "path": "comments/component-header-block-powershell.md",
+      "description": "PowerShell-native (<# #>) header block for .ps1 and .psm1 files — same SpeckKit sections as the HTML variant, adapted for scripting context. MUST be used instead of component-header-block for any PowerShell file.",
+      "applicableTo": ["PowerShell", ".ps1", ".psm1", ".psd1"],
+      "defaultApply": true,
+      "tags": ["comments", "documentation", "header", "powershell", "script", "bootstrap", "build"],
+      "created": "2026-07-19",
+      "status": "ACTIVE"
     }
   ],
 
@@ -79,6 +91,7 @@ v1.0  2026-02-16  Initial version — component-header-block standard
     "setupGuide": "See /SETUP_FOR_PROJECTS.md for the unified single-file setup (recommended)",
     "quickReference": {
       "directUrl": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/comments/component-header-block.md",
+      "powershellVariantUrl": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/comments/component-header-block-powershell.md",
       "catalogUrl": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/CODE_STANDARDS_CATALOG.json.md"
     }
   }

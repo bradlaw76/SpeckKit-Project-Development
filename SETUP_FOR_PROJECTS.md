@@ -76,9 +76,12 @@ Before scaffolding, the agent should ask these intake questions:
 
 1. "Do you want SpeckKit setup only, or SpeckKit + Squad team orchestration?"
 2. "If Squad is enabled, should I scaffold Squad team files (`.squad/*`) and add Squad workflows?"
-3. "Do you want me to propose recommended VS Code extensions for this tech stack?"
-4. "Do you want to configure MCP servers now (GitHub, Azure, other)?"
-5. "Do you want to preload skill context (SpeckKit, Azure, testing, or custom skills)?"
+3. "Do you want the component header comment block auto-applied to every new file? (Recommended — based on `code-standards/comments/component-header-block.md`)"
+4. "Do you want me to propose recommended VS Code extensions for this tech stack?"
+5. "Do you want to configure MCP servers now (GitHub, Azure, other)?"
+6. "Do you want to preload skill context (SpeckKit, Azure, testing, or custom skills)?"
+
+> **Code standards note:** If the user answers **yes** to question 3, set `defaultApply: true` in `SYSTEM_MANIFEST.json.md` and keep the auto-apply rule in `copilot-instructions.md`. If **no**, set `defaultApply: false` and change the rule to "Apply only when user explicitly requests it."
 
 ### SpeckKit vs Squad (What They Are)
 
@@ -155,9 +158,10 @@ Set up this project using the SpeckKit registry at https://github.com/bradlaw76/
 1) project profile,
 2) SpeckKit only vs SpeckKit + Squad,
 2a) if Squad is selected, use the Squad source repo https://github.com/bradygaster/squad,
-3) which VS Code extensions to install,
-4) which MCP servers to configure,
-5) which skills/context packs to preload.
+3) whether to auto-apply the component header comment block to every new file (code-standards/comments/component-header-block.md),
+4) which VS Code extensions to install,
+5) which MCP servers to configure,
+6) which skills/context packs to preload.
 Then scaffold the selected setup and summarize what was configured.
 ```
 
@@ -165,9 +169,10 @@ Expected intake output from the agent:
 
 1. Selected project profile and scaffolded file list
 2. SpeckKit-only or SpeckKit + Squad decision and what was added
-3. Proposed/selected VS Code extensions by category
-4. MCP servers requested and connection prerequisites
-5. Skills requested and when they should be auto-loaded
+3. Code standards preference — `defaultApply: true/false` set in `SYSTEM_MANIFEST.json.md` and `copilot-instructions.md` updated accordingly
+4. Proposed/selected VS Code extensions by category
+5. MCP servers requested and connection prerequisites
+6. Skills requested and when they should be auto-loaded
 
 ---
 
@@ -177,6 +182,10 @@ Expected intake output from the agent:
 |----------|-------------|---------------|
 | **Code Standards** | Structured comment headers for component files | **YES — auto-apply** |
 | **UI References** | Platform UI description models (e.g., Dynamics 365) | **ASK first** |
+
+> **Language variants:** The component header block has language-specific variants. Agents must select the correct one based on the file being created:
+> - **HTML / JS / TSX / CSS / Liquid** → `component-header-block.md` (HTML `<!-- -->` syntax)
+> - **PowerShell `.ps1` / `.psm1`** → `component-header-block-powershell.md` (`<# #>` syntax)
 
 ---
 
@@ -491,6 +500,8 @@ Create at repo root (or update if it already exists):
       {
         "id": "component-header-block",
         "url": "https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/comments/component-header-block.md",
+        // true = auto-apply to every new file (recommended)
+        // false = apply only when user explicitly requests it
         "defaultApply": true
       }
     ]
