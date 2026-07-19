@@ -2,9 +2,9 @@
 =============================================================================
 DOCUMENT:     SpeckKit Manifest Registry — README
 FILE:         README.md
-VERSION:      1.3
+VERSION:      1.4
 AUTHOR:       bradlaw76
-LAST UPDATED: 2026-02-16
+LAST UPDATED: 2026-07-19
 
 -----------------------------------------------------------------------------
 OVERVIEW
@@ -25,6 +25,9 @@ REGISTRY ROLE
 -----------------------------------------------------------------------------
 CHANGELOG
 -----------------------------------------------------------------------------
+v1.4  2026-07-19  Added PowerShell header block variant, registry git-update
+                  rule for existing submodule integrations, code-standards
+                  opt-in intake question, language-variant routing table
 v1.3  2026-02-16  Updated setup guide references for profile scaffolding
                   and cross-project referencing
 v1.2  2026-02-16  Added code standards, UI references, agent behavior,
@@ -100,7 +103,8 @@ SpeckKit-Project-Development/
 │   ├── HOW_TO_USE_CODE_STANDARDS.md          ← Usage guide
 │   ├── QUICK_START_FOR_PROJECTS.md           ← Consumer bootstrap
 │   └── comments/                             ← Category: comment standards
-│       └── component-header-block.md         ← Component header template
+│       ├── component-header-block.md         ← HTML/JS/TSX/CSS/Liquid header
+│       └── component-header-block-powershell.md  ← PowerShell (.ps1/.psm1) header
 ├── ui-references/
 │   ├── UI_REFERENCE_CATALOG.json.md          ← UI reference index
 │   ├── HOW_TO_USE_UI_REFERENCES.md           ← Usage guide (skill doc)
@@ -388,6 +392,8 @@ When an agent is pointed at this repo, it should read `AGENT_BEHAVIOR_DEFAULTS.j
 
 This is the single entry point for any VS Code project that wants to consume SpeckKit standards and references. It includes:
 - **Step 0 — Profile Selection:** Choose a project profile (spec-governed, ux-demo, hybrid, ui-reference, code-standard) and scaffold the required template files
+- **Registry Update Rule:** If a `.speckkit-registry` submodule already exists, the agent runs `git submodule update --remote` before reading any files (only on existing integrations — not fresh installs)
+- **Code standards opt-in:** During intake the agent asks whether to auto-apply the component header block (`defaultApply: true/false`)
 - A decision tree for choosing the right connection method (submodule, local path, or raw URL)
 - Exact copy-paste content for `.github/copilot-instructions.md`
 - Exact copy-paste content for `SYSTEM_MANIFEST.json.md`
@@ -412,8 +418,11 @@ code-standards/
 ├── HOW_TO_USE_CODE_STANDARDS.md      ← Full integration guide
 ├── QUICK_START_FOR_PROJECTS.md       ← Step-by-step consumer setup
 └── comments/                         ← Category: comment standards
-    └── component-header-block.md     ← Component header template
+    ├── component-header-block.md         ← HTML/JS/TSX/CSS/Liquid header
+    └── component-header-block-powershell.md  ← PowerShell (.ps1/.psm1) header
 ```
+
+> **Language variant routing:** Agents must select the correct header template based on the file being created. Use `component-header-block.md` for web/front-end files and `component-header-block-powershell.md` for any `.ps1` or `.psm1` file. Applying the HTML block to PowerShell is invalid.
 
 ### Quick Reference (for other VS Code projects)
 
@@ -423,9 +432,10 @@ Add to your `.github/copilot-instructions.md`:
 ## Code Standards (Auto-Apply)
 
 This project follows SpeckKit code standards.
-ALWAYS apply the component header comment block to new component files.
+ALWAYS apply the correct component header block to new component files.
 
-- Standard: https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/comments/component-header-block.md
+- HTML/JS/TSX/CSS: https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/comments/component-header-block.md
+- PowerShell (.ps1/.psm1): https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/comments/component-header-block-powershell.md
 - Catalog: https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/code-standards/CODE_STANDARDS_CATALOG.json.md
 ```
 

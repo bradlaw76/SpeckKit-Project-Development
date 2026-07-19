@@ -26,6 +26,9 @@ REGISTRY ROLE
 -----------------------------------------------------------------------------
 CHANGELOG
 -----------------------------------------------------------------------------
+v2.2  2026-07-19  Added registry git-update rule (submodule update on existing
+                  integrations before reading files), PowerShell header block
+                  variant note, code-standards opt-in intake question
 v2.1  2026-04-22  Set canonical Squad source repository to
                   https://github.com/bradygaster/squad and updated
                   Squad setup prompts/instructions
@@ -48,7 +51,7 @@ v1.0  2026-02-16  Initial version — unified setup guide
 **Registry:** `https://github.com/bradlaw76/SpeckKit-Project-Development`
 **Entry Point:** This file (`SETUP_FOR_PROJECTS.md`)
 **Agent Defaults:** `AGENT_BEHAVIOR_DEFAULTS.jsonc`
-**Last Updated:** 2026-04-22 (v2.1)
+**Last Updated:** 2026-07-19 (v2.2)
 
 ---
 
