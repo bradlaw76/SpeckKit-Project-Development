@@ -2,9 +2,9 @@
 =============================================================================
 DOCUMENT:     SpeckKit Setup Guide for Consumer Projects
 FILE:         SETUP_FOR_PROJECTS.md
-VERSION:      1.2
+VERSION:      2.1
 AUTHOR:       bradlaw76
-LAST UPDATED: 2026-02-17
+LAST UPDATED: 2026-04-22
 
 -----------------------------------------------------------------------------
 OVERVIEW
@@ -26,6 +26,12 @@ REGISTRY ROLE
 -----------------------------------------------------------------------------
 CHANGELOG
 -----------------------------------------------------------------------------
+v2.1  2026-04-22  Set canonical Squad source repository to
+                  https://github.com/bradygaster/squad and updated
+                  Squad setup prompts/instructions
+v2.0  2026-04-22  Added SpeckKit + Squad setup decision flow, Squad onboarding
+                  guidance, and Method 6 intake for extensions, MCP servers,
+                  and skills
 v1.3  2026-02-17  Added Method 5 — "Review an Existing Project" prompt
 v1.2  2026-02-17  Added "How to Bootstrap" section with 4 methods
                   (HTML comment, Copilot Chat, PowerShell CLI, Bash CLI)
@@ -42,7 +48,7 @@ v1.0  2026-02-16  Initial version — unified setup guide
 **Registry:** `https://github.com/bradlaw76/SpeckKit-Project-Development`
 **Entry Point:** This file (`SETUP_FOR_PROJECTS.md`)
 **Agent Defaults:** `AGENT_BEHAVIOR_DEFAULTS.jsonc`
-**Last Updated:** 2026-02-17 (v1.3)
+**Last Updated:** 2026-04-22 (v2.1)
 
 ---
 
@@ -54,7 +60,7 @@ Set up this project using the SpeckKit registry at https://github.com/bradlaw76/
 
 ## How to Bootstrap or Review a Project
 
-There are **five methods** to connect or update any repo with SpeckKit. Methods 1–4 are for **new projects**; Method 5 is for **existing projects** that need a compliance review.
+There are **six methods** to connect or update any repo with SpeckKit. Methods 1-4 are for **new projects**; Method 5 is for **existing projects** that need a compliance review; Method 6 is for a **full setup intake** (SpeckKit + Squad + tooling).
 
 ### Method 1 — Copilot Chat / AI Agent Prompt (Recommended)
 
@@ -65,6 +71,23 @@ Set up this project using the SpeckKit registry at https://github.com/bradlaw76/
 ```
 
 The agent will read this guide, ask you which project profile to use, and scaffold all required files. Works with GitHub Copilot, Cursor, Windsurf, or any AI agent that can read URLs.
+
+Before scaffolding, the agent should ask these intake questions:
+
+1. "Do you want SpeckKit setup only, or SpeckKit + Squad team orchestration?"
+2. "If Squad is enabled, should I scaffold Squad team files (`.squad/*`) and add Squad workflows?"
+3. "Do you want me to propose recommended VS Code extensions for this tech stack?"
+4. "Do you want to configure MCP servers now (GitHub, Azure, other)?"
+5. "Do you want to preload skill context (SpeckKit, Azure, testing, or custom skills)?"
+
+### SpeckKit vs Squad (What They Are)
+
+- **SpeckKit:** Specification and standards governance. Use this to drive profile-based scaffolding, manifests, specs, code standards, and compliance.
+- **Squad:** Team orchestration layer for multi-agent role routing and ceremonies. Use this when you want named agent roles, workload routing, and GitHub issue/label workflows.
+
+**Canonical Squad Repository:** `https://github.com/bradygaster/squad`
+
+> **Recommended default:** Start with SpeckKit. Enable Squad when the project needs structured multi-agent collaboration.
 
 ### Method 2 — HTML Comment (Agent Discovery)
 
@@ -112,13 +135,39 @@ Review this project's SpeckKit integration against the registry at https://githu
 
 The agent will:
 
-1. Read `SETUP_FOR_PROJECTS.md` from the registry.
-2. Identify the project's current profile from `SYSTEM_MANIFEST.json.md`.
-3. Compare installed files against the profile's required + optional file list.
-4. Report what's missing, outdated, or non-compliant.
-5. Scaffold or update files to bring the project back into compliance.
+1. **Update the registry** — if a `.speckkit-registry` submodule exists, run `git submodule update --remote .speckkit-registry` before reading any registry files.
+2. Read `SETUP_FOR_PROJECTS.md` from the registry.
+3. Identify the project's current profile from `SYSTEM_MANIFEST.json.md`.
+4. Compare installed files against the profile's required + optional file list.
+5. Report what's missing, outdated, or non-compliant.
+6. Scaffold or update files to bring the project back into compliance.
 
 > **Tip:** You can also paste this prompt periodically (e.g., after a registry update) to keep projects in sync with the latest standards.
+
+### Method 6 — Full Setup Intake (SpeckKit + Squad + Tooling)
+
+Use this when you want the agent to ask for everything up front: project profile, Squad usage, extensions, MCP servers, and skills.
+
+Paste into Copilot Chat:
+
+```
+Set up this project using the SpeckKit registry at https://github.com/bradlaw76/SpeckKit-Project-Development — read SETUP_FOR_PROJECTS.md, run a full intake, and ask me:
+1) project profile,
+2) SpeckKit only vs SpeckKit + Squad,
+2a) if Squad is selected, use the Squad source repo https://github.com/bradygaster/squad,
+3) which VS Code extensions to install,
+4) which MCP servers to configure,
+5) which skills/context packs to preload.
+Then scaffold the selected setup and summarize what was configured.
+```
+
+Expected intake output from the agent:
+
+1. Selected project profile and scaffolded file list
+2. SpeckKit-only or SpeckKit + Squad decision and what was added
+3. Proposed/selected VS Code extensions by category
+4. MCP servers requested and connection prerequisites
+5. Skills requested and when they should be auto-loaded
 
 ---
 
@@ -247,6 +296,40 @@ Example for `TEST_ACCEPTANCE.md`:
 
 ---
 
+## Step 0.5 — Decide Whether to Enable Squad
+
+If Squad is enabled, use this repository as the authoritative source:
+
+- `https://github.com/bradygaster/squad`
+
+After choosing the SpeckKit profile, ask:
+
+1. "Do you want Squad orchestration enabled for this repo?"
+2. "Should I create the `.squad` structure and Squad workflow files now using the Squad source at https://github.com/bradygaster/squad?"
+3. "Should I add `@copilot` to the Squad roster and enable issue routing?"
+
+If user answers **yes** to Squad, scaffold these assets (if not already present):
+
+- `.squad/team.md`
+- `.squad/config.json`
+- `.squad/agents/<member>/charter.md`
+- `.squad/agents/<member>/history.md`
+- `.squad/routing.md`
+- `.squad/ceremonies.md`
+- `.squad/decisions.md`
+- `.github/workflows/squad-heartbeat.yml`
+- `.github/workflows/squad-issue-assign.yml`
+- `.github/workflows/squad-triage.yml`
+- `.github/workflows/sync-squad-labels.yml`
+
+When available, prefer workflows and conventions from the Squad source repository above over ad-hoc local variants.
+
+If Squad is enabled, also update `.gitattributes` with merge-union rules for Squad collaboration logs and decision files.
+
+If user answers **no**, continue with SpeckKit-only setup.
+
+---
+
 ## Step 1 — Choose How to Connect
 
 The agent should evaluate the consumer project's situation and pick the best option:
@@ -323,6 +406,11 @@ This project is governed by the SpeckKit registry.
 
 **Registry:** https://github.com/bradlaw76/SpeckKit-Project-Development
 **Agent Defaults:** https://raw.githubusercontent.com/bradlaw76/SpeckKit-Project-Development/main/AGENT_BEHAVIOR_DEFAULTS.jsonc
+
+> **Registry Update Rule:** Before reading any SpeckKit registry files, check whether a `.speckkit-registry`
+> submodule is already initialized (directory exists with content). If so, run
+> `git submodule update --remote .speckkit-registry` to pull the latest registry changes before proceeding.
+> Skip this step on a fresh submodule add, or when using raw GitHub URLs or a local workspace reference.
 
 ---
 
@@ -427,14 +515,41 @@ git commit -m "[SPECKKIT] Add registry integration"
 git push
 ```
 
+If Squad was enabled, include Squad files in the same commit or create a dedicated commit:
+
+```bash
+git add .squad .github/workflows .gitattributes
+git commit -m "[SQUAD] Add team orchestration files and workflows"
+```
+
+---
+
+## Step 5 — Optional Tooling Intake (Extensions, MCP, Skills)
+
+To make setup repeatable, ask these questions before implementation starts:
+
+1. "Which editors and agents will be used (Copilot, Cursor, Windsurf, Claude, other)?"
+2. "Which extension categories do you want installed now (linters, formatters, test runners, cloud, database, AI tools)?"
+3. "Which MCP servers are required for this project (GitHub, Azure, docs/search, internal tools)?"
+4. "Which skills should be auto-loaded for this repo (SpeckKit workflow, testing, Azure, architecture, security)?"
+5. "Should this tooling be pinned in repo docs/config for team-wide consistency?"
+
+Recommended outputs:
+
+- `docs/SETUP_TOOLING.md` (selected extensions, MCP servers, skills, owners)
+- `.vscode/extensions.json` (recommended extensions)
+- `.github/copilot-instructions.md` updates for required MCP/skill behavior
+
 ---
 
 ## Done
 
 Your project now has:
 - **Profile-appropriate template files** scaffolded from Step 0
+- **Optional Squad orchestration** from Step 0.5
 - **Code standards** auto-applied to every new component
 - **UI references** available on request
+- **Optional tooling intake** for extensions, MCP servers, and skills
 - **One source of truth** linked back to the SpeckKit registry
 
 ---
@@ -517,6 +632,12 @@ An agent can read this index to:
 ## What the Agent Should Do When Pointed at This Repo
 
 ```
+0. Update → If .speckkit-registry submodule exists AND already has files
+            (i.e., this is an existing integration, not a fresh install):
+            run `git submodule update --remote .speckkit-registry`
+            to pull the latest registry changes before reading any files.
+            Skip on fresh `git submodule add` and when using raw URLs
+            or a local workspace reference.
 1. Read  → AGENT_BEHAVIOR_DEFAULTS.jsonc     (understand defaults)
 2. Read  → system-manifests/PROJECT_TEMPLATE.json  (know profiles)
 3. Ask   → "What project profile? (spec-governed / ux-demo / hybrid / ui-reference / code-standard)"
