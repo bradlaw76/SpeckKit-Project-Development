@@ -65,6 +65,12 @@ Set up this project using the SpeckKit registry at https://github.com/bradlaw76/
 
 There are **six methods** to connect or update any repo with SpeckKit. Methods 1-4 are for **new projects**; Method 5 is for **existing projects** that need a compliance review; Method 6 is for a **full setup intake** (SpeckKit + Squad + tooling).
 
+### Sustained work once a project is set up
+
+Complete the project's required intake, Spec Kit artifacts, and consequential owner decisions before execution. Then use the `executionContinuity` default in [AGENT_BEHAVIOR_DEFAULTS.jsonc](AGENT_BEHAVIOR_DEFAULTS.jsonc): place the approved dependent backlog in one multi-phase instruction; continue across independently authorized READY tasks; record unchanged blockers once; resume from durable checkpoints instead of repeating completed tests; and give one consolidated handoff after meaningful delivery.
+
+This is a **cadence preference, not an authority grant**. Do not skip initial discovery questions, ownership releases, task signatures, per-task budgets, Git permissions, Dataverse/security approval, or deployment gates. If a task blocks, advance independent authorized work, but do not silently turn BLOCKED work READY. A referenced PR or standard does not automatically update an existing project checkout or running agent. See the [shared execution-continuity proposal](https://github.com/bradlaw76/Work-items-standards-/pull/5) for the full operating contract.
+
 ### Method 1 — Copilot Chat / AI Agent Prompt (Recommended)
 
 Open **GitHub Copilot Chat** (or any AI agent panel) in VS Code and paste this prompt:
