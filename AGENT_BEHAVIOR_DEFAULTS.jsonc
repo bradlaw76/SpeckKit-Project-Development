@@ -11,8 +11,8 @@
   // or reference.
   // ============================================================
 
-  "version": "1.1",
-  "lastUpdated": "2026-02-16",
+  "version": "1.2",
+  "lastUpdated": "2026-11-22",
 
   // --------------------------------------------------------
   // Single Entry Point for Consumer Projects
@@ -52,6 +52,18 @@
       "confirmBeforeApplying": true,
       "behavior": "Ask the user before loading UI reference context. Only apply when the task involves building or reviewing UI for the referenced platform. Confirm which patterns are relevant.",
       "catalogPath": "/ui-references/UI_REFERENCE_CATALOG.json.md"
+    },
+
+    // --------------------------------------------------------
+    // Execution continuity: AUTO-APPLY AFTER INTAKE/AUTHORIZATION
+    // This affects agent planning/cadence only, not task permissions.
+    // --------------------------------------------------------
+    "executionContinuity": {
+      "defaultApply": true,
+      "confirmBeforeApplying": false,
+      "behavior": "After required intake, planning and actual owner approval, bundle a substantive downstream backlog in one instruction. Continue across independently authorized READY tasks without stopping after every minor test, status update or short handoff. Record unchanged blockers once, advance other safe work, reuse verified checkpoints, and provide a consolidated result. Do not re-ask accepted questions. Stop at real ownership/security/deployment gates, invalidated evidence, budgets or no remaining READY tasks. Never claim after-session automatic execution without an enabled, authorized persistent worker.",
+      "standardUrl": "https://github.com/bradlaw76/Work-items-standards-/blob/main/EXECUTION-CONTINUITY-STANDARD.md",
+      "scope": "Guidance only; does not grant source, Git, signing, live data, tenant, or deployment authority"
     }
   },
 
